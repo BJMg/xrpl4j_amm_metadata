@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.primitives.UnsignedInteger;
 import org.immutables.value.Value.Immutable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -76,6 +77,12 @@ public interface TransactionMetadata {
   @JsonProperty("delivered_amount")
   Optional<CurrencyAmount> deliveredAmount();
 
-  // TODO: map the AffectedNodes object graph if needed
+  /**
+   * An {@link AffectedNode} contains a list of objects a transaction modified in some way.
+   * 
+   * @return a list of {@link AffectedNode}s subtypes ({@link CreatedNode}, {@link DeletedNode}, and {ModifiedNode}).
+   */
+  @JsonProperty("AffectedNodes")
+  List<AffectedNode> affectedNodes();
 
 }

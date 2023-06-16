@@ -9,9 +9,9 @@ package org.xrpl.xrpl4j.model.client.accounts;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,6 +20,7 @@ package org.xrpl.xrpl4j.model.client.accounts;
  * =========================LICENSE_END==================================
  */
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -64,10 +65,11 @@ public interface AccountTransactionsTransactionResult<T extends Transaction> ext
 
   /**
    * Metadata about the transaction if this data is from a validated ledger version.
-   *
+   * Earlier ledgers refer to metaData instead of meta, hence the JsonAlias.
    * @return {@link TransactionMetadata} or empty for non-validated transactions.
    */
   @JsonProperty("meta")
+  @JsonAlias("metaData")
   Optional<TransactionMetadata> metadata();
 
   /**
