@@ -1,10 +1,10 @@
 package org.xrpl.xrpl4j.model.client.amm;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
-import org.xrpl.xrpl4j.model.ledger.ImmutableVoteEntry;
 import org.xrpl.xrpl4j.model.transactions.Address;
 import org.xrpl.xrpl4j.model.transactions.TradingFee;
 import org.xrpl.xrpl4j.model.transactions.VoteWeight;
@@ -39,8 +39,12 @@ public interface AmmInfoVoteEntry {
    *
    * @return A {@link TradingFee}.
    */
-  @JsonProperty("trading_fee")
-  TradingFee tradingFee();
+  @JsonProperty("TradingFee")
+  @JsonAlias("trading_fee")
+  @Value.Default
+  default TradingFee tradingFee(){
+    return TradingFee.ZERO;
+  }
 
   /**
    * The weight of the LP's vote.
