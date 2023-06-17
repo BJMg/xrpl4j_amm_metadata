@@ -21,6 +21,7 @@ package org.xrpl.xrpl4j.model.ledger;
  */
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.common.base.Strings;
 import com.google.common.primitives.UnsignedInteger;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,7 @@ class TicketObjectJsonTests extends AbstractJsonTest {
       .previousTransactionId(Hash256.of("F19AD4577212D3BEACA0F75FE1BA1644F2E854D46E8D62E9C95D18E9708CBFB1"))
       .previousTransactionLedgerSequence(UnsignedInteger.valueOf(4))
       .ticketSequence(UnsignedInteger.valueOf(3))
+      .index(Hash256.of(Strings.repeat("0", 64)))
       .build();
 
     String json = "{\n" +
@@ -47,7 +49,8 @@ class TicketObjectJsonTests extends AbstractJsonTest {
       "  \"OwnerNode\" : \"0000000000000000\",\n" +
       "  \"PreviousTxnID\" : \"F19AD4577212D3BEACA0F75FE1BA1644F2E854D46E8D62E9C95D18E9708CBFB1\",\n" +
       "  \"PreviousTxnLgrSeq\" : 4,\n" +
-      "  \"TicketSequence\" : 3\n" +
+      "  \"TicketSequence\" : 3,\n" +
+      "  \"index\" : " + objectMapper.writeValueAsString(Strings.repeat("0", 64)) +
       "}";
 
     assertCanSerializeAndDeserialize(ticketObject, json);

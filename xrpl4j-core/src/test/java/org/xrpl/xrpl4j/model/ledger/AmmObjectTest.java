@@ -1,17 +1,15 @@
 package org.xrpl.xrpl4j.model.ledger;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.mock;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.common.base.Strings;
 import com.google.common.primitives.UnsignedInteger;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.xrpl.xrpl4j.model.AbstractJsonTest;
-import org.xrpl.xrpl4j.model.transactions.Address;
-import org.xrpl.xrpl4j.model.transactions.IssuedCurrencyAmount;
-import org.xrpl.xrpl4j.model.transactions.TradingFee;
-import org.xrpl.xrpl4j.model.transactions.VoteWeight;
+import org.xrpl.xrpl4j.model.transactions.*;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.mock;
 
 class AmmObjectTest extends AbstractJsonTest {
 
@@ -37,6 +35,7 @@ class AmmObjectTest extends AbstractJsonTest {
         VoteEntryWrapper.of(voteEntry1),
         VoteEntryWrapper.of(voteEntry2)
       )
+      .index(Hash256.of(Strings.repeat("0", 64)))
       .build();
 
     assertThat(ammObject.voteSlotsUnwrapped()).asList()
@@ -97,6 +96,7 @@ class AmmObjectTest extends AbstractJsonTest {
           .expiration(UnsignedInteger.valueOf(721870180))
           .build()
       )
+      .index(Hash256.of(Strings.repeat("0", 64)))
       .build();
 
     String json = "{\n" +
@@ -110,7 +110,8 @@ class AmmObjectTest extends AbstractJsonTest {
       "    \"TradingFee\" : 600,\n" +
       "    \"VoteSlots\" : [\n" +
               objectMapper.writeValueAsString(ammObject.voteSlots().get(0)) +
-      "    ]\n" +
+      "    ],\n" +
+      "    \"index\" : " + objectMapper.writeValueAsString(Strings.repeat("0", 64)) +
       "}";
 
     assertCanSerializeAndDeserialize(ammObject, json);

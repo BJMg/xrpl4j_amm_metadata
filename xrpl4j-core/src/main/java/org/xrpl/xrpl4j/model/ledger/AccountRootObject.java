@@ -98,22 +98,6 @@ public interface AccountRootObject extends LedgerObject {
   Optional<UnsignedInteger> ownerCount();
 
   /**
-   * The identifying hash of the transaction that most recently modified this object.
-   *
-   * @return A {@link Hash256} containing the previous transaction hash.
-   */
-  @JsonProperty("PreviousTxnID")
-  Hash256 previousTransactionId();
-
-  /**
-   * The index of the ledger that contains the transaction that most recently modified this object.
-   *
-   * @return An {@link UnsignedInteger} representing the previous transaction ledger sequence.
-   */
-  @JsonProperty("PreviousTxnLgrSeq")
-  UnsignedInteger previousTransactionLedgerSequence();
-
-  /**
    * The sequence number of the next valid transaction for this account. (Each account starts with
    * Sequence = 1 and increases each time a transaction is made.)
    *
@@ -228,13 +212,5 @@ public interface AccountRootObject extends LedgerObject {
    */
   @JsonProperty("NFTokenMinter")
   Optional<Address> nfTokenMinter();
-
-  /**
-   * The unique ID of this {@link AccountRootObject} ledger object.
-   *
-   * @return A {@link Hash256}.
-   * @see "https://xrpl.org/ledger-object-ids.html"
-   */
-  Hash256 index();
 
 }

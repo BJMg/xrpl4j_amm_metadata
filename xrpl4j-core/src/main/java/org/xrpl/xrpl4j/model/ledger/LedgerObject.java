@@ -20,10 +20,11 @@ package org.xrpl.xrpl4j.model.ledger;
  * =========================LICENSE_END==================================
  */
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.*;
+import com.google.common.primitives.UnsignedInteger;
+import org.xrpl.xrpl4j.model.transactions.Hash256;
+
+import java.util.Optional;
 
 /**
  * Market interface for XRP Ledger Objects.
@@ -176,4 +177,39 @@ public interface LedgerObject {
       return value;
     }
   }
+
+  /**
+   * A hint indicating which page of the sender's owner directory links to this object, in case the directory
+   * consists of multiple pages.
+   * Note: The object does not contain a direct link to the owner directory containing it,
+   * since that value can be derived from the Account.
+   *
+   * @return A {@link String} containing the owner node hint.
+   */
+  @JsonProperty("OwnerNode")
+  Optional<String> ownerNode();
+
+  /**
+   * The identifying hash of the transaction that most recently modified this object.
+   *
+   * @return A {@link Hash256} containing the previous transaction hash.
+   */
+  @JsonProperty("PreviousTxnID")
+  Optional<Hash256> previousTransactionId();
+
+  /**
+   * The index of the ledger that contains the transaction that most recently modified this object.
+   *
+   * @return A {@link UnsignedInteger} representing the previous transaction sequence.
+   */
+  @JsonProperty("PreviousTxnLgrSeq")
+  Optional<UnsignedInteger> previousTransactionLedgerSequence();
+
+  /**
+   * The unique ID of this {@link LedgerObject} ledger object.
+   *
+   * @return A {@link Hash256}.
+   * @see "https://xrpl.org/ledger-object-ids.html"
+   */
+  Hash256 index();
 }

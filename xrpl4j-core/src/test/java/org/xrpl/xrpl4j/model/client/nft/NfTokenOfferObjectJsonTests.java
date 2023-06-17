@@ -21,6 +21,7 @@ package org.xrpl.xrpl4j.model.client.nft;
  */
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.common.base.Strings;
 import com.google.common.primitives.UnsignedInteger;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
@@ -45,6 +46,7 @@ public class NfTokenOfferObjectJsonTests  extends AbstractJsonTest {
       .previousTransactionLedgerSequence(UnsignedInteger.valueOf(14090896))
       .nfTokenId(NfTokenId.of("000B013A95F14B0044F78A264E41713C64B5F89242540EE208C3098E00000D65"))
       .flags(NfTokenOfferFlags.BUY_TOKEN)
+      .index(Hash256.of(Strings.repeat("0", 64)))
       .build();
 
     String json = "{\n" +
@@ -55,7 +57,8 @@ public class NfTokenOfferObjectJsonTests  extends AbstractJsonTest {
       "    \"Destination\": \"rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn\",\n" +
       "    \"PreviousTxnID\": \"E3FE6EA3D48F0C2B639448020EA4F03D4F4F8FFDB243A852A0F59177921B4879\",\n" +
       "    \"PreviousTxnLgrSeq\": 14090896,\n" +
-      "    \"LedgerEntryType\": \"NFTokenOffer\"\n" +
+      "    \"LedgerEntryType\": \"NFTokenOffer\",\n" +
+      "    \"index\" : " + objectMapper.writeValueAsString(Strings.repeat("0", 64)) +
       "}";
 
     assertCanSerializeAndDeserialize(object, json);

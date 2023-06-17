@@ -23,7 +23,6 @@ package org.xrpl.xrpl4j.model.ledger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.google.common.primitives.UnsignedInteger;
 import org.immutables.value.Value;
 import org.xrpl.xrpl4j.model.flags.Flags;
 import org.xrpl.xrpl4j.model.transactions.Address;
@@ -90,39 +89,4 @@ public interface DepositPreAuthObject extends LedgerObject {
   default Flags flags() {
     return Flags.UNSET;
   }
-
-  /**
-   * A hint indicating which page of the sender's owner directory links to this object, in case the directory
-   * consists of multiple pages.
-   *
-   * <p>Note: The object does not contain a direct link to the owner directory containing it, since that value can be
-   * derived from the Account.
-   *
-   * @return A {@link String} containing the owner node hint.
-   */
-  @JsonProperty("OwnerNode")
-  String ownerNode();
-
-  /**
-   * The identifying hash of the transaction that most recently modified this object.
-   *
-   * @return A {@link Hash256} containing the previous transaction hash.
-   */
-  @JsonProperty("PreviousTxnID")
-  Hash256 previousTransactionId();
-
-  /**
-   * The index of the ledger that contains the transaction that most recently modified this object.
-   *
-   * @return An {@link UnsignedInteger} representing the previous transaction ledger sequence.
-   */
-  @JsonProperty("PreviousTxnLgrSeq")
-  UnsignedInteger previousTransactionLedgerSequence();
-
-  /**
-   * The unique ID of the {@link DepositPreAuthObject}.
-   *
-   * @return A {@link Hash256} containing the ID.
-   */
-  Hash256 index();
 }

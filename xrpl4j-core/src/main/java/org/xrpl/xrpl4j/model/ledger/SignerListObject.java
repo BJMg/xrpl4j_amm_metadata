@@ -9,9 +9,9 @@ package org.xrpl.xrpl4j.model.ledger;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,7 +26,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.primitives.UnsignedInteger;
 import org.immutables.value.Value;
 import org.xrpl.xrpl4j.model.flags.SignerListFlags;
-import org.xrpl.xrpl4j.model.transactions.Hash256;
 import org.xrpl.xrpl4j.model.transactions.SignerListSet;
 import org.xrpl.xrpl4j.model.transactions.Transaction;
 
@@ -70,31 +69,6 @@ public interface SignerListObject extends LedgerObject {
   SignerListFlags flags();
 
   /**
-   * The identifying hash of the transaction that most recently modified this object.
-   *
-   * @return A {@link Hash256} containing the previous transaction hash.
-   */
-  @JsonProperty("PreviousTxnID")
-  Hash256 previousTransactionId();
-
-  /**
-   * The index of the ledger that contains the transaction that most recently modified this object.
-   *
-   * @return An {@link UnsignedInteger} representing the previous transaction ledger sequence.
-   */
-  @JsonProperty("PreviousTxnLgrSeq")
-  UnsignedInteger previousTransactionLedgerSequence();
-
-  /**
-   * A hint indicating which page of the owner directory links to this object, in case the directory
-   * consists of multiple pages.
-   *
-   * @return A {@link String} containing the hint.
-   */
-  @JsonProperty("OwnerNode")
-  String ownerNode();
-
-  /**
    * An ID for this signer list. Currently always set to 0. If a future amendment allows multiple
    * signer lists for an account, this may change.
    *
@@ -119,12 +93,5 @@ public interface SignerListObject extends LedgerObject {
    */
   @JsonProperty("SignerEntries")
   List<SignerEntryWrapper> signerEntries();
-
-  /**
-   * Unique ID for this {@link SignerListObject}.
-   *
-   * @return A {@link Hash256} containing the ID.
-   */
-  Hash256 index();
 
 }

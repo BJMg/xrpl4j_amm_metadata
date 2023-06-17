@@ -111,33 +111,6 @@ public interface CheckObject extends LedgerObject {
   }
 
   /**
-   * A hint indicating which page of the sender's owner directory links to this object, in case the directory
-   * consists of multiple pages.
-   * Note: The object does not contain a direct link to the owner directory containing it,
-   * since that value can be derived from the Account.
-   *
-   * @return A {@link String} containing the owner node hint.
-   */
-  @JsonProperty("OwnerNode")
-  String ownerNode();
-
-  /**
-   * The identifying hash of the transaction that most recently modified this object.
-   *
-   * @return A {@link Hash256} containing the previous transaction hash.
-   */
-  @JsonProperty("PreviousTxnID")
-  Hash256 previousTxnId();
-
-  /**
-   * The index of the ledger that contains the transaction that most recently modified this object.
-   *
-   * @return A {@link UnsignedInteger} representing the previous transaction sequence.
-   */
-  @JsonProperty("PreviousTxnLgrSeq")
-  UnsignedInteger previousTransactionLedgerSequence();
-
-  /**
    * The maximum amount of currency this {@link CheckObject} can debit the {@link CheckObject#account()}.
    * If the {@link CheckObject} is successfully cashed, the {@link CheckObject#destination()} is credited
    * in the same currency for up to this amount.
@@ -182,11 +155,4 @@ public interface CheckObject extends LedgerObject {
    */
   @JsonProperty("InvoiceID")
   Optional<Hash256> invoiceId();
-
-  /**
-   * The unique ID of the {@link CheckObject}.
-   *
-   * @return A {@link Hash256}.
-   */
-  Hash256 index();
 }

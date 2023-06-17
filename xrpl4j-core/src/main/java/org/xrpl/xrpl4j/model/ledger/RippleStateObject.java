@@ -26,7 +26,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.primitives.UnsignedInteger;
 import org.immutables.value.Value;
 import org.xrpl.xrpl4j.model.flags.RippleStateFlags;
-import org.xrpl.xrpl4j.model.transactions.Hash256;
 import org.xrpl.xrpl4j.model.transactions.IssuedCurrencyAmount;
 
 import java.util.Optional;
@@ -102,22 +101,6 @@ public interface RippleStateObject extends LedgerObject {
   IssuedCurrencyAmount highLimit();
 
   /**
-   * The identifying hash of the transaction that most recently modified this object.
-   *
-   * @return A {@link Hash256} containing the previous transaction hash.
-   */
-  @JsonProperty("PreviousTxnID")
-  Hash256 previousTransactionId();
-
-  /**
-   * The index of the ledger that contains the transaction that most recently modified this object.
-   *
-   * @return An {@link UnsignedInteger} representing the previous transaction ledger sequence.
-   */
-  @JsonProperty("PreviousTxnLgrSeq")
-  UnsignedInteger previousTransactionLedgerSequence();
-
-  /**
    * (Omitted in some historical ledgers) A hint indicating which page of the low account's owner directory
    * links to this object, in case the directory consists of multiple pages.
    *
@@ -170,11 +153,4 @@ public interface RippleStateObject extends LedgerObject {
    */
   @JsonProperty("HighQualityOut")
   Optional<UnsignedInteger> highQualityOut();
-
-  /**
-   * Unique identifier for this {@link RippleStateObject}.
-   *
-   * @return A {@link Hash256} containing the ID.
-   */
-  Hash256 index();
 }

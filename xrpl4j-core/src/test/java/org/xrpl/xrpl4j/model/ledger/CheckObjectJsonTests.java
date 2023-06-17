@@ -41,7 +41,7 @@ public class CheckObjectJsonTests extends AbstractJsonTest {
       .expiration(UnsignedInteger.valueOf(570113521))
       .invoiceId(Hash256.of("46060241FABCF692D4D934BA2A6C4427CD4279083E38C77CBE642243E43BE291"))
       .ownerNode("0000000000000000")
-      .previousTxnId(Hash256.of("5463C6E08862A1FAE5EDAC12D70ADB16546A1F674930521295BC082494B62924"))
+      .previousTransactionId(Hash256.of("5463C6E08862A1FAE5EDAC12D70ADB16546A1F674930521295BC082494B62924"))
       .previousTransactionLedgerSequence(UnsignedInteger.valueOf(6))
       .sendMax(XrpCurrencyAmount.ofDrops(100000000))
       .sequence(UnsignedInteger.valueOf(2))

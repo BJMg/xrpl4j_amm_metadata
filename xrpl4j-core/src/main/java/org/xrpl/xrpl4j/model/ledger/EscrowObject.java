@@ -28,12 +28,7 @@ import com.google.common.primitives.UnsignedLong;
 import com.ripple.cryptoconditions.Condition;
 import org.immutables.value.Value;
 import org.xrpl.xrpl4j.model.flags.Flags;
-import org.xrpl.xrpl4j.model.transactions.Address;
-import org.xrpl.xrpl4j.model.transactions.EscrowCancel;
-import org.xrpl.xrpl4j.model.transactions.EscrowCreate;
-import org.xrpl.xrpl4j.model.transactions.EscrowFinish;
-import org.xrpl.xrpl4j.model.transactions.Hash256;
-import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
+import org.xrpl.xrpl4j.model.transactions.*;
 
 import java.util.Optional;
 
@@ -158,19 +153,6 @@ public interface EscrowObject extends LedgerObject {
   Optional<UnsignedInteger> destinationTag();
 
   /**
-   * A hint indicating which page of the owner directory links to this object, in case the directory consists of
-   * multiple pages.
-   *
-   *
-   * <p>Note: The object does not contain a direct link to the owner directory containing it, since that value can be
-   * derived from the Account.</p>
-   *
-   * @return An {@link Optional} of type {@link String} containing the owner node hint.
-   */
-  @JsonProperty("OwnerNode")
-  Optional<String> ownerNode();
-
-  /**
    * A hint indicating which page of the destination's owner directory links to this object, in case the directory
    * consists of multiple pages. Omitted on escrows created before enabling the
    * <a href="https://xrpl.org/known-amendments.html#fix1523">fix1523 amendment</a>.
@@ -179,28 +161,5 @@ public interface EscrowObject extends LedgerObject {
    */
   @JsonProperty("DestinationNode")
   Optional<String> destinationNode();
-
-  /**
-   * The identifying hash of the transaction that most recently modified this object.
-   *
-   * @return A {@link Hash256} containing the previous transaction hash.
-   */
-  @JsonProperty("PreviousTxnID")
-  Optional<Hash256> previousTransactionId();
-
-  /**
-   * The index of the ledger that contains the transaction that most recently modified this object.
-   *
-   * @return An {@link Optional} of type {@link UnsignedInteger} representing the previous transaction ledger sequence.
-   */
-  @JsonProperty("PreviousTxnLgrSeq")
-  Optional<UnsignedInteger> previousTransactionLedgerSequence();
-
-  /**
-   * The unique ID of this {@link EscrowObject}.
-   *
-   * @return A {@link Hash256} containing the ID.
-   */
-  Hash256 index();
 
 }

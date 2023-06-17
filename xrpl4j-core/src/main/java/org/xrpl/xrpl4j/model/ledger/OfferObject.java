@@ -9,9 +9,9 @@ package org.xrpl.xrpl4j.model.ledger;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -77,7 +77,10 @@ public interface OfferObject extends LedgerObject {
    * @return A {@link OfferFlags}.
    */
   @JsonProperty("Flags")
-  OfferFlags flags();
+  @Value.Default
+  default OfferFlags flags() {
+    return OfferFlags.of(0);
+  }
 
   /**
    * The sequence number of the {@link org.xrpl.xrpl4j.model.transactions.OfferCreate} transaction that
@@ -121,34 +124,10 @@ public interface OfferObject extends LedgerObject {
    * @return A {@link String} containing the hint.
    */
   @JsonProperty("BookNode")
-  String bookNode();
-
-  /**
-   * A hint indicating which page of the sender's owner directory links to this object, in case the directory
-   * consists of multiple pages.
-   * Note: The object does not contain a direct link to the owner directory containing it,
-   * since that value can be derived from the Account.
-   *
-   * @return A {@link String} containing the hint.
-   */
-  @JsonProperty("OwnerNode")
-  String ownerNode();
-
-  /**
-   * The identifying hash of the transaction that most recently modified this object.
-   *
-   * @return A {@link Hash256} containing the previous transaction hash.
-   */
-  @JsonProperty("PreviousTxnID")
-  Hash256 previousTransactionId();
-
-  /**
-   * The index of the ledger that contains the transaction that most recently modified this object.
-   *
-   * @return An {@link UnsignedInteger} representing the previous transaction ledger sequence.
-   */
-  @JsonProperty("PreviousTxnLgrSeq")
-  UnsignedInteger previousTransactionLedgerSequence();
+  @Value.Default
+  default String bookNode() {
+    return "0000000000000000";
+  }
 
   /**
    * Indicates the time after which this offer is considered expired, in
@@ -158,12 +137,5 @@ public interface OfferObject extends LedgerObject {
    */
   @JsonProperty("Expiration")
   Optional<UnsignedInteger> expiration();
-
-  /**
-   * The unique ID of the {@link OfferObject}.
-   *
-   * @return A {@link Hash256} containing the ID.
-   */
-  Hash256 index();
 
 }

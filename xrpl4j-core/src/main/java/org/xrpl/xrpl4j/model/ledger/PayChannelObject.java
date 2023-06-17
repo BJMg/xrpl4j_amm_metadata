@@ -28,7 +28,6 @@ import com.google.common.primitives.UnsignedLong;
 import org.immutables.value.Value;
 import org.xrpl.xrpl4j.model.flags.Flags;
 import org.xrpl.xrpl4j.model.transactions.Address;
-import org.xrpl.xrpl4j.model.transactions.Hash256;
 import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
 
 import java.util.Optional;
@@ -152,31 +151,6 @@ public interface PayChannelObject extends LedgerObject {
   UnsignedLong settleDelay();
 
   /**
-   * A hint indicating which page of the source address's owner directory links to this object, in case
-   * the directory consists of multiple pages.
-   *
-   * @return A {@link String} containing the hint.
-   */
-  @JsonProperty("OwnerNode")
-  String ownerNode();
-
-  /**
-   * The identifying hash of the transaction that most recently modified this object.
-   *
-   * @return A {@link Hash256} containing the previous transaction hash.
-   */
-  @JsonProperty("PreviousTxnID")
-  Hash256 previousTransactionId();
-
-  /**
-   * The index of the ledger that contains the transaction that most recently modified this object.
-   *
-   * @return An {@link UnsignedInteger} representing the previous transaction ledger sequence.
-   */
-  @JsonProperty("PreviousTxnLgrSeq")
-  UnsignedInteger previousTransactionLedgerSequence();
-
-  /**
    * The mutable expiration time for this payment channel, in
    * <a href="https://xrpl.org/basic-data-types.html#specifying-time">seconds since the Ripple Epoch</a>.
    * The channel is expired if this value is present and smaller than the previous
@@ -215,11 +189,4 @@ public interface PayChannelObject extends LedgerObject {
    */
   @JsonProperty("DestinationTag")
   Optional<UnsignedInteger> destinationTag();
-
-  /**
-   * Unique ID for this channel.
-   *
-   * @return A {@link Hash256} containing the ID.
-   */
-  Hash256 index();
 }

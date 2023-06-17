@@ -27,7 +27,6 @@ import com.google.common.primitives.UnsignedInteger;
 import org.immutables.value.Value;
 import org.xrpl.xrpl4j.model.flags.NfTokenOfferFlags;
 import org.xrpl.xrpl4j.model.transactions.Address;
-import org.xrpl.xrpl4j.model.transactions.Hash256;
 import org.xrpl.xrpl4j.model.transactions.NfTokenId;
 import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
 
@@ -79,22 +78,6 @@ public interface NfTokenOfferObject extends LedgerObject {
   Address owner();
 
   /**
-   * The identifying hash of the transaction that most recently modified this object.
-   *
-   * @return A {@link Hash256} containing the previous transaction hash.
-   */
-  @JsonProperty("PreviousTxnID")
-  Hash256 previousTransactionId();
-
-  /**
-   * The index of the ledger that contains the transaction that most recently modified this object.
-   *
-   * @return An {@link UnsignedInteger} representing the previous transaction ledger sequence.
-   */
-  @JsonProperty("PreviousTxnLgrSeq")
-  UnsignedInteger previousTransactionLedgerSequence();
-
-  /**
    * The TokenId of the NfToken for which the offer has been created.
    *
    * @return {@link org.xrpl.xrpl4j.model.transactions.NfTokenId} of the NfToken.
@@ -118,17 +101,6 @@ public interface NfTokenOfferObject extends LedgerObject {
    */
   @JsonProperty("Destination")
   Optional<Address> destination();
-
-  /**
-   * A hint indicating which page of the sender's owner directory links to this object, in case the directory
-   * consists of multiple pages.
-   * Note: The object does not contain a direct link to the owner directory containing it,
-   * since that value can be derived from the Account.
-   *
-   * @return A {@link String} containing the hint.
-   */
-  @JsonProperty("OwnerNode")
-  Optional<String> ownerNode();
 
   /**
    * A hint indicating which page of the token buy or sell offer directory links to this object.
