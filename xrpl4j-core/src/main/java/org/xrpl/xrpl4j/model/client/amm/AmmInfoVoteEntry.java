@@ -1,6 +1,5 @@
 package org.xrpl.xrpl4j.model.client.amm;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -39,10 +38,9 @@ public interface AmmInfoVoteEntry {
    *
    * @return A {@link TradingFee}.
    */
-  @JsonProperty("TradingFee")
-  @JsonAlias("trading_fee")
+  @JsonProperty("trading_fee")
   @Value.Default
-  default TradingFee tradingFee(){
+  default TradingFee tradingFee() {
     return TradingFee.ZERO;
   }
 

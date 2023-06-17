@@ -104,6 +104,7 @@ public interface AmmObject extends LedgerObject {
    * @return A {@link TradingFee}.
    */
   @JsonProperty("TradingFee")
+  @Value.Default
   default TradingFee tradingFee() {
     return TradingFee.ZERO;
   }
