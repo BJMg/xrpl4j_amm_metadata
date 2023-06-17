@@ -84,7 +84,7 @@ public interface ModifiedNode extends AffectedNode {
                 LedgerObject.LedgerEntryType ledgerEntryType = LedgerObject.LedgerEntryType.forValue(ledgerEntryTypeNode.textValue());
 
                 ImmutableModifiedNode.Builder builder = ImmutableModifiedNode.builder();
-                JsonNode finalFieldsJsonNode = objectNode.required("FinalFields");
+                JsonNode finalFieldsJsonNode = objectNode.get("FinalFields");
                 if (ledgerObjectDeserializeCache.canBeDeserialized(ledgerEntryType) && finalFieldsJsonNode != null) {
 
                     ObjectNode finalFieldsNode = (ObjectNode) finalFieldsJsonNode;
