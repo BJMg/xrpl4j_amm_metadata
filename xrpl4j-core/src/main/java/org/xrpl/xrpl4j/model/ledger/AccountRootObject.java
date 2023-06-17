@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.primitives.UnsignedInteger;
+import com.google.common.primitives.UnsignedLong;
 import org.immutables.value.Value;
 import org.xrpl.xrpl4j.model.flags.AccountRootFlags;
 import org.xrpl.xrpl4j.model.transactions.Address;
@@ -75,7 +76,10 @@ public interface AccountRootObject extends LedgerObject {
    * @return An {@link XrpCurrencyAmount} representing the account's XRP balance.
    */
   @JsonProperty("Balance")
-  XrpCurrencyAmount balance();
+  @Value.Default
+  default XrpCurrencyAmount balance() {
+    return XrpCurrencyAmount.of(UnsignedLong.ZERO);
+  }
 
   /**
    * A bit-map of boolean {@link AccountRootFlags} enabled for this account.

@@ -60,7 +60,10 @@ public interface AmmObject extends LedgerObject {
    * @return An {@link Asset}.
    */
   @JsonProperty("Asset")
-  Asset asset();
+  @Value.Default
+  default Asset asset(){
+    return Asset.XRP;
+  }
 
   /**
    * The definition for the other asset this AMM holds.
@@ -68,7 +71,10 @@ public interface AmmObject extends LedgerObject {
    * @return An {@link Asset}.
    */
   @JsonProperty("Asset2")
-  Asset asset2();
+  @Value.Default
+ default Asset asset2(){
+    return Asset.XRP;
+  }
 
   /**
    * The address of the special account that holds this AMM's assets.
