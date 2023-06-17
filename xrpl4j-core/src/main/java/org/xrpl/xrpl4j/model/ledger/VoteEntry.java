@@ -9,6 +9,8 @@ import org.xrpl.xrpl4j.model.transactions.Address;
 import org.xrpl.xrpl4j.model.transactions.TradingFee;
 import org.xrpl.xrpl4j.model.transactions.VoteWeight;
 
+import java.util.Optional;
+
 /**
  * Describes a vote for the trading fee on an AMM by an LP.
  */
@@ -42,7 +44,7 @@ public interface VoteEntry {
    */
   @JsonProperty("TradingFee")
   @JsonAlias("trading_fee")
-  TradingFee tradingFee();
+  Optional<TradingFee> tradingFee();
 
   /**
    * The weight of the LP's vote.

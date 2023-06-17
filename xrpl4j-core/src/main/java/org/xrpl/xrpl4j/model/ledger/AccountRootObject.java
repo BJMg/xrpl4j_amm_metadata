@@ -83,10 +83,7 @@ public interface AccountRootObject extends LedgerObject {
    * @return An {@link AccountRootFlags}.
    */
   @JsonProperty("Flags")
-  @Value.Default
-  default AccountRootFlags flags() {
-    return AccountRootFlags.UNSET;
-  }
+  Optional<AccountRootFlags> flags();
 
   /**
    * The number of objects this account owns in the ledger, which contributes to its owner reserve.
@@ -94,10 +91,7 @@ public interface AccountRootObject extends LedgerObject {
    * @return An {@link UnsignedInteger} representing the number of objects.
    */
   @JsonProperty("OwnerCount")
-  @Value.Default
-  default UnsignedInteger ownerCount() {
-    return UnsignedInteger.ZERO;
-  }
+  Optional<UnsignedInteger> ownerCount();
 
   /**
    * The identifying hash of the transaction that most recently modified this object.
