@@ -1,9 +1,11 @@
 package org.xrpl.xrpl4j.model.ledger;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.primitives.UnsignedInteger;
 import org.immutables.value.Value;
 import org.xrpl.xrpl4j.model.flags.Flags;
 import org.xrpl.xrpl4j.model.transactions.Address;
@@ -75,6 +77,7 @@ public interface AmmObject extends LedgerObject {
    * @return An {@link Address}.
    */
   @JsonProperty("AMMAccount")
+  @JsonAlias("Account")
   Address ammAccount();
 
   /**
@@ -102,7 +105,9 @@ public interface AmmObject extends LedgerObject {
    * @return A {@link TradingFee}.
    */
   @JsonProperty("TradingFee")
-  TradingFee tradingFee();
+  default TradingFee tradingFee() {
+    return TradingFee.of(UnsignedInteger.ZERO);
+  }
 
   /**
    * A list of vote objects, representing votes on the pool's trading fee.
