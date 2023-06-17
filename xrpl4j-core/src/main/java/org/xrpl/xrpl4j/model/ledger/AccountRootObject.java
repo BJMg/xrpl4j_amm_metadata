@@ -83,7 +83,10 @@ public interface AccountRootObject extends LedgerObject {
    * @return An {@link AccountRootFlags}.
    */
   @JsonProperty("Flags")
-  AccountRootFlags flags();
+  @Value.Default
+  default AccountRootFlags flags() {
+    return AccountRootFlags.UNSET;
+  }
 
   /**
    * The number of objects this account owns in the ledger, which contributes to its owner reserve.
@@ -91,7 +94,10 @@ public interface AccountRootObject extends LedgerObject {
    * @return An {@link UnsignedInteger} representing the number of objects.
    */
   @JsonProperty("OwnerCount")
-  UnsignedInteger ownerCount();
+  @Value.Default
+  default UnsignedInteger ownerCount() {
+    return UnsignedInteger.ZERO;
+  }
 
   /**
    * The identifying hash of the transaction that most recently modified this object.
@@ -219,7 +225,7 @@ public interface AccountRootObject extends LedgerObject {
 
   /**
    * Another account that can mint non-fungible tokens on behalf of this account.
-   * 
+   *
    * @return The optionally-present {@link Address} of the account that can mint NFTs on behalf of this account.
    */
   @JsonProperty("NFTokenMinter")

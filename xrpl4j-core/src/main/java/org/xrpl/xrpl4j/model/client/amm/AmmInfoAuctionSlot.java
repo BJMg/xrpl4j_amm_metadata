@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.primitives.UnsignedInteger;
 import org.immutables.value.Value;
-import org.xrpl.xrpl4j.model.ledger.AuthAccountWrapper;
 import org.xrpl.xrpl4j.model.transactions.Address;
 import org.xrpl.xrpl4j.model.transactions.IssuedCurrencyAmount;
 import org.xrpl.xrpl4j.model.transactions.TradingFee;
@@ -56,7 +55,10 @@ public interface AmmInfoAuctionSlot {
    * @return A {@link TradingFee}.
    */
   @JsonProperty("discounted_fee")
-  TradingFee discountedFee();
+  @Value.Default
+  default TradingFee discountedFee() {
+    return TradingFee.of(UnsignedInteger.ZERO);
+  }
 
   /**
    * The time when this slot expires, as a {@link ZonedDateTime}.

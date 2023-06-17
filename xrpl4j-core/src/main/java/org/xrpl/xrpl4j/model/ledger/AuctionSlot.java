@@ -68,7 +68,10 @@ public interface AuctionSlot {
    * @return A {@link TradingFee}.
    */
   @JsonProperty("DiscountedFee")
-  TradingFee discountedFee();
+  @Value.Default
+  default TradingFee discountedFee() {
+    return TradingFee.of(UnsignedInteger.ZERO);
+  }
 
   /**
    * The amount the auction owner paid to win this slot, in LP Tokens.
