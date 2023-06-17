@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import org.xrpl.xrpl4j.model.ledger.LedgerObject;
 
 /**
  * An {@link AffectedNode} contains the objects in the ledger that a transaction modified in some way.
@@ -27,7 +28,7 @@ public interface AffectedNode {
    * @return the type of ledger object that was created/modified/deleted.
    */ 
   @JsonProperty("LedgerEntryType")
-  String ledgerEntryType();
+  LedgerObject.LedgerEntryType ledgerEntryType();
   
   /**
    * The ID of the ledger object in the ledger's state tree.
