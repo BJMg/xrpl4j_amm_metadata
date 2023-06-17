@@ -4,12 +4,11 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.primitives.UnsignedInteger;
 import org.immutables.value.Value;
 import org.xrpl.xrpl4j.model.transactions.Address;
 import org.xrpl.xrpl4j.model.transactions.TradingFee;
 import org.xrpl.xrpl4j.model.transactions.VoteWeight;
-
-import java.util.Optional;
 
 /**
  * Describes a vote for the trading fee on an AMM by an LP.
@@ -44,7 +43,10 @@ public interface VoteEntry {
    */
   @JsonProperty("TradingFee")
   @JsonAlias("trading_fee")
-  Optional<TradingFee> tradingFee();
+  @Value.Default
+  default TradingFee tradingFee(){
+    return TradingFee.of(UnsignedInteger.ZERO);
+  }
 
   /**
    * The weight of the LP's vote.
