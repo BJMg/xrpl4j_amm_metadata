@@ -57,7 +57,7 @@ public interface AmmInfoAuctionSlot {
   @JsonProperty("discounted_fee")
   @Value.Default
   default TradingFee discountedFee() {
-    return TradingFee.of(UnsignedInteger.ZERO);
+    return TradingFee.ZERO;
   }
 
   /**

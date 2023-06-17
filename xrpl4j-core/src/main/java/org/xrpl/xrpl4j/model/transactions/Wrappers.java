@@ -388,6 +388,8 @@ public class Wrappers {
   @JsonDeserialize(as = TradingFee.class, using = TradingFeeDeserializer.class)
   abstract static class _TradingFee extends Wrapper<UnsignedInteger> implements Serializable {
 
+    public static final TradingFee ZERO = ofPercent(BigDecimal.ZERO);
+
     @Override
     public String toString() {
       return this.value().toString();

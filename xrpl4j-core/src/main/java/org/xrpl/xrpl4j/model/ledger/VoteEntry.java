@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.google.common.primitives.UnsignedInteger;
 import org.immutables.value.Value;
 import org.xrpl.xrpl4j.model.transactions.Address;
 import org.xrpl.xrpl4j.model.transactions.TradingFee;
@@ -45,7 +44,7 @@ public interface VoteEntry {
   @JsonAlias("trading_fee")
   @Value.Default
   default TradingFee tradingFee(){
-    return TradingFee.of(UnsignedInteger.ZERO);
+    return TradingFee.ZERO;
   }
 
   /**

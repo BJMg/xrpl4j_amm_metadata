@@ -70,7 +70,7 @@ public interface AuctionSlot {
   @JsonProperty("DiscountedFee")
   @Value.Default
   default TradingFee discountedFee() {
-    return TradingFee.of(UnsignedInteger.ZERO);
+    return TradingFee.ZERO;
   }
 
   /**
