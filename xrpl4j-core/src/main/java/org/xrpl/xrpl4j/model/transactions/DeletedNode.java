@@ -50,19 +50,19 @@ public interface DeletedNode extends AffectedNode {
                 ObjectNode objectNode = (ObjectNode) jsonNode;
                 JsonNode ledgerEntryTypeNode = objectNode.get("LedgerEntryType");
                 LedgerObject.LedgerEntryType ledgerEntryType = LedgerObject.LedgerEntryType.forValue(ledgerEntryTypeNode.textValue());
-                ObjectNode finalFieldsNode = (ObjectNode) objectNode.required("FinalFields");
                 JsonNode ledgerIndex = objectNode.get("LedgerIndex");
-                finalFieldsNode.set("index", ledgerIndex);
-                finalFieldsNode.set("LedgerEntryType", ledgerEntryTypeNode);
-                if (!finalFieldsNode.has("PreviousTxnLgrSeq")) {
-                    finalFieldsNode.set("PreviousTxnLgrSeq", EMPTY_LONG_NODE);
-                }
-                if (!finalFieldsNode.has("PreviousTxnID")) {
-                    finalFieldsNode.set("PreviousTxnID", EMPTY_HASH_NODE);
-                }
 
                 ImmutableDeletedNode.Builder builder = ImmutableDeletedNode.builder();
                 if (ledgerObjectDeserializeCache.canBeDeserialized(ledgerEntryType)) {
+                    ObjectNode finalFieldsNode = (ObjectNode) objectNode.required("FinalFields");
+                    finalFieldsNode.set("index", ledgerIndex);
+                    finalFieldsNode.set("LedgerEntryType", ledgerEntryTypeNode);
+                    if (!finalFieldsNode.has("PreviousTxnLgrSeq")) {
+                        finalFieldsNode.set("PreviousTxnLgrSeq", EMPTY_LONG_NODE);
+                    }
+                    if (!finalFieldsNode.has("PreviousTxnID")) {
+                        finalFieldsNode.set("PreviousTxnID", EMPTY_HASH_NODE);
+                    }
                     builder.finalFields(Optional.ofNullable(deserializationContext.readTreeAsValue(finalFieldsNode, LedgerObject.class)));
                 }
                 return builder

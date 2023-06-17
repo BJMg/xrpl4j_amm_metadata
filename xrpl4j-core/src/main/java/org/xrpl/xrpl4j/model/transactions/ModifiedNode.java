@@ -76,20 +76,22 @@ public interface ModifiedNode extends AffectedNode {
             JsonNode jsonNode = jsonParser.getCodec().readTree(jsonParser);
             if (jsonNode.isObject()) {
                 ObjectNode objectNode = (ObjectNode) jsonNode;
-                ObjectNode finalFieldsNode = (ObjectNode) objectNode.required("FinalFields");
                 JsonNode previousTxnLgrSeq = firstNonNull(objectNode.get("PreviousTxnLgrSeq"), EMPTY_LONG_NODE);
                 JsonNode previousTxnId = firstNonNull(objectNode.get("PreviousTxnID"), EMPTY_HASH_NODE);
                 JsonNode ledgerEntryTypeNode = objectNode.get("LedgerEntryType");
                 JsonNode ledgerIndex = objectNode.get("LedgerIndex");
-                finalFieldsNode.set("index", ledgerIndex);
-                finalFieldsNode.set("LedgerEntryType", ledgerEntryTypeNode);
-                finalFieldsNode.set("PreviousTxnLgrSeq", previousTxnLgrSeq);
-                finalFieldsNode.set("PreviousTxnID", previousTxnId);
 
                 LedgerObject.LedgerEntryType ledgerEntryType = LedgerObject.LedgerEntryType.forValue(ledgerEntryTypeNode.textValue());
 
                 ImmutableModifiedNode.Builder builder = ImmutableModifiedNode.builder();
-                if (ledgerObjectDeserializeCache.canBeDeserialized(ledgerEntryType)) {
+                JsonNode finalFieldsJsonNode = objectNode.required("FinalFields");
+                if (ledgerObjectDeserializeCache.canBeDeserialized(ledgerEntryType) && finalFieldsJsonNode != null) {
+
+                    ObjectNode finalFieldsNode = (ObjectNode) finalFieldsJsonNode;
+                    finalFieldsNode.set("index", ledgerIndex);
+                    finalFieldsNode.set("LedgerEntryType", ledgerEntryTypeNode);
+                    finalFieldsNode.set("PreviousTxnLgrSeq", previousTxnLgrSeq);
+                    finalFieldsNode.set("PreviousTxnID", previousTxnId);
                     builder.finalFields(Optional.ofNullable(deserializationContext.readTreeAsValue(finalFieldsNode, LedgerObject.class)));
 
                     JsonNode previousFieldsNode = objectNode.get("PreviousFields");

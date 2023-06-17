@@ -50,15 +50,15 @@ public interface CreatedNode extends AffectedNode {
                 ObjectNode objectNode = (ObjectNode) jsonNode;
                 JsonNode ledgerEntryTypeNode = objectNode.get("LedgerEntryType");
                 LedgerObject.LedgerEntryType ledgerEntryType = LedgerObject.LedgerEntryType.forValue(ledgerEntryTypeNode.textValue());
-                ObjectNode newFieldsNode = (ObjectNode) objectNode.required("NewFields");
                 JsonNode ledgerIndex = objectNode.get("LedgerIndex");
-                newFieldsNode.set("index", ledgerIndex);
-                newFieldsNode.set("LedgerEntryType", ledgerEntryTypeNode);
-                newFieldsNode.set("PreviousTxnLgrSeq", EMPTY_LONG_NODE);
-                newFieldsNode.set("PreviousTxnID", EMPTY_HASH_NODE);
 
                 ImmutableCreatedNode.Builder builder = ImmutableCreatedNode.builder();
                 if (ledgerObjectDeserializeCache.canBeDeserialized(ledgerEntryType)) {
+                    ObjectNode newFieldsNode = (ObjectNode) objectNode.required("NewFields");
+                    newFieldsNode.set("index", ledgerIndex);
+                    newFieldsNode.set("LedgerEntryType", ledgerEntryTypeNode);
+                    newFieldsNode.set("PreviousTxnLgrSeq", EMPTY_LONG_NODE);
+                    newFieldsNode.set("PreviousTxnID", EMPTY_HASH_NODE);
                     builder.newFields(Optional.ofNullable(deserializationContext.readTreeAsValue(newFieldsNode, LedgerObject.class)));
                 }
                 return builder
