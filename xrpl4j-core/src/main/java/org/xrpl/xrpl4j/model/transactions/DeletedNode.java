@@ -14,9 +14,6 @@ import org.xrpl.xrpl4j.model.ledger.LedgerObject;
 import java.io.IOException;
 import java.util.Optional;
 
-import static org.xrpl.xrpl4j.model.transactions.ModifiedNode.Deserializer.EMPTY_HASH_NODE;
-import static org.xrpl.xrpl4j.model.transactions.ModifiedNode.Deserializer.EMPTY_LONG_NODE;
-
 /**
  * A {@link DeletedNode} contains the objects in the ledger that a transaction deleted.
  *
@@ -57,12 +54,6 @@ public interface DeletedNode extends AffectedNode {
                     ObjectNode finalFieldsNode = (ObjectNode) objectNode.required("FinalFields");
                     finalFieldsNode.set("index", ledgerIndex);
                     finalFieldsNode.set("LedgerEntryType", ledgerEntryTypeNode);
-                    if (!finalFieldsNode.has("PreviousTxnLgrSeq")) {
-                        finalFieldsNode.set("PreviousTxnLgrSeq", EMPTY_LONG_NODE);
-                    }
-                    if (!finalFieldsNode.has("PreviousTxnID")) {
-                        finalFieldsNode.set("PreviousTxnID", EMPTY_HASH_NODE);
-                    }
                     builder.finalFields(Optional.ofNullable(deserializationContext.readTreeAsValue(finalFieldsNode, LedgerObject.class)));
                 }
                 return builder

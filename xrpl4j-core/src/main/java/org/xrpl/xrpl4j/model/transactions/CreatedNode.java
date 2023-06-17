@@ -13,9 +13,6 @@ import org.xrpl.xrpl4j.model.ledger.LedgerObject;
 import java.io.IOException;
 import java.util.Optional;
 
-import static org.xrpl.xrpl4j.model.transactions.ModifiedNode.Deserializer.EMPTY_HASH_NODE;
-import static org.xrpl.xrpl4j.model.transactions.ModifiedNode.Deserializer.EMPTY_LONG_NODE;
-
 /**
  * A {@link CreatedNode} contains the objects in the ledger that a transaction created.
  *
@@ -57,8 +54,6 @@ public interface CreatedNode extends AffectedNode {
                     ObjectNode newFieldsNode = (ObjectNode) objectNode.required("NewFields");
                     newFieldsNode.set("index", ledgerIndex);
                     newFieldsNode.set("LedgerEntryType", ledgerEntryTypeNode);
-                    newFieldsNode.set("PreviousTxnLgrSeq", EMPTY_LONG_NODE);
-                    newFieldsNode.set("PreviousTxnID", EMPTY_HASH_NODE);
                     builder.newFields(Optional.ofNullable(deserializationContext.readTreeAsValue(newFieldsNode, LedgerObject.class)));
                 }
                 return builder

@@ -2,7 +2,6 @@ package org.xrpl.xrpl4j.model.transactions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.ImmutableList;
-import com.google.common.primitives.UnsignedInteger;
 import org.junit.jupiter.api.Test;
 import org.xrpl.xrpl4j.model.AbstractJsonTest;
 import org.xrpl.xrpl4j.model.flags.RippleStateFlags;
@@ -96,8 +95,6 @@ class CreatedNodeTest extends AbstractJsonTest {
                                         .issuer(Address.of("rphDLpCwJyPEBuZccdBCWPUgAXUd96dUCJ"))
                                         .value("0")
                                         .build())
-                                .previousTransactionId(Hash256.of("0000000000000000000000000000000000000000000000000000000000000000"))
-                                .previousTransactionLedgerSequence(UnsignedInteger.valueOf(0))
                                 .index(Hash256.of("CF2A10BB2DD216A456421A2AA1CB6CD35B18E36A0BE80976772CCCEA08EBAC97"))
                                 .build())
                         .build()
