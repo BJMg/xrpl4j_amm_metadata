@@ -75,7 +75,10 @@ public interface SignerListObject extends LedgerObject {
    * @return An {@link UnsignedInteger} representing the ID.
    */
   @JsonProperty("SignerListID")
-  UnsignedInteger signerListId();
+  @Value.Default
+  default UnsignedInteger signerListId(){
+    return UnsignedInteger.ZERO;
+  }
 
   /**
    * A target number for signer weights. To produce a valid signature for the owner of this {@link SignerListObject},
