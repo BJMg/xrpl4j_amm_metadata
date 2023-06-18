@@ -25,7 +25,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.primitives.UnsignedInteger;
 import org.immutables.value.Value;
-import org.xrpl.xrpl4j.model.flags.Flags;
 import org.xrpl.xrpl4j.model.transactions.Address;
 import org.xrpl.xrpl4j.model.transactions.CurrencyAmount;
 import org.xrpl.xrpl4j.model.transactions.Hash256;
@@ -98,17 +97,6 @@ public interface CheckObject extends LedgerObject {
    */
   @JsonProperty("DestinationTag")
   Optional<UnsignedInteger> destinationTag();
-
-  /**
-   * A bit-map of boolean flags. No flags are defined for {@link CheckObject}, so this value is always 0.
-   *
-   * @return Always {@link Flags#UNSET}.
-   */
-  @JsonProperty("Flags")
-  @Value.Derived
-  default Flags flags() {
-    return Flags.UNSET;
-  }
 
   /**
    * The maximum amount of currency this {@link CheckObject} can debit the {@link CheckObject#account()}.

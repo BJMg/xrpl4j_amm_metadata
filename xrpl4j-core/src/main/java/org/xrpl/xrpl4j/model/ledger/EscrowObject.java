@@ -27,7 +27,6 @@ import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
 import com.ripple.cryptoconditions.Condition;
 import org.immutables.value.Value;
-import org.xrpl.xrpl4j.model.flags.Flags;
 import org.xrpl.xrpl4j.model.transactions.*;
 
 import java.util.Optional;
@@ -122,17 +121,6 @@ public interface EscrowObject extends LedgerObject {
    */
   @JsonProperty("FinishAfter")
   Optional<UnsignedLong> finishAfter();
-
-  /**
-   * A bit-map of boolean flags. No flags are defined for the {@link EscrowObject} type, so this value is always 0.
-   *
-   * @return Always {@link Flags#UNSET}.
-   */
-  @JsonProperty("Flags")
-  @Value.Derived
-  default Flags flags() {
-    return Flags.UNSET;
-  }
 
   /**
    * An arbitrary tag to further specify the source for this held payment, such as a hosted recipient at the owner's

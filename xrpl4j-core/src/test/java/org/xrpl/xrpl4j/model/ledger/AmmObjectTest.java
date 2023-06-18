@@ -105,7 +105,6 @@ class AmmObjectTest extends AbstractJsonTest {
       "    \"Asset\" : " + objectMapper.writeValueAsString(ammObject.asset())  + "," +
       "    \"Asset2\" : " + objectMapper.writeValueAsString(ammObject.asset2())  + "," +
       "    \"AuctionSlot\" : " + objectMapper.writeValueAsString(ammObject.auctionSlot()) + "," +
-      "    \"Flags\" : 0,\n" +
       "    \"LPTokenBalance\" : " + objectMapper.writeValueAsString(ammObject.lpTokenBalance()) + "," +
       "    \"TradingFee\" : 600,\n" +
       "    \"VoteSlots\" : [\n" +

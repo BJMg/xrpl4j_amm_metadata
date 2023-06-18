@@ -26,7 +26,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
 import org.immutables.value.Value;
-import org.xrpl.xrpl4j.model.flags.Flags;
 import org.xrpl.xrpl4j.model.transactions.Address;
 import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
 
@@ -71,18 +70,6 @@ public interface PayChannelObject extends LedgerObject {
   @Value.Derived
   default LedgerEntryType ledgerEntryType() {
     return LedgerEntryType.PAY_CHANNEL;
-  }
-
-  /**
-   * A bit-map of boolean flags enabled for this payment channel. Currently, the protocol defines no flags for
-   * PayChannel objects.
-   *
-   * @return Always {@link Flags#UNSET}.
-   */
-  @JsonProperty("Flags")
-  @Value.Derived
-  default Flags flags() {
-    return Flags.UNSET;
   }
 
   /**

@@ -26,6 +26,7 @@ import org.xrpl.xrpl4j.model.ledger.RippleStateObject;
  * A set of static {@link Flags} which can be set on {@link RippleStateObject}s.
  */
 public class RippleStateFlags extends Flags {
+  public static final RippleStateFlags UNSET = new RippleStateFlags(0);
 
   /**
    * Constant {@link RippleStateFlags} for the {@code lsfLowReserve} flag.

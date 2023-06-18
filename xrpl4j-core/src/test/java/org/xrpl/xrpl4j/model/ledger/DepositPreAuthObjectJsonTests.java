@@ -45,7 +45,6 @@ public class DepositPreAuthObjectJsonTests extends AbstractJsonTest {
       "  \"LedgerEntryType\" : \"DepositPreauth\",\n" +
       "  \"Account\" : \"rsUiUMpnrgxQp24dJYZDhmV4bE3aBtQyt8\",\n" +
       "  \"Authorize\" : \"rEhxGqkqPPSxQ3P25J66ft5TwpzV14k2de\",\n" +
-      "  \"Flags\" : 0,\n" +
       "  \"OwnerNode\" : \"0000000000000000\",\n" +
       "  \"PreviousTxnID\" : \"3E8964D5A86B3CD6B9ECB33310D4E073D64C865A5B866200AD2B7E29F8326702\",\n" +
       "  \"PreviousTxnLgrSeq\" : 7,\n" +

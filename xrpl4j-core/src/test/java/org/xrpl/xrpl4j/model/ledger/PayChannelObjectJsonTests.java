@@ -62,7 +62,6 @@ public class PayChannelObjectJsonTests extends AbstractJsonTest {
       "    \"CancelAfter\": 536891313,\n" +
       "    \"SourceTag\": 0,\n" +
       "    \"DestinationTag\": 1002341,\n" +
-      "    \"Flags\": 0,\n" +
       "    \"LedgerEntryType\": \"PayChannel\",\n" +
       "    \"OwnerNode\": \"0000000000000000\",\n" +
       "    \"PreviousTxnID\": \"F0AB71E777B2DA54B86231E19B82554EF1F8211F92ECA473121C655BFC5329BF\",\n" +

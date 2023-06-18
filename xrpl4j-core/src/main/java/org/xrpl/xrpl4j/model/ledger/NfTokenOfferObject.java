@@ -117,5 +117,8 @@ public interface NfTokenOfferObject extends LedgerObject {
    * @return The {@link NfTokenOfferFlags} for this object.
    */
   @JsonProperty("Flags")
-  NfTokenOfferFlags flags();
+  @Value.Default
+  default NfTokenOfferFlags flags() {
+    return NfTokenOfferFlags.UNSET;
+  }
 }

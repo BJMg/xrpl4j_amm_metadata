@@ -79,7 +79,7 @@ public interface OfferObject extends LedgerObject {
   @JsonProperty("Flags")
   @Value.Default
   default OfferFlags flags() {
-    return OfferFlags.of(0);
+    return OfferFlags.UNSET;
   }
 
   /**

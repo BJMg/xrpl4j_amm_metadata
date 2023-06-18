@@ -26,6 +26,7 @@ import org.xrpl.xrpl4j.model.ledger.OfferObject;
  * A set of static {@link Flags} which can be set on {@link OfferObject}s.
  */
 public class OfferFlags extends Flags {
+  public static final OfferFlags UNSET = new OfferFlags(0);
 
   /**
    * Constant {@link OfferFlags} for the {@code lsfPassive} flag.

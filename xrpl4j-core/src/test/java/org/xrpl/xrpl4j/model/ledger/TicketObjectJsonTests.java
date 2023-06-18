@@ -44,7 +44,6 @@ class TicketObjectJsonTests extends AbstractJsonTest {
 
     String json = "{\n" +
       "  \"Account\" : \"rEhxGqkqPPSxQ3P25J66ft5TwpzV14k2de\",\n" +
-      "  \"Flags\" : 0,\n" +
       "  \"LedgerEntryType\" : \"Ticket\",\n" +
       "  \"OwnerNode\" : \"0000000000000000\",\n" +
       "  \"PreviousTxnID\" : \"F19AD4577212D3BEACA0F75FE1BA1644F2E854D46E8D62E9C95D18E9708CBFB1\",\n" +

@@ -87,7 +87,10 @@ public interface AccountRootObject extends LedgerObject {
    * @return An {@link AccountRootFlags}.
    */
   @JsonProperty("Flags")
-  Optional<AccountRootFlags> flags();
+  @Value.Default
+  default AccountRootFlags flags(){
+    return AccountRootFlags.UNSET;
+  }
 
   /**
    * The number of objects this account owns in the ledger, which contributes to its owner reserve.

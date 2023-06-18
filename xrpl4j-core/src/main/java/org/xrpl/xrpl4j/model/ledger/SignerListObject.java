@@ -66,7 +66,10 @@ public interface SignerListObject extends LedgerObject {
    * @return The {@link SignerListFlags} for this object.
    */
   @JsonProperty("Flags")
-  SignerListFlags flags();
+  @Value.Default
+  default SignerListFlags flags() {
+    return SignerListFlags.UNSET;
+  }
 
   /**
    * An ID for this signer list. Currently always set to 0. If a future amendment allows multiple

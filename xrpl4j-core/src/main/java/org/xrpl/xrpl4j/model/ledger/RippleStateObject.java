@@ -70,7 +70,11 @@ public interface RippleStateObject extends LedgerObject {
    * @return The {@link RippleStateFlags} for this object.
    */
   @JsonProperty("Flags")
-  RippleStateFlags flags();
+  @Value.Default
+  default RippleStateFlags flags(){
+    return RippleStateFlags.UNSET;
+  }
+
 
   /**
    * The balance of the trust line, from the perspective of the low account. A negative balance indicates that the

@@ -26,6 +26,7 @@ import org.xrpl.xrpl4j.model.ledger.NfTokenOfferObject;
  * A set of static {@link Flags} which can be set on {@link NfTokenOfferObject}s.
  */
 public class NfTokenOfferFlags extends Flags {
+  public static final NfTokenOfferFlags UNSET = new NfTokenOfferFlags(0);
 
   /**
    * Constant {@link NfTokenOfferFlags} for the {@code lsfBuyToken} flag.

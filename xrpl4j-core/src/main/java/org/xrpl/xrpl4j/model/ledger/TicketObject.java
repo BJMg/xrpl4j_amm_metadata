@@ -25,9 +25,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.primitives.UnsignedInteger;
 import org.immutables.value.Value;
-import org.xrpl.xrpl4j.model.flags.Flags;
 import org.xrpl.xrpl4j.model.transactions.Address;
-import org.xrpl.xrpl4j.model.transactions.Hash256;
 import org.xrpl.xrpl4j.model.transactions.TicketCreate;
 
 /**
@@ -57,17 +55,6 @@ public interface TicketObject extends LedgerObject {
   @Value.Derived
   default LedgerEntryType ledgerEntryType() {
     return LedgerEntryType.TICKET;
-  }
-
-  /**
-   * A bit-map of Boolean flags enabled for this Ticket. Currently, there are no flags defined for Tickets.
-   *
-   * @return Always returns {@link Flags#UNSET}.
-   */
-  @JsonProperty("Flags")
-  @Value.Derived
-  default Flags flags() {
-    return Flags.UNSET;
   }
 
   /**

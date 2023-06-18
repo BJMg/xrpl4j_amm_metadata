@@ -56,7 +56,6 @@ public class EscrowObjectJsonTests extends AbstractJsonTest {
       "    \"Destination\": \"ra5nK24KXen9AHvsdFTKHSANinZseWnPcX\",\n" +
       "    \"DestinationTag\": 23480,\n" +
       "    \"FinishAfter\": 545354132,\n" +
-      "    \"Flags\": 0,\n" +
       "    \"LedgerEntryType\": \"Escrow\",\n" +
       "    \"OwnerNode\": \"0000000000000000\",\n" +
       "    \"DestinationNode\": \"0000000000000000\",\n" +
