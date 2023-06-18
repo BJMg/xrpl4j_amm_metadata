@@ -24,12 +24,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.Beta;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Range;
 import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
 import okhttp3.HttpUrl;
-import org.immutables.value.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xrpl.xrpl4j.codec.binary.XrplBinaryCodec;
@@ -38,24 +36,7 @@ import org.xrpl.xrpl4j.crypto.signing.SingleSignedTransaction;
 import org.xrpl.xrpl4j.model.client.Finality;
 import org.xrpl.xrpl4j.model.client.FinalityStatus;
 import org.xrpl.xrpl4j.model.client.XrplMethods;
-import org.xrpl.xrpl4j.model.client.accounts.AccountChannelsRequestParams;
-import org.xrpl.xrpl4j.model.client.accounts.AccountChannelsResult;
-import org.xrpl.xrpl4j.model.client.accounts.AccountCurrenciesRequestParams;
-import org.xrpl.xrpl4j.model.client.accounts.AccountCurrenciesResult;
-import org.xrpl.xrpl4j.model.client.accounts.AccountInfoRequestParams;
-import org.xrpl.xrpl4j.model.client.accounts.AccountInfoResult;
-import org.xrpl.xrpl4j.model.client.accounts.AccountLinesRequestParams;
-import org.xrpl.xrpl4j.model.client.accounts.AccountLinesResult;
-import org.xrpl.xrpl4j.model.client.accounts.AccountNftsRequestParams;
-import org.xrpl.xrpl4j.model.client.accounts.AccountNftsResult;
-import org.xrpl.xrpl4j.model.client.accounts.AccountObjectsRequestParams;
-import org.xrpl.xrpl4j.model.client.accounts.AccountObjectsResult;
-import org.xrpl.xrpl4j.model.client.accounts.AccountOffersRequestParams;
-import org.xrpl.xrpl4j.model.client.accounts.AccountOffersResult;
-import org.xrpl.xrpl4j.model.client.accounts.AccountTransactionsRequestParams;
-import org.xrpl.xrpl4j.model.client.accounts.AccountTransactionsResult;
-import org.xrpl.xrpl4j.model.client.accounts.GatewayBalancesRequestParams;
-import org.xrpl.xrpl4j.model.client.accounts.GatewayBalancesResult;
+import org.xrpl.xrpl4j.model.client.accounts.*;
 import org.xrpl.xrpl4j.model.client.amm.AmmInfoRequestParams;
 import org.xrpl.xrpl4j.model.client.amm.AmmInfoResult;
 import org.xrpl.xrpl4j.model.client.channels.ChannelVerifyRequestParams;
@@ -73,52 +54,14 @@ import org.xrpl.xrpl4j.model.client.path.DepositAuthorizedRequestParams;
 import org.xrpl.xrpl4j.model.client.path.DepositAuthorizedResult;
 import org.xrpl.xrpl4j.model.client.path.RipplePathFindRequestParams;
 import org.xrpl.xrpl4j.model.client.path.RipplePathFindResult;
-import org.xrpl.xrpl4j.model.client.serverinfo.ClioServerInfo;
-import org.xrpl.xrpl4j.model.client.serverinfo.ReportingModeServerInfo;
-import org.xrpl.xrpl4j.model.client.serverinfo.RippledServerInfo;
-import org.xrpl.xrpl4j.model.client.serverinfo.ServerInfo;
-import org.xrpl.xrpl4j.model.client.serverinfo.ServerInfoResult;
-import org.xrpl.xrpl4j.model.client.transactions.SubmitMultiSignedRequestParams;
-import org.xrpl.xrpl4j.model.client.transactions.SubmitMultiSignedResult;
-import org.xrpl.xrpl4j.model.client.transactions.SubmitRequestParams;
-import org.xrpl.xrpl4j.model.client.transactions.SubmitResult;
-import org.xrpl.xrpl4j.model.client.transactions.TransactionRequestParams;
-import org.xrpl.xrpl4j.model.client.transactions.TransactionResult;
+import org.xrpl.xrpl4j.model.client.serverinfo.*;
+import org.xrpl.xrpl4j.model.client.transactions.*;
 import org.xrpl.xrpl4j.model.immutables.FluentCompareTo;
 import org.xrpl.xrpl4j.model.jackson.ObjectMapperFactory;
-import org.xrpl.xrpl4j.model.transactions.AccountDelete;
-import org.xrpl.xrpl4j.model.transactions.AccountSet;
 import org.xrpl.xrpl4j.model.transactions.Address;
-import org.xrpl.xrpl4j.model.transactions.AmmBid;
-import org.xrpl.xrpl4j.model.transactions.AmmCreate;
-import org.xrpl.xrpl4j.model.transactions.AmmDeposit;
-import org.xrpl.xrpl4j.model.transactions.AmmVote;
-import org.xrpl.xrpl4j.model.transactions.AmmWithdraw;
-import org.xrpl.xrpl4j.model.transactions.CheckCancel;
-import org.xrpl.xrpl4j.model.transactions.CheckCash;
-import org.xrpl.xrpl4j.model.transactions.CheckCreate;
-import org.xrpl.xrpl4j.model.transactions.DepositPreAuth;
-import org.xrpl.xrpl4j.model.transactions.EscrowCancel;
-import org.xrpl.xrpl4j.model.transactions.EscrowCreate;
-import org.xrpl.xrpl4j.model.transactions.EscrowFinish;
 import org.xrpl.xrpl4j.model.transactions.Hash256;
-import org.xrpl.xrpl4j.model.transactions.NfTokenAcceptOffer;
-import org.xrpl.xrpl4j.model.transactions.NfTokenBurn;
-import org.xrpl.xrpl4j.model.transactions.NfTokenCancelOffer;
-import org.xrpl.xrpl4j.model.transactions.NfTokenCreateOffer;
-import org.xrpl.xrpl4j.model.transactions.NfTokenMint;
-import org.xrpl.xrpl4j.model.transactions.OfferCancel;
-import org.xrpl.xrpl4j.model.transactions.OfferCreate;
-import org.xrpl.xrpl4j.model.transactions.Payment;
-import org.xrpl.xrpl4j.model.transactions.PaymentChannelClaim;
-import org.xrpl.xrpl4j.model.transactions.PaymentChannelCreate;
-import org.xrpl.xrpl4j.model.transactions.PaymentChannelFund;
-import org.xrpl.xrpl4j.model.transactions.SetRegularKey;
-import org.xrpl.xrpl4j.model.transactions.SignerListSet;
-import org.xrpl.xrpl4j.model.transactions.TicketCreate;
 import org.xrpl.xrpl4j.model.transactions.Transaction;
 import org.xrpl.xrpl4j.model.transactions.TransactionMetadata;
-import org.xrpl.xrpl4j.model.transactions.TrustSet;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -149,12 +92,11 @@ public class XrplClient {
   }
 
   /**
-   * Required-args constructor (exists for testing purposes only).
+   * Public constructor.
    *
    * @param jsonRpcClient A {@link JsonRpcClient}.
    */
-  @VisibleForTesting
-  XrplClient(final JsonRpcClient jsonRpcClient) {
+  public XrplClient(final JsonRpcClient jsonRpcClient) {
     this.jsonRpcClient = Objects.requireNonNull(jsonRpcClient);
     this.objectMapper = ObjectMapperFactory.create();
     this.binaryCodec = XrplBinaryCodec.getInstance();
