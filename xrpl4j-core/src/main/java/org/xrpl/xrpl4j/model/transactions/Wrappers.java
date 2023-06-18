@@ -241,19 +241,6 @@ public class Wrappers {
       return this.value().toString();
     }
 
-    /**
-     * Validates that this {@link XrpCurrencyAmount} does not exceed the maximum number of drops.
-     */
-    @Value.Check
-    protected void check() {
-      Preconditions.checkState(
-        FluentCompareTo.is(value()).lessThanOrEqualTo(UnsignedLong.valueOf(MAX_XRP_IN_DROPS)),
-        String.format(
-          "XRP Amounts may not exceed %s drops (100B XRP, denominated in Drops)", FORMATTER.format(MAX_XRP_IN_DROPS)
-        )
-      );
-    }
-
   }
 
   @Value.Immutable

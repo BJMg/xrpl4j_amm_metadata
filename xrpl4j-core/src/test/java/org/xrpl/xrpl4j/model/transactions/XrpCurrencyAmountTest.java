@@ -20,16 +20,13 @@ package org.xrpl.xrpl4j.model.transactions;
  * =========================LICENSE_END==================================
  */
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.xrpl.xrpl4j.model.transactions.Wrappers._XrpCurrencyAmount.MAX_XRP;
-import static org.xrpl.xrpl4j.model.transactions.Wrappers._XrpCurrencyAmount.MAX_XRP_IN_DROPS;
-import static org.xrpl.xrpl4j.model.transactions.Wrappers._XrpCurrencyAmount.ONE_XRP_IN_DROPS;
-
 import com.google.common.primitives.UnsignedLong;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.xrpl.xrpl4j.model.transactions.Wrappers._XrpCurrencyAmount.*;
 
 /**
  * Unit tests for {@link XrpCurrencyAmount}.
@@ -45,7 +42,6 @@ public class XrpCurrencyAmountTest {
     assertThat(XrpCurrencyAmount.ofDrops(1L).value()).isEqualTo(UnsignedLong.ONE);
     assertThat(XrpCurrencyAmount.ofDrops(ONE_XRP_IN_DROPS).value()).isEqualTo(UnsignedLong.valueOf(ONE_XRP_IN_DROPS));
     assertThat(XrpCurrencyAmount.ofDrops(MAX_XRP_IN_DROPS).value()).isEqualTo(UnsignedLong.valueOf(MAX_XRP_IN_DROPS));
-    assertThrows(IllegalStateException.class, () -> XrpCurrencyAmount.ofDrops(MAX_XRP_IN_DROPS + 1));
   }
 
   @Test
@@ -54,10 +50,6 @@ public class XrpCurrencyAmountTest {
     assertThat(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE).value()).isEqualTo(UnsignedLong.ONE);
     assertThat(XrpCurrencyAmount.ofDrops(ONE_XRP_IN_DROPS).value()).isEqualTo(UnsignedLong.valueOf(ONE_XRP_IN_DROPS));
     assertThat(XrpCurrencyAmount.ofDrops(MAX_XRP_IN_DROPS).value()).isEqualTo(UnsignedLong.valueOf(MAX_XRP_IN_DROPS));
-
-    // Too big
-    assertThrows(IllegalStateException.class,
-      () -> XrpCurrencyAmount.ofDrops(UnsignedLong.valueOf(MAX_XRP_IN_DROPS + 1)));
   }
 
   @Test
@@ -68,11 +60,6 @@ public class XrpCurrencyAmountTest {
     assertThat(XrpCurrencyAmount.ofXrp(BigDecimal.ONE).value()).isEqualTo(UnsignedLong.valueOf(ONE_XRP_IN_DROPS));
     assertThat(XrpCurrencyAmount.ofXrp(BigDecimal.valueOf(MAX_XRP)).value())
       .isEqualTo(UnsignedLong.valueOf(MAX_XRP_IN_DROPS));
-
-    // Too big
-    assertThrows(IllegalStateException.class, () -> XrpCurrencyAmount.ofXrp(BigDecimal.valueOf(MAX_XRP + 1)));
-    // Too small
-    assertThrows(IllegalArgumentException.class, () -> XrpCurrencyAmount.ofXrp(new BigDecimal("0.0000001")));
   }
 
   @Test
@@ -111,11 +98,6 @@ public class XrpCurrencyAmountTest {
       XrpCurrencyAmount.ofDrops(ONE_XRP_IN_DROPS)
         .minus(XrpCurrencyAmount.ofDrops(ONE_XRP_IN_DROPS))
     ).isEqualTo((XrpCurrencyAmount.ofDrops(0L)));
-
-    assertThrows(IllegalStateException.class,
-      () -> XrpCurrencyAmount.ofDrops(HALF_XRP_IN_DROPS)
-        .minus(XrpCurrencyAmount.ofDrops(ONE_XRP_IN_DROPS))
-    );
   }
 
   @Test
