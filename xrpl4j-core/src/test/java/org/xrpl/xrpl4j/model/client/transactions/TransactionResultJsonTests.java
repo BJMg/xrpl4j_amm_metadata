@@ -20,8 +20,6 @@ package org.xrpl.xrpl4j.model.client.transactions;
  * =========================LICENSE_END==================================
  */
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
@@ -31,28 +29,26 @@ import org.xrpl.xrpl4j.crypto.keys.PublicKey;
 import org.xrpl.xrpl4j.crypto.signing.Signature;
 import org.xrpl.xrpl4j.model.AbstractJsonTest;
 import org.xrpl.xrpl4j.model.flags.PaymentFlags;
-import org.xrpl.xrpl4j.model.transactions.Address;
-import org.xrpl.xrpl4j.model.transactions.Hash256;
-import org.xrpl.xrpl4j.model.transactions.Payment;
-import org.xrpl.xrpl4j.model.transactions.TransactionMetadata;
-import org.xrpl.xrpl4j.model.transactions.TransactionResultCodes;
-import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
+import org.xrpl.xrpl4j.model.transactions.*;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class TransactionResultJsonTests extends AbstractJsonTest {
 
   @Test
   public void testPaymentTransactionResultJson() throws JsonProcessingException, JSONException {
-    XrpCurrencyAmount amount = XrpCurrencyAmount.of(UnsignedLong.valueOf(1000000000));
+    XrpCurrencyAmount amount = XrpCurrencyAmount.of(BigInteger.valueOf(1000000000));
     TransactionResult<Payment> paymentResult = TransactionResult.<Payment>builder()
       .transaction(Payment.builder()
         .account(Address.of("rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe"))
         .amount(amount)
         .destination(Address.of("r3ubyDp4gPGKH5bJx9KMmzpTSTW7EtRixS"))
-        .fee(XrpCurrencyAmount.of(UnsignedLong.valueOf(12)))
+        .fee(XrpCurrencyAmount.of(BigInteger.valueOf(12)))
         .flags(PaymentFlags.of(2147483648L))
         .lastLedgerSequence(UnsignedInteger.valueOf(13010048))
         .sequence(UnsignedInteger.valueOf(2062126))
@@ -106,13 +102,13 @@ public class TransactionResultJsonTests extends AbstractJsonTest {
 
   @Test
   public void testPaymentTransactionResultWithoutCloseDateJson() throws JsonProcessingException, JSONException {
-    XrpCurrencyAmount amount = XrpCurrencyAmount.of(UnsignedLong.valueOf(1000000000));
+    XrpCurrencyAmount amount = XrpCurrencyAmount.of(BigInteger.valueOf(1000000000));
     TransactionResult<Payment> paymentResult = TransactionResult.<Payment>builder()
       .transaction(Payment.builder()
         .account(Address.of("rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe"))
         .amount(amount)
         .destination(Address.of("r3ubyDp4gPGKH5bJx9KMmzpTSTW7EtRixS"))
-        .fee(XrpCurrencyAmount.of(UnsignedLong.valueOf(12)))
+        .fee(XrpCurrencyAmount.of(BigInteger.valueOf(12)))
         .flags(PaymentFlags.of(2147483648L))
         .lastLedgerSequence(UnsignedInteger.valueOf(13010048))
         .sequence(UnsignedInteger.valueOf(2062126))
@@ -160,13 +156,13 @@ public class TransactionResultJsonTests extends AbstractJsonTest {
 
   @Test
   public void testPaymentTransactionResultWithMetaDataJson() throws JsonProcessingException, JSONException {
-    XrpCurrencyAmount amount = XrpCurrencyAmount.of(UnsignedLong.valueOf(1000000000));
+    XrpCurrencyAmount amount = XrpCurrencyAmount.of(BigInteger.valueOf(1000000000));
     TransactionResult<Payment> paymentResult = TransactionResult.<Payment>builder()
       .transaction(Payment.builder()
         .account(Address.of("rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe"))
         .amount(amount)
         .destination(Address.of("r3ubyDp4gPGKH5bJx9KMmzpTSTW7EtRixS"))
-        .fee(XrpCurrencyAmount.of(UnsignedLong.valueOf(12)))
+        .fee(XrpCurrencyAmount.of(BigInteger.valueOf(12)))
         .flags(PaymentFlags.of(2147483648L))
         .lastLedgerSequence(UnsignedInteger.valueOf(13010048))
         .sequence(UnsignedInteger.valueOf(2062126))

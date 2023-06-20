@@ -51,6 +51,7 @@ import org.xrpl.xrpl4j.model.transactions.Payment;
 import org.xrpl.xrpl4j.model.transactions.Signer;
 import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
 
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -450,7 +451,7 @@ class BcDerivedKeySignatureServiceTest {
 
     final UnsignedClaim unsignedClaim = UnsignedClaim.builder()
       .channel(Hash256.of(Hashing.sha256().hashBytes("Check this out.".getBytes()).toString()))
-      .amount(XrpCurrencyAmount.of(UnsignedLong.ONE))
+      .amount(XrpCurrencyAmount.of(BigInteger.ONE))
       .build();
 
     final ExecutorService pool = Executors.newFixedThreadPool(5);
@@ -486,7 +487,7 @@ class BcDerivedKeySignatureServiceTest {
 
     final UnsignedClaim unsignedClaim = UnsignedClaim.builder()
       .channel(Hash256.of(Hashing.sha256().hashBytes("Check this out.".getBytes()).toString()))
-      .amount(XrpCurrencyAmount.of(UnsignedLong.ONE))
+      .amount(XrpCurrencyAmount.of(BigInteger.ONE))
       .build();
 
     final ExecutorService pool = Executors.newFixedThreadPool(5);

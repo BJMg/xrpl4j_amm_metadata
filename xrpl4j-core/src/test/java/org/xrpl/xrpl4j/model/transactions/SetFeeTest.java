@@ -20,14 +20,14 @@ package org.xrpl.xrpl4j.model.transactions;
  * =========================LICENSE_END==================================
  */
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.google.common.primitives.UnsignedInteger;
-import com.google.common.primitives.UnsignedLong;
 import org.junit.jupiter.api.Test;
 import org.xrpl.xrpl4j.model.client.common.LedgerIndex;
 
+import java.math.BigInteger;
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class SetFeeTest {
 
@@ -46,7 +46,7 @@ public class SetFeeTest {
 
     assertThat(setFee.transactionType()).isEqualTo(TransactionType.SET_FEE);
     assertThat(setFee.account()).isEqualTo(Address.of("rrrrrrrrrrrrrrrrrrrrrhoLvTp"));
-    assertThat(setFee.fee().value()).isEqualTo(UnsignedLong.valueOf(12));
+    assertThat(setFee.fee().value()).isEqualTo(BigInteger.valueOf(12));
     assertThat(setFee.sequence()).isEqualTo(UnsignedInteger.valueOf(2470665));
     assertThat(setFee.ledgerSequence()).isNotEmpty().get().isEqualTo(LedgerIndex.of(UnsignedInteger.valueOf(67850752)));
     assertThat(setFee.referenceFeeUnits()).isEqualTo(UnsignedInteger.valueOf(10));

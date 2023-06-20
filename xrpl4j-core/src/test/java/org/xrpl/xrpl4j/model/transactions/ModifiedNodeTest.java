@@ -3,7 +3,6 @@ package org.xrpl.xrpl4j.model.transactions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.UnsignedInteger;
-import com.google.common.primitives.UnsignedLong;
 import org.junit.jupiter.api.Test;
 import org.xrpl.xrpl4j.model.AbstractJsonTest;
 import org.xrpl.xrpl4j.model.client.common.LedgerIndex;
@@ -12,6 +11,8 @@ import org.xrpl.xrpl4j.model.flags.RippleStateFlags;
 import org.xrpl.xrpl4j.model.ledger.ImmutableAccountRootObject;
 import org.xrpl.xrpl4j.model.ledger.ImmutableRippleStateObject;
 import org.xrpl.xrpl4j.model.ledger.LedgerObject;
+
+import java.math.BigInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -111,7 +112,7 @@ class ModifiedNodeTest extends AbstractJsonTest {
 
         ImmutableAccountRootObject.Builder accountRootBuilder = ImmutableAccountRootObject.builder()
                 .account(Address.of("rphDLpCwJyPEBuZccdBCWPUgAXUd96dUCJ"))
-                .balance(XrpCurrencyAmount.of(UnsignedLong.valueOf(29999999940L)))
+                .balance(XrpCurrencyAmount.of(BigInteger.valueOf(29999999940L)))
                 .flags(AccountRootFlags.of(8388608))
                 .ownerCount(UnsignedInteger.valueOf(0))
                 .sequence(UnsignedInteger.valueOf(57013))
@@ -142,7 +143,7 @@ class ModifiedNodeTest extends AbstractJsonTest {
                         .finalFields(accountRootBuilder
                                 .build())
                         .previousFields(accountRootBuilder
-                                .balance(XrpCurrencyAmount.of(UnsignedLong.valueOf(29999999950L)))
+                                .balance(XrpCurrencyAmount.of(BigInteger.valueOf(29999999950L)))
                                 .sequence(UnsignedInteger.valueOf(57012))
                                 .build())
                         .build()

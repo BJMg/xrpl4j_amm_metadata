@@ -29,7 +29,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.primitives.UnsignedInteger;
 import org.immutables.value.Value;
 import org.xrpl.xrpl4j.model.flags.AccountSetTransactionFlags;
-import org.xrpl.xrpl4j.model.flags.TransactionFlags;
 
 import java.util.Optional;
 
@@ -153,21 +152,6 @@ public interface AccountSet extends Transaction {
         Preconditions.checkArgument(
           hash.length() == 32,
           String.format("emailHash must be 32 characters (128 bits), but was %s characters long.", hash.length())
-        )
-      );
-  }
-
-  /**
-   * Check transfer rate.
-   */
-  @Value.Check
-  default void checkTransferRate() {
-    transferRate()
-      .ifPresent(rate ->
-        Preconditions.checkArgument(rate.equals(UnsignedInteger.ZERO) ||
-            (rate.compareTo(UnsignedInteger.valueOf(1000000000L)) >= 0 &&
-              rate.compareTo(UnsignedInteger.valueOf(2000000000L)) <= 0),
-          "transferRate must be between 1,000,000,000 and 2,000,000,000 or equal to 0."
         )
       );
   }

@@ -20,12 +20,13 @@ package org.xrpl.xrpl4j.model.transactions;
  * =========================LICENSE_END==================================
  */
 
+import org.junit.jupiter.api.Test;
+
+import java.math.BigInteger;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
-
-import com.google.common.primitives.UnsignedLong;
-import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for {@link CurrencyAmount}.
@@ -37,7 +38,7 @@ public class CurrencyAmountTest {
     XrpCurrencyAmount xrpCurrencyAmount = XrpCurrencyAmount.ofDrops(0L);
 
     xrpCurrencyAmount.handle(
-      ($) -> assertThat($.value()).isEqualTo(UnsignedLong.ZERO),
+      ($) -> assertThat($.value()).isEqualTo(BigInteger.ZERO),
       ($) -> fail()
     );
 

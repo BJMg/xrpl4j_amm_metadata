@@ -20,13 +20,14 @@ package org.xrpl.xrpl4j.model.transactions;
  * =========================LICENSE_END==================================
  */
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.google.common.primitives.UnsignedInteger;
-import com.google.common.primitives.UnsignedLong;
 import org.junit.jupiter.api.Test;
 import org.xrpl.xrpl4j.model.flags.AccountSetTransactionFlags;
+
+import java.math.BigInteger;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AccountSetTests {
 
@@ -45,7 +46,7 @@ public class AccountSetTests {
 
     assertThat(accountSet.transactionType()).isEqualTo(TransactionType.ACCOUNT_SET);
     assertThat(accountSet.account()).isEqualTo(Address.of("rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn"));
-    assertThat(accountSet.fee().value()).isEqualTo(UnsignedLong.valueOf(12));
+    assertThat(accountSet.fee().value()).isEqualTo(BigInteger.valueOf(12));
     assertThat(accountSet.sequence()).isEqualTo(UnsignedInteger.valueOf(5));
     assertThat(accountSet.domain()).isNotEmpty().get().isEqualTo("6578616D706C652E636F6D");
     assertThat(accountSet.setFlag()).isNotEmpty().get().isEqualTo(AccountSet.AccountSetFlag.ACCOUNT_TXN_ID);
@@ -76,7 +77,7 @@ public class AccountSetTests {
 
     assertThat(accountSet.transactionType()).isEqualTo(TransactionType.ACCOUNT_SET);
     assertThat(accountSet.account()).isEqualTo(Address.of("rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn"));
-    assertThat(accountSet.fee().value()).isEqualTo(UnsignedLong.valueOf(12));
+    assertThat(accountSet.fee().value()).isEqualTo(BigInteger.valueOf(12));
     assertThat(accountSet.sequence()).isEqualTo(UnsignedInteger.valueOf(5));
     assertThat(accountSet.domain()).isNotEmpty().get().isEqualTo("6578616D706C652E636F6D");
     assertThat(accountSet.setFlag()).isNotEmpty().get().isEqualTo(AccountSet.AccountSetFlag.ACCOUNT_TXN_ID);
@@ -99,34 +100,6 @@ public class AccountSetTests {
       "emailHash must be 32 characters (128 bits), but was 33 characters long."
     );
 
-  }
-
-  @Test
-  public void transferRateTooLow() {
-    assertThrows(
-      IllegalArgumentException.class,
-      () -> AccountSet.builder()
-        .account(Address.of("rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn"))
-        .fee(XrpCurrencyAmount.ofDrops(12))
-        .sequence(UnsignedInteger.valueOf(5))
-        .transferRate(UnsignedInteger.valueOf(999999999))
-        .build(),
-      "transferRate must be between 1,000,000,000 and 2,000,000,000 or equal to 0."
-    );
-  }
-
-  @Test
-  public void transferRateTooHigh() {
-    assertThrows(
-      IllegalArgumentException.class,
-      () -> AccountSet.builder()
-        .account(Address.of("rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn"))
-        .fee(XrpCurrencyAmount.ofDrops(12))
-        .sequence(UnsignedInteger.valueOf(5))
-        .transferRate(UnsignedInteger.valueOf(2000000001))
-        .build(),
-      "transferRate must be between 1,000,000,000 and 2,000,000,000 or equal to 0."
-    );
   }
 
   @Test

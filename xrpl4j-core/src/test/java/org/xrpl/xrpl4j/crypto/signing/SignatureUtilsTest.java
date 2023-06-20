@@ -20,18 +20,6 @@ package org.xrpl.xrpl4j.crypto.signing;
  * =========================LICENSE_END==================================
  */
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
-
 import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
@@ -51,48 +39,21 @@ import org.xrpl.xrpl4j.model.flags.AmmWithdrawFlags;
 import org.xrpl.xrpl4j.model.ledger.Asset;
 import org.xrpl.xrpl4j.model.ledger.AuthAccount;
 import org.xrpl.xrpl4j.model.ledger.AuthAccountWrapper;
-import org.xrpl.xrpl4j.model.transactions.AccountDelete;
-import org.xrpl.xrpl4j.model.transactions.AccountSet;
-import org.xrpl.xrpl4j.model.transactions.Address;
-import org.xrpl.xrpl4j.model.transactions.AmmBid;
-import org.xrpl.xrpl4j.model.transactions.AmmCreate;
-import org.xrpl.xrpl4j.model.transactions.AmmDeposit;
-import org.xrpl.xrpl4j.model.transactions.AmmVote;
-import org.xrpl.xrpl4j.model.transactions.AmmWithdraw;
-import org.xrpl.xrpl4j.model.transactions.CheckCancel;
-import org.xrpl.xrpl4j.model.transactions.CheckCash;
-import org.xrpl.xrpl4j.model.transactions.CheckCreate;
-import org.xrpl.xrpl4j.model.transactions.DepositPreAuth;
-import org.xrpl.xrpl4j.model.transactions.EscrowCancel;
-import org.xrpl.xrpl4j.model.transactions.EscrowCreate;
-import org.xrpl.xrpl4j.model.transactions.EscrowFinish;
-import org.xrpl.xrpl4j.model.transactions.Hash256;
-import org.xrpl.xrpl4j.model.transactions.IssuedCurrencyAmount;
-import org.xrpl.xrpl4j.model.transactions.NfTokenAcceptOffer;
-import org.xrpl.xrpl4j.model.transactions.NfTokenBurn;
-import org.xrpl.xrpl4j.model.transactions.NfTokenCancelOffer;
-import org.xrpl.xrpl4j.model.transactions.NfTokenCreateOffer;
-import org.xrpl.xrpl4j.model.transactions.NfTokenId;
-import org.xrpl.xrpl4j.model.transactions.NfTokenMint;
-import org.xrpl.xrpl4j.model.transactions.OfferCancel;
-import org.xrpl.xrpl4j.model.transactions.OfferCreate;
-import org.xrpl.xrpl4j.model.transactions.Payment;
-import org.xrpl.xrpl4j.model.transactions.PaymentChannelClaim;
-import org.xrpl.xrpl4j.model.transactions.PaymentChannelCreate;
-import org.xrpl.xrpl4j.model.transactions.PaymentChannelFund;
-import org.xrpl.xrpl4j.model.transactions.SetRegularKey;
-import org.xrpl.xrpl4j.model.transactions.SignerListSet;
-import org.xrpl.xrpl4j.model.transactions.SignerWrapper;
-import org.xrpl.xrpl4j.model.transactions.TicketCreate;
-import org.xrpl.xrpl4j.model.transactions.TradingFee;
-import org.xrpl.xrpl4j.model.transactions.Transaction;
-import org.xrpl.xrpl4j.model.transactions.TrustSet;
-import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
+import org.xrpl.xrpl4j.model.transactions.*;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 /**
  * Unit tests for {@link SignatureUtils}.
@@ -198,7 +159,7 @@ public class SignatureUtilsTest {
   void unsignedClaimToSignableBytes() throws JsonProcessingException {
     when(xrplBinaryCodecMock.encodeForSigningClaim(any())).thenReturn("ABCD1234");
     UnsignedClaim unsignedClaim = UnsignedClaim.builder()
-      .amount(XrpCurrencyAmount.of(UnsignedLong.ONE))
+      .amount(XrpCurrencyAmount.of(BigInteger.ONE))
       .channel(Hash256.of("ABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCD"))
       .build();
     assertThat(signatureUtils.toSignableBytes(unsignedClaim).hexValue()).isEqualTo("ABCD1234");
@@ -212,7 +173,7 @@ public class SignatureUtilsTest {
   @Test
   public void unsignedClaimToSignableBytesWithJsonException() throws JsonProcessingException {
     UnsignedClaim unsignedClaim = UnsignedClaim.builder()
-      .amount(XrpCurrencyAmount.of(UnsignedLong.ONE))
+      .amount(XrpCurrencyAmount.of(BigInteger.ONE))
       .channel(Hash256.of("ABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCD"))
       .build();
     doThrow(new JsonParseException(mock(JsonParser.class), "", mock(JsonLocation.class)))
@@ -223,7 +184,7 @@ public class SignatureUtilsTest {
   @Test
   void unsignedClaimToSignableBytesActual() {
     UnsignedClaim unsignedClaim = UnsignedClaim.builder()
-      .amount(XrpCurrencyAmount.of(UnsignedLong.ONE))
+      .amount(XrpCurrencyAmount.of(BigInteger.ONE))
       .channel(Hash256.of("ABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCDABCD"))
       .build();
     assertThat(SignatureUtils.getInstance().toSignableBytes(unsignedClaim).hexValue())
@@ -282,7 +243,7 @@ public class SignatureUtilsTest {
   public void addSignatureToTransactionPayment() {
     Payment payment = Payment.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .destination(sourcePublicKey.deriveAddress())
       .amount(XrpCurrencyAmount.ofDrops(12345))
@@ -295,7 +256,7 @@ public class SignatureUtilsTest {
   public void addSignatureToTransactionAccountSet() {
     AccountSet accountSet = AccountSet.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .signingPublicKey(sourcePublicKey)
       .build();
@@ -307,7 +268,7 @@ public class SignatureUtilsTest {
     AccountDelete accountDelete = AccountDelete.builder()
       .account(sourcePublicKey.deriveAddress())
       .destination(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .signingPublicKey(sourcePublicKey)
       .build();
@@ -318,7 +279,7 @@ public class SignatureUtilsTest {
   public void addSignatureToTransactionCheckCancel() {
     CheckCancel checkCancel = CheckCancel.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .signingPublicKey(sourcePublicKey)
       .checkId(Hash256.of("0123456789012345678901234567890123456789012345678901234567891234"))
@@ -330,7 +291,7 @@ public class SignatureUtilsTest {
   public void addSignatureToTransactionCheckCash() {
     CheckCash checkCash = CheckCash.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .signingPublicKey(sourcePublicKey)
       .checkId(Hash256.of("0123456789012345678901234567890123456789012345678901234567891234"))
@@ -343,7 +304,7 @@ public class SignatureUtilsTest {
   public void addSignatureToTransactionCheckCreate() {
     CheckCreate checkCreate = CheckCreate.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .signingPublicKey(sourcePublicKey)
       .destination(sourcePublicKey.deriveAddress())
@@ -356,7 +317,7 @@ public class SignatureUtilsTest {
   public void addSignatureToTransactionDepositPreAuth() {
     DepositPreAuth depositPreAuth = DepositPreAuth.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .signingPublicKey(sourcePublicKey)
       .authorize(sourcePublicKey.deriveAddress())
@@ -368,7 +329,7 @@ public class SignatureUtilsTest {
   public void addSignatureToTransactionEscrowCancel() {
     EscrowCancel escrowCancel = EscrowCancel.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .signingPublicKey(sourcePublicKey)
       .offerSequence(UnsignedInteger.ONE)
@@ -381,7 +342,7 @@ public class SignatureUtilsTest {
   public void addSignatureToTransactionEscrowFinish() {
     EscrowFinish escrowFinish = EscrowFinish.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .signingPublicKey(sourcePublicKey)
       .offerSequence(UnsignedInteger.ONE)
@@ -394,7 +355,7 @@ public class SignatureUtilsTest {
   public void addSignatureToTransactionEscrowCreate() {
     EscrowCreate escrowCreate = EscrowCreate.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .signingPublicKey(sourcePublicKey)
       .amount(XrpCurrencyAmount.ofDrops(100))
@@ -407,7 +368,7 @@ public class SignatureUtilsTest {
   public void addSignatureToTransactionTrustSet() {
     TrustSet trustSet = TrustSet.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .signingPublicKey(sourcePublicKey)
       .limitAmount(IssuedCurrencyAmount.builder()
@@ -423,7 +384,7 @@ public class SignatureUtilsTest {
   public void addSignatureToTransactionOfferOfferCreate() {
     OfferCreate offerCreate = OfferCreate.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .signingPublicKey(sourcePublicKey)
       .takerPays(XrpCurrencyAmount.ofDrops(100))
@@ -436,7 +397,7 @@ public class SignatureUtilsTest {
   public void addSignatureToTransactionOfferCancel() {
     OfferCancel offerCancel = OfferCancel.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .signingPublicKey(sourcePublicKey)
       .build();
@@ -447,7 +408,7 @@ public class SignatureUtilsTest {
   public void addSignatureToTransactionPaymentChannelCreate() {
     PaymentChannelCreate paymentChannelCreate = PaymentChannelCreate.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .signingPublicKey(sourcePublicKey)
       .amount(XrpCurrencyAmount.ofDrops(100))
@@ -462,7 +423,7 @@ public class SignatureUtilsTest {
   public void addSignatureToTransactionPaymentChannelClaim() {
     PaymentChannelClaim paymentChannelClaim = PaymentChannelClaim.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .signingPublicKey(sourcePublicKey)
       .channel(Hash256.of("0123456789012345678901234567890123456789012345678901234567891234"))
@@ -474,7 +435,7 @@ public class SignatureUtilsTest {
   public void addSignatureToTransactionPaymentChannelFund() {
     PaymentChannelFund paymentChannelFund = PaymentChannelFund.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .signingPublicKey(sourcePublicKey)
       .channel(Hash256.of("0123456789012345678901234567890123456789012345678901234567891234"))
@@ -487,7 +448,7 @@ public class SignatureUtilsTest {
   public void addSignatureToTransactionSetRegularKey() {
     SetRegularKey setRegularKey = SetRegularKey.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .signingPublicKey(sourcePublicKey)
       .build();
@@ -498,7 +459,7 @@ public class SignatureUtilsTest {
   public void addSignatureToTransactionSignerListSet() {
     SignerListSet signerListSet = SignerListSet.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .signingPublicKey(sourcePublicKey)
       .signerQuorum(UnsignedInteger.ONE)
@@ -574,7 +535,7 @@ public class SignatureUtilsTest {
   void addSignatureToTicketCreate() {
     TicketCreate ticketCreate = TicketCreate.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .ticketCount(UnsignedInteger.ONE)
       .signingPublicKey(sourcePublicKey)
@@ -734,7 +695,7 @@ public class SignatureUtilsTest {
   public void addMultiSignaturesToTransactionPayment() {
     Payment payment = Payment.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .destination(sourcePublicKey.deriveAddress())
       .amount(XrpCurrencyAmount.ofDrops(12345))
@@ -746,7 +707,7 @@ public class SignatureUtilsTest {
   public void addMultiSignaturesToTransactionAccountSet() {
     AccountSet accountSet = AccountSet.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .build();
     addMultiSignatureToTransactionHelper(accountSet);
@@ -757,7 +718,7 @@ public class SignatureUtilsTest {
     AccountDelete accountDelete = AccountDelete.builder()
       .account(sourcePublicKey.deriveAddress())
       .destination(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .build();
     addMultiSignatureToTransactionHelper(accountDelete);
@@ -767,7 +728,7 @@ public class SignatureUtilsTest {
   public void addMultiSignaturesToTransactionCheckCancel() {
     CheckCancel checkCancel = CheckCancel.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .checkId(Hash256.of("0123456789012345678901234567890123456789012345678901234567891234"))
       .build();
@@ -778,7 +739,7 @@ public class SignatureUtilsTest {
   public void addMultiSignaturesToTransactionCheckCash() {
     CheckCash checkCash = CheckCash.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .checkId(Hash256.of("0123456789012345678901234567890123456789012345678901234567891234"))
       .amount(XrpCurrencyAmount.ofDrops(100))
@@ -790,7 +751,7 @@ public class SignatureUtilsTest {
   public void addMultiSignaturesToTransactionCheckCreate() {
     CheckCreate checkCreate = CheckCreate.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .destination(sourcePublicKey.deriveAddress())
       .sendMax(XrpCurrencyAmount.ofDrops(100))
@@ -802,7 +763,7 @@ public class SignatureUtilsTest {
   public void addMultiSignaturesToTransactionDepositPreAuth() {
     DepositPreAuth depositPreAuth = DepositPreAuth.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .authorize(sourcePublicKey.deriveAddress())
       .build();
@@ -813,7 +774,7 @@ public class SignatureUtilsTest {
   public void addMultiSignaturesToTransactionEscrowCancel() {
     EscrowCancel escrowCancel = EscrowCancel.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .offerSequence(UnsignedInteger.ONE)
       .owner(sourcePublicKey.deriveAddress())
@@ -825,7 +786,7 @@ public class SignatureUtilsTest {
   public void addMultiSignaturesToTransactionEscrowFinish() {
     EscrowFinish escrowFinish = EscrowFinish.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .offerSequence(UnsignedInteger.ONE)
       .owner(sourcePublicKey.deriveAddress())
@@ -837,7 +798,7 @@ public class SignatureUtilsTest {
   public void addMultiSignaturesToTransactionEscrowCreate() {
     EscrowCreate escrowCreate = EscrowCreate.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .amount(XrpCurrencyAmount.ofDrops(100))
       .destination(sourcePublicKey.deriveAddress())
@@ -849,7 +810,7 @@ public class SignatureUtilsTest {
   public void addMultiSignaturesToTransactionTrustSet() {
     TrustSet trustSet = TrustSet.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .limitAmount(IssuedCurrencyAmount.builder()
         .issuer(sourcePublicKey.deriveAddress())
@@ -864,7 +825,7 @@ public class SignatureUtilsTest {
   public void addMultiSignaturesToTransactionOfferOfferCreate() {
     OfferCreate offerCreate = OfferCreate.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .takerPays(XrpCurrencyAmount.ofDrops(100))
       .takerGets(XrpCurrencyAmount.ofDrops(100))
@@ -876,7 +837,7 @@ public class SignatureUtilsTest {
   public void addMultiSignaturesToTransactionOfferCancel() {
     OfferCancel offerCancel = OfferCancel.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .build();
     addMultiSignatureToTransactionHelper(offerCancel);
@@ -886,7 +847,7 @@ public class SignatureUtilsTest {
   public void addMultiSignaturesToTransactionPaymentChannelCreate() {
     PaymentChannelCreate paymentChannelCreate = PaymentChannelCreate.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .amount(XrpCurrencyAmount.ofDrops(100))
       .destination(sourcePublicKey.deriveAddress())
@@ -900,7 +861,7 @@ public class SignatureUtilsTest {
   public void addMultiSignaturesToTransactionPaymentChannelClaim() {
     PaymentChannelClaim paymentChannelClaim = PaymentChannelClaim.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .channel(Hash256.of("0123456789012345678901234567890123456789012345678901234567891234"))
       .build();
@@ -911,7 +872,7 @@ public class SignatureUtilsTest {
   public void addMultiSignaturesToTransactionPaymentChannelFund() {
     PaymentChannelFund paymentChannelFund = PaymentChannelFund.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .channel(Hash256.of("0123456789012345678901234567890123456789012345678901234567891234"))
       .amount(XrpCurrencyAmount.ofDrops(100L))
@@ -923,7 +884,7 @@ public class SignatureUtilsTest {
   public void addMultiSignaturesToTransactionSetRegularKey() {
     SetRegularKey setRegularKey = SetRegularKey.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .build();
     addMultiSignatureToTransactionHelper(setRegularKey);
@@ -933,7 +894,7 @@ public class SignatureUtilsTest {
   public void addMultiSignaturesToTransactionSignerListSet() {
     SignerListSet signerListSet = SignerListSet.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .signerQuorum(UnsignedInteger.ONE)
       .build();
@@ -1003,7 +964,7 @@ public class SignatureUtilsTest {
   void addMultiSignaturesToTicketCreate() {
     TicketCreate ticketCreate = TicketCreate.builder()
       .account(sourcePublicKey.deriveAddress())
-      .fee(XrpCurrencyAmount.ofDrops(UnsignedLong.ONE))
+      .fee(XrpCurrencyAmount.ofDrops(BigInteger.ONE))
       .sequence(UnsignedInteger.ONE)
       .ticketCount(UnsignedInteger.ONE)
       .build();

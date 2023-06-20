@@ -20,14 +20,7 @@ package org.xrpl.xrpl4j.model.client.fees;
  * =========================LICENSE_END==================================
  */
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
-import static org.xrpl.xrpl4j.model.client.fees.FeeUtils.DecomposedFees.MAX_XRP_IN_DROPS_BIG_INT;
-import static org.xrpl.xrpl4j.model.transactions.CurrencyAmount.MAX_XRP_IN_DROPS;
-
 import com.google.common.primitives.UnsignedInteger;
-import com.google.common.primitives.UnsignedLong;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +30,12 @@ import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Optional;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
+import static org.xrpl.xrpl4j.model.client.fees.FeeUtils.DecomposedFees.MAX_XRP_IN_DROPS_BIG_INT;
+import static org.xrpl.xrpl4j.model.transactions.CurrencyAmount.MAX_XRP_IN_DROPS;
 
 /**
  * Unit tests for {@link FeeUtils.DecomposedFees}.
@@ -57,16 +56,16 @@ public class DecomposedFeesTest {
     when(feeResultMock.currentQueueSize()).thenReturn(UnsignedInteger.ZERO);
     when(feeResultMock.maxQueueSize()).thenReturn(Optional.of(UnsignedInteger.ONE));
 
-    when(feeDropsMock.minimumFee()).thenReturn(XrpCurrencyAmount.builder().value(UnsignedLong.ZERO).build());
-    when(feeDropsMock.medianFee()).thenReturn(XrpCurrencyAmount.builder().value(UnsignedLong.ZERO).build());
-    when(feeDropsMock.openLedgerFee()).thenReturn(XrpCurrencyAmount.builder().value(UnsignedLong.ZERO).build());
+    when(feeDropsMock.minimumFee()).thenReturn(XrpCurrencyAmount.builder().value(BigInteger.ZERO).build());
+    when(feeDropsMock.medianFee()).thenReturn(XrpCurrencyAmount.builder().value(BigInteger.ZERO).build());
+    when(feeDropsMock.openLedgerFee()).thenReturn(XrpCurrencyAmount.builder().value(BigInteger.ZERO).build());
   }
 
   @Test
   void buildWithZeroFees() {
-    when(feeDropsMock.minimumFee()).thenReturn(XrpCurrencyAmount.builder().value(UnsignedLong.ZERO).build());
-    when(feeDropsMock.medianFee()).thenReturn(XrpCurrencyAmount.builder().value(UnsignedLong.ZERO).build());
-    when(feeDropsMock.openLedgerFee()).thenReturn(XrpCurrencyAmount.builder().value(UnsignedLong.ZERO).build());
+    when(feeDropsMock.minimumFee()).thenReturn(XrpCurrencyAmount.builder().value(BigInteger.ZERO).build());
+    when(feeDropsMock.medianFee()).thenReturn(XrpCurrencyAmount.builder().value(BigInteger.ZERO).build());
+    when(feeDropsMock.openLedgerFee()).thenReturn(XrpCurrencyAmount.builder().value(BigInteger.ZERO).build());
 
     FeeUtils.DecomposedFees decomposedFees = FeeUtils.DecomposedFees.builder(feeResultMock);
 
@@ -80,9 +79,9 @@ public class DecomposedFeesTest {
 
   @Test
   void buildWithOneFees() {
-    when(feeDropsMock.minimumFee()).thenReturn(XrpCurrencyAmount.builder().value(UnsignedLong.ONE).build());
-    when(feeDropsMock.medianFee()).thenReturn(XrpCurrencyAmount.builder().value(UnsignedLong.ONE).build());
-    when(feeDropsMock.openLedgerFee()).thenReturn(XrpCurrencyAmount.builder().value(UnsignedLong.ONE).build());
+    when(feeDropsMock.minimumFee()).thenReturn(XrpCurrencyAmount.builder().value(BigInteger.ONE).build());
+    when(feeDropsMock.medianFee()).thenReturn(XrpCurrencyAmount.builder().value(BigInteger.ONE).build());
+    when(feeDropsMock.openLedgerFee()).thenReturn(XrpCurrencyAmount.builder().value(BigInteger.ONE).build());
 
     FeeUtils.DecomposedFees decomposedFees = FeeUtils.DecomposedFees.builder(feeResultMock);
 
@@ -96,9 +95,9 @@ public class DecomposedFeesTest {
 
   @Test
   void buildWithTenFees() {
-    when(feeDropsMock.minimumFee()).thenReturn(XrpCurrencyAmount.builder().value(UnsignedLong.valueOf(10L)).build());
-    when(feeDropsMock.medianFee()).thenReturn(XrpCurrencyAmount.builder().value(UnsignedLong.valueOf(10L)).build());
-    when(feeDropsMock.openLedgerFee()).thenReturn(XrpCurrencyAmount.builder().value(UnsignedLong.valueOf(10L)).build());
+    when(feeDropsMock.minimumFee()).thenReturn(XrpCurrencyAmount.builder().value(BigInteger.valueOf(10L)).build());
+    when(feeDropsMock.medianFee()).thenReturn(XrpCurrencyAmount.builder().value(BigInteger.valueOf(10L)).build());
+    when(feeDropsMock.openLedgerFee()).thenReturn(XrpCurrencyAmount.builder().value(BigInteger.valueOf(10L)).build());
 
     FeeUtils.DecomposedFees decomposedFees = FeeUtils.DecomposedFees.builder(feeResultMock);
 
@@ -115,7 +114,7 @@ public class DecomposedFeesTest {
     when(feeResultMock.currentQueueSize()).thenReturn(UnsignedInteger.MAX_VALUE);
     when(feeResultMock.maxQueueSize()).thenReturn(Optional.of(UnsignedInteger.MAX_VALUE));
 
-    final UnsignedLong maxFees = UnsignedLong.valueOf(MAX_XRP_IN_DROPS);
+    final BigInteger maxFees = BigInteger.valueOf(MAX_XRP_IN_DROPS);
     when(feeDropsMock.minimumFee()).thenReturn(
       XrpCurrencyAmount.builder().value(maxFees).build());
     when(feeDropsMock.medianFee()).thenReturn(
@@ -127,13 +126,13 @@ public class DecomposedFeesTest {
 
     assertThat(decomposedFees.adjustedMinimumFeeDrops()).isEqualTo(MAX_XRP_IN_DROPS_BIG_INT);
     assertThat(decomposedFees.adjustedMinimumFeeDropsAsBigDecimal())
-      .isEqualTo(new BigDecimal(maxFees.bigIntegerValue()));
+      .isEqualTo(new BigDecimal(maxFees));
     assertThat(decomposedFees.medianFeeDrops()).isEqualTo(MAX_XRP_IN_DROPS_BIG_INT);
     assertThat(decomposedFees.medianFeeDropsAsBigDecimal())
-      .isEqualTo(new BigDecimal(maxFees.bigIntegerValue()));
+      .isEqualTo(new BigDecimal(maxFees));
     assertThat(decomposedFees.openLedgerFeeDrops()).isEqualTo(MAX_XRP_IN_DROPS_BIG_INT);
     assertThat(decomposedFees.openLedgerFeeDropsAsBigDecimal())
-      .isEqualTo(new BigDecimal(maxFees.bigIntegerValue()));
+      .isEqualTo(new BigDecimal(maxFees));
   }
 
   @Test
@@ -141,9 +140,9 @@ public class DecomposedFeesTest {
     when(feeResultMock.currentQueueSize()).thenReturn(UnsignedInteger.ONE);
     when(feeResultMock.maxQueueSize()).thenReturn(Optional.empty());
 
-    when(feeDropsMock.minimumFee()).thenReturn(XrpCurrencyAmount.builder().value(UnsignedLong.ONE).build());
-    when(feeDropsMock.medianFee()).thenReturn(XrpCurrencyAmount.builder().value(UnsignedLong.ONE).build());
-    when(feeDropsMock.openLedgerFee()).thenReturn(XrpCurrencyAmount.builder().value(UnsignedLong.ONE).build());
+    when(feeDropsMock.minimumFee()).thenReturn(XrpCurrencyAmount.builder().value(BigInteger.ONE).build());
+    when(feeDropsMock.medianFee()).thenReturn(XrpCurrencyAmount.builder().value(BigInteger.ONE).build());
+    when(feeDropsMock.openLedgerFee()).thenReturn(XrpCurrencyAmount.builder().value(BigInteger.ONE).build());
 
     FeeUtils.DecomposedFees decomposedFees = FeeUtils.DecomposedFees.builder(feeResultMock);
 

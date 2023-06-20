@@ -22,7 +22,6 @@ package org.xrpl.xrpl4j.model.client.serverinfo;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.primitives.UnsignedInteger;
-import com.google.common.primitives.UnsignedLong;
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 import org.xrpl.xrpl4j.model.AbstractJsonTest;
@@ -32,6 +31,7 @@ import org.xrpl.xrpl4j.model.transactions.Hash256;
 import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * Unit tests for {@link ValidatedLedger}.
@@ -68,8 +68,8 @@ class ServerInfoLedgerTest extends AbstractJsonTest {
       .sequence(LedgerIndex.of(UnsignedInteger.ONE))
       .hash(Hash256.of("0D2D30837E05995AAAAA117294BB45AB0699AB1219605FFD23318E050C7166E9"))
       .baseFeeXrp(new BigDecimal("0.00001")) //"base_fee_xrp":1E-5,
-      .reserveBaseXrp(XrpCurrencyAmount.of(UnsignedLong.ZERO))
-      .reserveIncXrp(XrpCurrencyAmount.of(UnsignedLong.ZERO))
+      .reserveBaseXrp(XrpCurrencyAmount.of(BigInteger.ZERO))
+      .reserveIncXrp(XrpCurrencyAmount.of(BigInteger.ZERO))
       .build();
 
     String json = "{\n" +
@@ -91,8 +91,8 @@ class ServerInfoLedgerTest extends AbstractJsonTest {
       .sequence(LedgerIndex.of(UnsignedInteger.ONE))
       .hash(Hash256.of("0D2D30837E05995AAAAA117294BB45AB0699AB1219605FFD23318E050C7166E9"))
       .baseFeeXrp(new BigDecimal("0.00001")) //"base_fee_xrp":1E-5,
-      .reserveBaseXrp(XrpCurrencyAmount.of(UnsignedLong.ONE))
-      .reserveIncXrp(XrpCurrencyAmount.of(UnsignedLong.ONE))
+      .reserveBaseXrp(XrpCurrencyAmount.of(BigInteger.ONE))
+      .reserveIncXrp(XrpCurrencyAmount.of(BigInteger.ONE))
       .build();
 
     String json = "{\n" +

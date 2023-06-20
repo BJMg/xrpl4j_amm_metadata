@@ -9,9 +9,9 @@ package org.xrpl.xrpl4j.model.client.fees;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,8 +19,6 @@ package org.xrpl.xrpl4j.model.client.fees;
  * limitations under the License.
  * =========================LICENSE_END==================================
  */
-
-import static org.xrpl.xrpl4j.model.transactions.CurrencyAmount.MAX_XRP_IN_DROPS;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
@@ -38,6 +36,8 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Objects;
+
+import static org.xrpl.xrpl4j.model.transactions.CurrencyAmount.MAX_XRP_IN_DROPS;
 
 /**
  * Utils relating to XRPL fees.
@@ -83,7 +83,7 @@ public class FeeUtils {
 
     ComputedNetworkFees computedNetworkFees = computeNetworkFees(feeResult);
     XrpCurrencyAmount numberOfSignersAsAmount = XrpCurrencyAmount.of(
-      UnsignedLong.valueOf(signerList.signerEntries().size() + 1)
+      BigInteger.valueOf(signerList.signerEntries().size() + 1)
     );
     return ComputedNetworkFees.builder()
       .feeLow(computedNetworkFees.feeLow().times(numberOfSignersAsAmount))
@@ -134,7 +134,6 @@ public class FeeUtils {
 
     // Cap `feeLow` to the size of an UnsignedLong.
     return XrpCurrencyAmount.ofDrops(
-      toUnsignedLongSafe(
         min(
           max(
             adjustedMinimumFeeDrops, // min fee * 1.50
@@ -142,7 +141,6 @@ public class FeeUtils {
           ),
           ONE_THOUSAND
         )
-      )
     );
   }
 
@@ -181,12 +179,10 @@ public class FeeUtils {
     // calculate the lowest fee the user is able to pay if there are txns in the queue
     final BigInteger feeMedium = min(
       possibleFeeMedium,
-      feeLow.value().bigIntegerValue().multiply(FIFTEEN), TEN_THOUSAND
+      feeLow.value().multiply(FIFTEEN), TEN_THOUSAND
     );
 
-    return XrpCurrencyAmount.ofDrops(
-      toUnsignedLongSafe(feeMedium)
-    );
+    return XrpCurrencyAmount.ofDrops(feeMedium);
   }
 
   /**
@@ -206,9 +202,7 @@ public class FeeUtils {
     final BigInteger feeHigh = min(
       max(minimumFee.multiply(BigInteger.TEN), multiplyToBigInteger(max(medianFee, openLedgerFee), ONE_POINT_ONE)),
       TEN_THOUSAND);
-    return XrpCurrencyAmount.ofDrops(
-      toUnsignedLongSafe(feeHigh)
-    );
+    return XrpCurrencyAmount.ofDrops(feeHigh);
   }
 
   /**
@@ -386,12 +380,12 @@ public class FeeUtils {
 
       // Min fee should be slightly larger than the indicated min.
       final BigInteger adjustedMinimumFeeDrops = min(MAX_XRP_IN_DROPS_BIG_INT,
-        new BigDecimal(feeDrops.minimumFee().value().bigIntegerValue()).multiply(ONE_POINT_FIVE)
+        new BigDecimal(feeDrops.minimumFee().value()).multiply(ONE_POINT_FIVE)
           .setScale(0, RoundingMode.HALF_DOWN).toBigIntegerExact());
 
       return ImmutableDecomposedFees.builder().adjustedMinimumFeeDrops(adjustedMinimumFeeDrops)
-        .medianFeeDrops(feeDrops.medianFee().value().bigIntegerValue())
-        .openLedgerFeeDrops(feeDrops.openLedgerFee().value().bigIntegerValue()).queuePercentage(queuePercentage)
+        .medianFeeDrops(feeDrops.medianFee().value())
+        .openLedgerFeeDrops(feeDrops.openLedgerFee().value()).queuePercentage(queuePercentage)
         .build();
     }
 

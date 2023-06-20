@@ -20,13 +20,8 @@ package org.xrpl.xrpl4j.crypto.signing;
  * =========================LICENSE_END==================================
  */
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.xrpl.xrpl4j.crypto.TestConstants.EC_ADDRESS;
-import static org.xrpl.xrpl4j.crypto.TestConstants.ED_ADDRESS;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.primitives.UnsignedInteger;
-import com.google.common.primitives.UnsignedLong;
 import com.jayway.jsonassert.JsonAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,6 +29,12 @@ import org.xrpl.xrpl4j.codec.addresses.UnsignedByteArray;
 import org.xrpl.xrpl4j.model.jackson.ObjectMapperFactory;
 import org.xrpl.xrpl4j.model.transactions.Payment;
 import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
+
+import java.math.BigInteger;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.xrpl.xrpl4j.crypto.TestConstants.EC_ADDRESS;
+import static org.xrpl.xrpl4j.crypto.TestConstants.ED_ADDRESS;
 
 /**
  * Unit tests for {@link SingleSignedTransaction}.
@@ -48,14 +49,14 @@ class SingleSingedTransactionTest {
     singleSingedTransaction = SingleSignedTransaction.builder()
       .signedTransaction(Payment.builder()
         .account(ED_ADDRESS)
-        .fee(XrpCurrencyAmount.of(UnsignedLong.ONE))
+        .fee(XrpCurrencyAmount.of(BigInteger.ONE))
         .sequence(UnsignedInteger.ONE)
         .amount(XrpCurrencyAmount.ofDrops(12345))
         .destination(EC_ADDRESS)
         .build())
       .unsignedTransaction(Payment.builder()
         .account(ED_ADDRESS)
-        .fee(XrpCurrencyAmount.of(UnsignedLong.ONE))
+        .fee(XrpCurrencyAmount.of(BigInteger.ONE))
         .sequence(UnsignedInteger.ONE)
         .amount(XrpCurrencyAmount.ofDrops(12345))
         .destination(EC_ADDRESS)

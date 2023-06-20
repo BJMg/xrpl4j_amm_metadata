@@ -20,12 +20,13 @@ package org.xrpl.xrpl4j.model.transactions;
  * =========================LICENSE_END==================================
  */
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.google.common.primitives.UnsignedInteger;
-import com.google.common.primitives.UnsignedLong;
 import org.junit.jupiter.api.Test;
 import org.xrpl.xrpl4j.model.client.common.LedgerIndex;
+
+import java.math.BigInteger;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UnlModifyTest {
 
@@ -42,7 +43,7 @@ public class UnlModifyTest {
 
     assertThat(unlModify.transactionType()).isEqualTo(TransactionType.UNL_MODIFY);
     assertThat(unlModify.account()).isEqualTo(UnlModify.ACCOUNT_ZERO);
-    assertThat(unlModify.fee().value()).isEqualTo(UnsignedLong.valueOf(12));
+    assertThat(unlModify.fee().value()).isEqualTo(BigInteger.valueOf(12));
     assertThat(unlModify.sequence()).isEqualTo(UnsignedInteger.valueOf(2470665));
     assertThat(unlModify.ledgerSequence()).isEqualTo(LedgerIndex.of(UnsignedInteger.valueOf(67850752)));
     assertThat(unlModify.unlModifyValidator()).isEqualTo(validator);

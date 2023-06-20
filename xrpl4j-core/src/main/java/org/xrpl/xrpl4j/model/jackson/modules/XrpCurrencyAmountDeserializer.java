@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
 
 import java.io.IOException;
+import java.math.BigInteger;
 
 /**
  * Custom Jackson deserializer for {@link XrpCurrencyAmount}s.
@@ -41,6 +42,6 @@ public class XrpCurrencyAmountDeserializer extends StdDeserializer<XrpCurrencyAm
 
   @Override
   public XrpCurrencyAmount deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
-    return XrpCurrencyAmount.ofDrops(jsonParser.getValueAsLong());
+    return XrpCurrencyAmount.ofDrops(new BigInteger(jsonParser.getText()));
   }
 }

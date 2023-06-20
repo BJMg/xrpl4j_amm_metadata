@@ -20,10 +20,7 @@ package org.xrpl.xrpl4j.crypto.signing.bc;
  * =========================LICENSE_END==================================
  */
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.google.common.primitives.UnsignedInteger;
-import com.google.common.primitives.UnsignedLong;
 import org.assertj.core.util.Sets;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,14 +34,13 @@ import org.xrpl.xrpl4j.model.transactions.Signer;
 import org.xrpl.xrpl4j.model.transactions.Transaction;
 import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * An Integration Test for {@link BcSignatureService} that uses actual implementations.
@@ -80,7 +76,7 @@ class BouncyCastleSignatureServiceIT {
       "02576CB07495A6A03F1B5BD812721E2358304A6FA31ADF7781B8A0F9F59D3726DC");
 
     this.payment = Payment.builder().account(ed25519KeyPair.publicKey().deriveAddress())
-      .fee(XrpCurrencyAmount.of(UnsignedLong.valueOf(10L))).sequence(UnsignedInteger.ONE)
+      .fee(XrpCurrencyAmount.of(BigInteger.valueOf(10L))).sequence(UnsignedInteger.ONE)
       .destination(secp256k1KeyPair.publicKey().deriveAddress()).amount(XrpCurrencyAmount.ofDrops(12345))
       .signingPublicKey(ed25519KeyPair.publicKey()).build();
 

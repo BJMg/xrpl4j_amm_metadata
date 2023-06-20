@@ -20,14 +20,14 @@ package org.xrpl.xrpl4j.model.transactions;
  * =========================LICENSE_END==================================
  */
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.google.common.primitives.UnsignedInteger;
-import com.google.common.primitives.UnsignedLong;
 import org.junit.jupiter.api.Test;
 import org.xrpl.xrpl4j.model.client.common.LedgerIndex;
 
+import java.math.BigInteger;
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class EnableAmendmentTest {
 
@@ -45,7 +45,7 @@ public class EnableAmendmentTest {
 
     assertThat(enableAmendment.transactionType()).isEqualTo(TransactionType.ENABLE_AMENDMENT);
     assertThat(enableAmendment.account()).isEqualTo(Address.of("rrrrrrrrrrrrrrrrrrrrrhoLvTp"));
-    assertThat(enableAmendment.fee().value()).isEqualTo(UnsignedLong.valueOf(12));
+    assertThat(enableAmendment.fee().value()).isEqualTo(BigInteger.valueOf(12));
     assertThat(enableAmendment.sequence()).isEqualTo(UnsignedInteger.valueOf(2470665));
     assertThat(enableAmendment.ledgerSequence()).isNotEmpty().get()
       .isEqualTo(LedgerIndex.of(UnsignedInteger.valueOf(67850752)));

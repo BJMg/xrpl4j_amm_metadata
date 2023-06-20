@@ -51,6 +51,7 @@ import org.xrpl.xrpl4j.model.jackson.modules.XrpCurrencyAmountSerializer;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.MathContext;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
@@ -151,7 +152,7 @@ public class Wrappers {
   @Wrapped
   @JsonSerialize(as = XrpCurrencyAmount.class, using = XrpCurrencyAmountSerializer.class)
   @JsonDeserialize(as = XrpCurrencyAmount.class, using = XrpCurrencyAmountDeserializer.class)
-  abstract static class _XrpCurrencyAmount extends Wrapper<UnsignedLong> implements Serializable, CurrencyAmount {
+  abstract static class _XrpCurrencyAmount extends Wrapper<BigInteger> implements Serializable, CurrencyAmount {
 
     static final BigDecimal SMALLEST_XRP = new BigDecimal("0.000001");
     static final DecimalFormat FORMATTER = new DecimalFormat("###,###");
@@ -164,7 +165,7 @@ public class Wrappers {
      * @return An {@link XrpCurrencyAmount} of {@code drops}.
      */
     public static XrpCurrencyAmount ofDrops(long drops) {
-      return ofDrops(UnsignedLong.valueOf(drops));
+      return ofDrops(BigInteger.valueOf(drops));
     }
 
     /**
@@ -174,7 +175,7 @@ public class Wrappers {
      *
      * @return An {@link XrpCurrencyAmount} of {@code drops}.
      */
-    public static XrpCurrencyAmount ofDrops(UnsignedLong drops) {
+    public static XrpCurrencyAmount ofDrops(BigInteger drops) {
       return XrpCurrencyAmount.of(drops);
     }
 
@@ -189,7 +190,7 @@ public class Wrappers {
       if (FluentCompareTo.is(amount).notEqualTo(BigDecimal.ZERO)) {
         Preconditions.checkArgument(FluentCompareTo.is(amount).greaterThanEqualTo(SMALLEST_XRP));
       }
-      return ofDrops(UnsignedLong.valueOf(amount.scaleByPowerOfTen(6).toBigIntegerExact()));
+      return ofDrops(amount.scaleByPowerOfTen(6).toBigIntegerExact());
     }
 
     /**
@@ -199,7 +200,7 @@ public class Wrappers {
      * @return A {@link BigDecimal} representing this value denominated in whole XRP units.
      */
     public BigDecimal toXrp() {
-      return new BigDecimal(this.value().bigIntegerValue())
+      return new BigDecimal(this.value())
         .divide(BigDecimal.valueOf(ONE_XRP_IN_DROPS), MathContext.DECIMAL128);
     }
 
@@ -211,7 +212,7 @@ public class Wrappers {
      * @return The sum of this amount and the {@code other} amount, as an {@link XrpCurrencyAmount}.
      */
     public XrpCurrencyAmount plus(XrpCurrencyAmount other) {
-      return XrpCurrencyAmount.of(this.value().plus(other.value()));
+      return XrpCurrencyAmount.of(this.value().add(other.value()));
     }
 
     /**
@@ -222,7 +223,7 @@ public class Wrappers {
      * @return The difference of this amount and the {@code other} amount, as an {@link XrpCurrencyAmount}.
      */
     public XrpCurrencyAmount minus(XrpCurrencyAmount other) {
-      return XrpCurrencyAmount.of(this.value().minus(other.value()));
+      return XrpCurrencyAmount.of(this.value().subtract(other.value()));
     }
 
     /**
@@ -233,7 +234,7 @@ public class Wrappers {
      * @return The product of this amount and the {@code other} amount, as an {@link XrpCurrencyAmount}.
      */
     public XrpCurrencyAmount times(XrpCurrencyAmount other) {
-      return XrpCurrencyAmount.of(this.value().times(other.value()));
+      return XrpCurrencyAmount.of(this.value().multiply(other.value()));
     }
 
     @Override

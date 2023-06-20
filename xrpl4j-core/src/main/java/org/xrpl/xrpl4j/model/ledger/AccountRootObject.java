@@ -24,13 +24,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.primitives.UnsignedInteger;
-import com.google.common.primitives.UnsignedLong;
 import org.immutables.value.Value;
 import org.xrpl.xrpl4j.model.flags.AccountRootFlags;
 import org.xrpl.xrpl4j.model.transactions.Address;
 import org.xrpl.xrpl4j.model.transactions.Hash256;
 import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,7 +78,7 @@ public interface AccountRootObject extends LedgerObject {
   @JsonProperty("Balance")
   @Value.Default
   default XrpCurrencyAmount balance() {
-    return XrpCurrencyAmount.of(UnsignedLong.ZERO);
+    return XrpCurrencyAmount.of(BigInteger.ZERO);
   }
 
   /**
