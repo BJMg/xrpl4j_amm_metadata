@@ -81,32 +81,34 @@ public interface ModifiedNode extends AffectedNode {
                 JsonNode ledgerEntryTypeNode = objectNode.get("LedgerEntryType");
                 JsonNode ledgerIndex = objectNode.get("LedgerIndex");
 
-                LedgerObject.LedgerEntryType ledgerEntryType = LedgerObject.LedgerEntryType.forValue(ledgerEntryTypeNode.textValue());
+                LedgerObject.LedgerEntryType ledgerEntryType = LedgerObject.LedgerEntryType.forValueIfExists(ledgerEntryTypeNode.textValue());
 
                 ImmutableModifiedNode.Builder builder = ImmutableModifiedNode.builder();
-                JsonNode finalFieldsJsonNode = objectNode.get("FinalFields");
-                if (ledgerObjectDeserializeCache.canBeDeserialized(ledgerEntryType) && finalFieldsJsonNode != null) {
+                if (ledgerEntryType != null) {
+                    JsonNode finalFieldsJsonNode = objectNode.get("FinalFields");
+                    if (ledgerObjectDeserializeCache.canBeDeserialized(ledgerEntryType) && finalFieldsJsonNode != null) {
 
-                    ObjectNode finalFieldsNode = (ObjectNode) finalFieldsJsonNode;
-                    finalFieldsNode.set("index", ledgerIndex);
-                    finalFieldsNode.set("LedgerEntryType", ledgerEntryTypeNode);
-                    finalFieldsNode.set("PreviousTxnLgrSeq", previousTxnLgrSeq);
-                    finalFieldsNode.set("PreviousTxnID", previousTxnId);
-                    builder.finalFields(Optional.ofNullable(deserializationContext.readTreeAsValue(finalFieldsNode, LedgerObject.class)));
+                        ObjectNode finalFieldsNode = (ObjectNode) finalFieldsJsonNode;
+                        finalFieldsNode.set("index", ledgerIndex);
+                        finalFieldsNode.set("LedgerEntryType", ledgerEntryTypeNode);
+                        finalFieldsNode.set("PreviousTxnLgrSeq", previousTxnLgrSeq);
+                        finalFieldsNode.set("PreviousTxnID", previousTxnId);
+                        builder.finalFields(Optional.ofNullable(deserializationContext.readTreeAsValue(finalFieldsNode, LedgerObject.class)));
 
-                    JsonNode previousFieldsNode = objectNode.get("PreviousFields");
-                    if (previousFieldsNode != null && previousFieldsNode.isObject()) {
-                        finalFieldsNode.setAll((ObjectNode) previousFieldsNode);
-                        LedgerObject previousFields = deserializationContext.readTreeAsValue(finalFieldsNode, LedgerObject.class);
-                        builder.previousFields(previousFields);
+                        JsonNode previousFieldsNode = objectNode.get("PreviousFields");
+                        if (previousFieldsNode != null && previousFieldsNode.isObject()) {
+                            finalFieldsNode.setAll((ObjectNode) previousFieldsNode);
+                            LedgerObject previousFields = deserializationContext.readTreeAsValue(finalFieldsNode, LedgerObject.class);
+                            builder.previousFields(previousFields);
+                        }
                     }
+                    builder.ledgerEntryType(ledgerEntryType);
                 }
-
-                builder.previousTransactionId(Hash256.of(previousTxnId.textValue()));
-                builder.previousTransactionLedgerSequence(LedgerIndex.of(UnsignedInteger.valueOf(previousTxnLgrSeq.longValue())));
-                builder.ledgerIndex(Hash256.of(ledgerIndex.textValue()));
-                builder.ledgerEntryType(ledgerEntryType);
-                return builder.build();
+                return builder
+                        .ledgerIndex(Hash256.of(ledgerIndex.textValue()))
+                        .previousTransactionLedgerSequence(LedgerIndex.of(UnsignedInteger.valueOf(previousTxnLgrSeq.longValue())))
+                        .previousTransactionId(Hash256.of(previousTxnId.textValue()))
+                        .build();
             } else {
                 return null;
             }

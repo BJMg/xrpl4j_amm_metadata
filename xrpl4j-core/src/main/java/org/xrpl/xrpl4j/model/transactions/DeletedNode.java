@@ -46,19 +46,21 @@ public interface DeletedNode extends AffectedNode {
             if (jsonNode.isObject()) {
                 ObjectNode objectNode = (ObjectNode) jsonNode;
                 JsonNode ledgerEntryTypeNode = objectNode.get("LedgerEntryType");
-                LedgerObject.LedgerEntryType ledgerEntryType = LedgerObject.LedgerEntryType.forValue(ledgerEntryTypeNode.textValue());
+                LedgerObject.LedgerEntryType ledgerEntryType = LedgerObject.LedgerEntryType.forValueIfExists(ledgerEntryTypeNode.textValue());
                 JsonNode ledgerIndex = objectNode.get("LedgerIndex");
 
-                ImmutableDeletedNode.Builder builder = ImmutableDeletedNode.builder();
-                if (ledgerObjectDeserializeCache.canBeDeserialized(ledgerEntryType)) {
-                    ObjectNode finalFieldsNode = (ObjectNode) objectNode.required("FinalFields");
-                    finalFieldsNode.set("index", ledgerIndex);
-                    finalFieldsNode.set("LedgerEntryType", ledgerEntryTypeNode);
-                    builder.finalFields(Optional.ofNullable(deserializationContext.readTreeAsValue(finalFieldsNode, LedgerObject.class)));
+                ImmutableDeletedNode.Builder builder = ImmutableDeletedNode.builder()
+                        .ledgerIndex(Hash256.of(ledgerIndex.textValue()));
+                if (ledgerEntryType != null) {
+                    if (ledgerObjectDeserializeCache.canBeDeserialized(ledgerEntryType)) {
+                        ObjectNode finalFieldsNode = (ObjectNode) objectNode.required("FinalFields");
+                        finalFieldsNode.set("index", ledgerIndex);
+                        finalFieldsNode.set("LedgerEntryType", ledgerEntryTypeNode);
+                        builder.finalFields(Optional.ofNullable(deserializationContext.readTreeAsValue(finalFieldsNode, LedgerObject.class)));
+                    }
+                    builder.ledgerEntryType(ledgerEntryType);
                 }
                 return builder
-                        .ledgerIndex(Hash256.of(ledgerIndex.textValue()))
-                        .ledgerEntryType(ledgerEntryType)
                         .build();
             } else {
                 return null;

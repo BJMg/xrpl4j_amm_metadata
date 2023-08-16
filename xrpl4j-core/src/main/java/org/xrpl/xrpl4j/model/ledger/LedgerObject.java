@@ -24,192 +24,203 @@ import com.fasterxml.jackson.annotation.*;
 import com.google.common.primitives.UnsignedInteger;
 import org.xrpl.xrpl4j.model.transactions.Hash256;
 
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Market interface for XRP Ledger Objects.
  * TODO: pull common fields up.
  */
 @JsonTypeInfo(
-  use = JsonTypeInfo.Id.NAME,
-  include = JsonTypeInfo.As.EXISTING_PROPERTY,
-  property = "LedgerEntryType"
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "LedgerEntryType"
 )
-@JsonSubTypes( {
-  @JsonSubTypes.Type(value = ImmutableAccountRootObject.class, name = "AccountRoot"),
-  //    @JsonSubTypes.Type(value = ImmutableAmendmentsObject.class, name = "Amendments"),
-  @JsonSubTypes.Type(value = ImmutableCheckObject.class, name = "Check"),
-  @JsonSubTypes.Type(value = ImmutableDepositPreAuthObject.class, name = "DepositPreauth"),
-  //    @JsonSubTypes.Type(value = ImmutableDirectoryNodeObject.class, name = "DirectoryNode"),
-  @JsonSubTypes.Type(value = ImmutableEscrowObject.class, name = "Escrow"),
-  //    @JsonSubTypes.Type(value = ImmutableFeeSettingsObject.class, name = "FeeSettings"),
-  //    @JsonSubTypes.Type(value = ImmutableLedgerHashesObject.class, name = "LedgerHashes"),
-  //    @JsonSubTypes.Type(value = ImmutableNegativeUnlObject.class, name = "NegativeUNL"),
-  @JsonSubTypes.Type(value = ImmutableNfTokenOfferObject.class, name = "NFTokenOffer"),
-  @JsonSubTypes.Type(value = ImmutableOfferObject.class, name = "Offer"),
-  @JsonSubTypes.Type(value = ImmutablePayChannelObject.class, name = "PayChannel"),
-  @JsonSubTypes.Type(value = ImmutableRippleStateObject.class, name = "RippleState"),
-  @JsonSubTypes.Type(value = ImmutableSignerListObject.class, name = "SignerList"),
-  @JsonSubTypes.Type(value = ImmutableTicketObject.class, name = "Ticket"),
-  @JsonSubTypes.Type(value = ImmutableAmmObject.class, name = "AMM"),
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = ImmutableAccountRootObject.class, name = "AccountRoot"),
+        //    @JsonSubTypes.Type(value = ImmutableAmendmentsObject.class, name = "Amendments"),
+        @JsonSubTypes.Type(value = ImmutableCheckObject.class, name = "Check"),
+        @JsonSubTypes.Type(value = ImmutableDepositPreAuthObject.class, name = "DepositPreauth"),
+        //    @JsonSubTypes.Type(value = ImmutableDirectoryNodeObject.class, name = "DirectoryNode"),
+        @JsonSubTypes.Type(value = ImmutableEscrowObject.class, name = "Escrow"),
+        //    @JsonSubTypes.Type(value = ImmutableFeeSettingsObject.class, name = "FeeSettings"),
+        //    @JsonSubTypes.Type(value = ImmutableLedgerHashesObject.class, name = "LedgerHashes"),
+        //    @JsonSubTypes.Type(value = ImmutableNegativeUnlObject.class, name = "NegativeUNL"),
+        @JsonSubTypes.Type(value = ImmutableNfTokenOfferObject.class, name = "NFTokenOffer"),
+        @JsonSubTypes.Type(value = ImmutableOfferObject.class, name = "Offer"),
+        @JsonSubTypes.Type(value = ImmutablePayChannelObject.class, name = "PayChannel"),
+        @JsonSubTypes.Type(value = ImmutableRippleStateObject.class, name = "RippleState"),
+        @JsonSubTypes.Type(value = ImmutableSignerListObject.class, name = "SignerList"),
+        @JsonSubTypes.Type(value = ImmutableTicketObject.class, name = "Ticket"),
+        @JsonSubTypes.Type(value = ImmutableAmmObject.class, name = "AMM"),
 })
 // TODO: Uncomment subtypes as we implement
 public interface LedgerObject {
 
-  /**
-   * Enum for all types of ledger objects.
-   */
-  enum LedgerEntryType {
     /**
-     * The {@link LedgerEntryType} for {@code AccountRoot} ledger objects.
+     * Enum for all types of ledger objects.
      */
-    ACCOUNT_ROOT("AccountRoot"),
+    enum LedgerEntryType {
+        /**
+         * The {@link LedgerEntryType} for {@code AccountRoot} ledger objects.
+         */
+        ACCOUNT_ROOT("AccountRoot"),
 
-    /**
-     * The {@link LedgerEntryType} for {@code Amendments} ledger objects.
-     */
-    AMENDMENTS("Amendments"),
+        /**
+         * The {@link LedgerEntryType} for {@code Amendments} ledger objects.
+         */
+        AMENDMENTS("Amendments"),
 
-    /**
-     * The {@link LedgerEntryType} for {@code Check} ledger objects.
-     */
-    CHECK("Check"),
+        /**
+         * The {@link LedgerEntryType} for {@code Check} ledger objects.
+         */
+        CHECK("Check"),
 
-    /**
-     * The {@link LedgerEntryType} for {@code DepositPreauth} ledger objects.
-     */
-    DEPOSIT_PRE_AUTH("DepositPreauth"),
+        /**
+         * The {@link LedgerEntryType} for {@code DepositPreauth} ledger objects.
+         */
+        DEPOSIT_PRE_AUTH("DepositPreauth"),
 
-    /**
-     * The {@link LedgerEntryType} for {@code DirectoryNode} ledger objects.
-     */
-    DIRECTORY_NODE("DirectoryNode"),
+        /**
+         * The {@link LedgerEntryType} for {@code DirectoryNode} ledger objects.
+         */
+        DIRECTORY_NODE("DirectoryNode"),
 
-    /**
-     * The {@link LedgerEntryType} for {@code Escrow} ledger objects.
-     */
-    ESCROW("Escrow"),
+        /**
+         * The {@link LedgerEntryType} for {@code Escrow} ledger objects.
+         */
+        ESCROW("Escrow"),
 
-    /**
-     * The {@link LedgerEntryType} for {@code FeeSettings} ledger objects.
-     */
-    FEE_SETTINGS("FeeSettings"),
+        /**
+         * The {@link LedgerEntryType} for {@code FeeSettings} ledger objects.
+         */
+        FEE_SETTINGS("FeeSettings"),
 
-    /**
-     * The {@link LedgerEntryType} for {@code LedgerHashes} ledger objects.
-     */
-    LEDGER_HASHES("LedgerHashes"),
+        /**
+         * The {@link LedgerEntryType} for {@code LedgerHashes} ledger objects.
+         */
+        LEDGER_HASHES("LedgerHashes"),
 
-    /**
-     * The {@link LedgerEntryType} for {@code NegativeUNL} ledger objects.
-     */
-    NEGATIVE_UNL("NegativeUNL"),
+        /**
+         * The {@link LedgerEntryType} for {@code NegativeUNL} ledger objects.
+         */
+        NEGATIVE_UNL("NegativeUNL"),
 
-    /**
-     * The {@link LedgerEntryType} for {@code NFTokenOffer} ledger objects.
-     */
-    NFTOKEN_OFFER("NFTokenOffer"),
+        /**
+         * The {@link LedgerEntryType} for {@code NFTokenOffer} ledger objects.
+         */
+        NFTOKEN_OFFER("NFTokenOffer"),
 
-    /**
-     * The {@link LedgerEntryType} for {@code Offer} ledger objects.
-     */
-    OFFER("Offer"),
+        /**
+         * The {@link LedgerEntryType} for {@code Offer} ledger objects.
+         */
+        OFFER("Offer"),
 
-    /**
-     * The {@link LedgerEntryType} for {@code PayChannel} ledger objects.
-     */
-    PAY_CHANNEL("PayChannel"),
+        /**
+         * The {@link LedgerEntryType} for {@code PayChannel} ledger objects.
+         */
+        PAY_CHANNEL("PayChannel"),
 
-    /**
-     * The {@link LedgerEntryType} for {@code RippleState} ledger objects.
-     */
-    RIPPLE_STATE("RippleState"),
+        /**
+         * The {@link LedgerEntryType} for {@code RippleState} ledger objects.
+         */
+        RIPPLE_STATE("RippleState"),
 
-    /**
-     * The {@link LedgerEntryType} for {@code SignerList} ledger objects.
-     */
-    SIGNER_LIST("SignerList"),
+        /**
+         * The {@link LedgerEntryType} for {@code SignerList} ledger objects.
+         */
+        SIGNER_LIST("SignerList"),
 
-    /**
-     * The {@link LedgerEntryType} for {@code TicketObject} ledger objects.
-     */
-    TICKET("Ticket"),
+        /**
+         * The {@link LedgerEntryType} for {@code TicketObject} ledger objects.
+         */
+        TICKET("Ticket"),
 
-    /**
-     * The {@link LedgerEntryType} for {@code AmmObject} ledger objects.
-     */
-    AMM("AMM");
+        /**
+         * The {@link LedgerEntryType} for {@code AmmObject} ledger objects.
+         */
+        AMM("AMM");
 
-    private final String value;
+        private final String value;
 
-    LedgerEntryType(String value) {
-      this.value = value;
-    }
-
-    /**
-     * Constructs the {@link LedgerEntryType} corresponding to the given value, or throws an
-     * {@link IllegalArgumentException} if no corresponding {@link LedgerEntryType} exists.
-     *
-     * <p>Mostly used by Jackson for deserialization.
-     *
-     * @param value The {@link String} value of a {@link LedgerEntryType}.
-     *
-     * @return A {@link LedgerEntryType}.
-     */
-    @JsonCreator
-    public static LedgerEntryType forValue(String value) {
-      for (LedgerEntryType type : LedgerEntryType.values()) {
-        if (type.value.equals(value)) {
-          return type;
+        LedgerEntryType(String value) {
+            this.value = value;
         }
-      }
 
-      throw new IllegalArgumentException("No matching LedgerEntryType enum value for String value " + value);
+
+        private static Map<String, LedgerEntryType> CONVERTER = Arrays.stream(LedgerEntryType.values())
+                .collect(Collectors.toMap(it -> it.value, Function.identity()));
+
+        /**
+         * Constructs the {@link LedgerEntryType} corresponding to the given value, or throws an
+         * {@link IllegalArgumentException} if no corresponding {@link LedgerEntryType} exists.
+         *
+         * <p>Mostly used by Jackson for deserialization.
+         *
+         * @param value The {@link String} value of a {@link LedgerEntryType}.
+         * @return A {@link LedgerEntryType}.
+         */
+        @JsonCreator
+        public static LedgerEntryType forValue(String value) {
+            LedgerEntryType ledgerEntryType = forValueIfExists(value);
+            if (ledgerEntryType == null) {
+                throw new IllegalArgumentException("No matching LedgerEntryType enum value for String value " + value);
+            } else {
+                return ledgerEntryType;
+            }
+        }
+
+        public static @Nullable LedgerEntryType forValueIfExists(String value) {
+            return CONVERTER.get(value);
+        }
+
+        /**
+         * Get the underlying value of this {@link LedgerEntryType}.
+         *
+         * @return The {@link String} value associated with this {@link LedgerEntryType}.
+         */
+        @JsonValue
+        public String value() {
+            return value;
+        }
     }
 
     /**
-     * Get the underlying value of this {@link LedgerEntryType}.
+     * A hint indicating which page of the sender's owner directory links to this object, in case the directory
+     * consists of multiple pages.
+     * Note: The object does not contain a direct link to the owner directory containing it,
+     * since that value can be derived from the Account.
      *
-     * @return The {@link String} value associated with this {@link LedgerEntryType}.
+     * @return A {@link String} containing the owner node hint.
      */
-    @JsonValue
-    public String value() {
-      return value;
-    }
-  }
+    @JsonProperty("OwnerNode")
+    Optional<String> ownerNode();
 
-  /**
-   * A hint indicating which page of the sender's owner directory links to this object, in case the directory
-   * consists of multiple pages.
-   * Note: The object does not contain a direct link to the owner directory containing it,
-   * since that value can be derived from the Account.
-   *
-   * @return A {@link String} containing the owner node hint.
-   */
-  @JsonProperty("OwnerNode")
-  Optional<String> ownerNode();
+    /**
+     * The identifying hash of the transaction that most recently modified this object.
+     *
+     * @return A {@link Hash256} containing the previous transaction hash.
+     */
+    @JsonProperty("PreviousTxnID")
+    Optional<Hash256> previousTransactionId();
 
-  /**
-   * The identifying hash of the transaction that most recently modified this object.
-   *
-   * @return A {@link Hash256} containing the previous transaction hash.
-   */
-  @JsonProperty("PreviousTxnID")
-  Optional<Hash256> previousTransactionId();
+    /**
+     * The index of the ledger that contains the transaction that most recently modified this object.
+     *
+     * @return A {@link UnsignedInteger} representing the previous transaction sequence.
+     */
+    @JsonProperty("PreviousTxnLgrSeq")
+    Optional<UnsignedInteger> previousTransactionLedgerSequence();
 
-  /**
-   * The index of the ledger that contains the transaction that most recently modified this object.
-   *
-   * @return A {@link UnsignedInteger} representing the previous transaction sequence.
-   */
-  @JsonProperty("PreviousTxnLgrSeq")
-  Optional<UnsignedInteger> previousTransactionLedgerSequence();
-
-  /**
-   * The unique ID of this {@link LedgerObject} ledger object.
-   *
-   * @return A {@link Hash256}.
-   * @see "https://xrpl.org/ledger-object-ids.html"
-   */
-  Hash256 index();
+    /**
+     * The unique ID of this {@link LedgerObject} ledger object.
+     *
+     * @return A {@link Hash256}.
+     * @see "https://xrpl.org/ledger-object-ids.html"
+     */
+    Hash256 index();
 }

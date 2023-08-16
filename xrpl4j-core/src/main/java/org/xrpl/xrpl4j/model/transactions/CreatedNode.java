@@ -46,20 +46,21 @@ public interface CreatedNode extends AffectedNode {
             if (jsonNode.isObject()) {
                 ObjectNode objectNode = (ObjectNode) jsonNode;
                 JsonNode ledgerEntryTypeNode = objectNode.get("LedgerEntryType");
-                LedgerObject.LedgerEntryType ledgerEntryType = LedgerObject.LedgerEntryType.forValue(ledgerEntryTypeNode.textValue());
+                LedgerObject.LedgerEntryType ledgerEntryType = LedgerObject.LedgerEntryType.forValueIfExists(ledgerEntryTypeNode.textValue());
                 JsonNode ledgerIndex = objectNode.get("LedgerIndex");
 
-                ImmutableCreatedNode.Builder builder = ImmutableCreatedNode.builder();
-                if (ledgerObjectDeserializeCache.canBeDeserialized(ledgerEntryType)) {
-                    ObjectNode newFieldsNode = (ObjectNode) objectNode.required("NewFields");
-                    newFieldsNode.set("index", ledgerIndex);
-                    newFieldsNode.set("LedgerEntryType", ledgerEntryTypeNode);
-                    builder.newFields(Optional.ofNullable(deserializationContext.readTreeAsValue(newFieldsNode, LedgerObject.class)));
+                ImmutableCreatedNode.Builder builder = ImmutableCreatedNode.builder()
+                        .ledgerIndex(Hash256.of(ledgerIndex.textValue()));
+                if (ledgerEntryType != null) {
+                    if (ledgerObjectDeserializeCache.canBeDeserialized(ledgerEntryType)) {
+                        ObjectNode newFieldsNode = (ObjectNode) objectNode.required("NewFields");
+                        newFieldsNode.set("index", ledgerIndex);
+                        newFieldsNode.set("LedgerEntryType", ledgerEntryTypeNode);
+                        builder.newFields(Optional.ofNullable(deserializationContext.readTreeAsValue(newFieldsNode, LedgerObject.class)));
+                    }
+                    builder.ledgerEntryType(ledgerEntryType);
                 }
-                return builder
-                        .ledgerIndex(Hash256.of(ledgerIndex.textValue()))
-                        .ledgerEntryType(ledgerEntryType)
-                        .build();
+                return builder.build();
             } else {
                 return null;
             }
