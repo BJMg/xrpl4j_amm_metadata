@@ -68,6 +68,7 @@ public interface NfTokenOfferObject extends LedgerObject {
      * @return The {@link XrpCurrencyAmount}.
      */
     @JsonProperty("Amount")
+    @Value.Default
     default XrpCurrencyAmount amount() {
         return XrpCurrencyAmount.of(BigInteger.ZERO);
     }
