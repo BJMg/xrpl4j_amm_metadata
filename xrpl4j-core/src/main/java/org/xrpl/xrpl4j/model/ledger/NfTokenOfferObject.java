@@ -9,9 +9,9 @@ package org.xrpl.xrpl4j.model.ledger;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,6 +30,7 @@ import org.xrpl.xrpl4j.model.transactions.Address;
 import org.xrpl.xrpl4j.model.transactions.NfTokenId;
 import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
 
+import java.math.BigInteger;
 import java.util.Optional;
 
 /**
@@ -41,84 +42,86 @@ import java.util.Optional;
 @JsonDeserialize(as = ImmutableNfTokenOfferObject.class)
 public interface NfTokenOfferObject extends LedgerObject {
 
-  /**
-   * Construct a builder for this class.
-   *
-   * @return An {@link ImmutableNfTokenOfferObject.Builder}.
-   */
-  static ImmutableNfTokenOfferObject.Builder builder() {
-    return ImmutableNfTokenOfferObject.builder();
-  }
+    /**
+     * Construct a builder for this class.
+     *
+     * @return An {@link ImmutableNfTokenOfferObject.Builder}.
+     */
+    static ImmutableNfTokenOfferObject.Builder builder() {
+        return ImmutableNfTokenOfferObject.builder();
+    }
 
-  /**
-   * The type of ledger object. In this case, this is always "NfTokenOffer".
-   *
-   * @return Always {@link LedgerObject.LedgerEntryType#NFTOKEN_OFFER}.
-   */
-  @JsonProperty("LedgerEntryType")
-  @Value.Derived
-  default LedgerEntryType ledgerEntryType() {
-    return LedgerEntryType.NFTOKEN_OFFER;
-  }
+    /**
+     * The type of ledger object. In this case, this is always "NfTokenOffer".
+     *
+     * @return Always {@link LedgerObject.LedgerEntryType#NFTOKEN_OFFER}.
+     */
+    @JsonProperty("LedgerEntryType")
+    @Value.Derived
+    default LedgerEntryType ledgerEntryType() {
+        return LedgerEntryType.NFTOKEN_OFFER;
+    }
 
-  /**
-   * The amount of XRP, in drops, expected or offered for the token.
-   *
-   * @return The {@link XrpCurrencyAmount}.
-   */
-  @JsonProperty("Amount")
-  XrpCurrencyAmount amount();
+    /**
+     * The amount of XRP, in drops, expected or offered for the token.
+     *
+     * @return The {@link XrpCurrencyAmount}.
+     */
+    @JsonProperty("Amount")
+    default XrpCurrencyAmount amount() {
+        return XrpCurrencyAmount.of(BigInteger.ZERO);
+    }
 
-  /**
-   * {@link Address} of the source account that created and owns the offer.
-   *
-   * @return The {@link Address} of the NfTokenOffer owner.
-   */
-  @JsonProperty("Owner")
-  Address owner();
+    /**
+     * {@link Address} of the source account that created and owns the offer.
+     *
+     * @return The {@link Address} of the NfTokenOffer owner.
+     */
+    @JsonProperty("Owner")
+    Address owner();
 
-  /**
-   * The TokenId of the NfToken for which the offer has been created.
-   *
-   * @return {@link org.xrpl.xrpl4j.model.transactions.NfTokenId} of the NfToken.
-   */
-  @JsonProperty("NFTokenID")
-  NfTokenId nfTokenId();
+    /**
+     * The TokenId of the NfToken for which the offer has been created.
+     *
+     * @return {@link org.xrpl.xrpl4j.model.transactions.NfTokenId} of the NfToken.
+     */
+    @JsonProperty("NFTokenID")
+    NfTokenId nfTokenId();
 
-  /**
-   * A time after which this offer is considered unfunded, as the number of seconds since
-   * the Ripple Epoch.
-   *
-   * @return The offer's expiration.
-   */
-  Optional<UnsignedInteger> expiration();
+    /**
+     * A time after which this offer is considered unfunded, as the number of seconds since
+     * the Ripple Epoch.
+     *
+     * @return The offer's expiration.
+     */
+    Optional<UnsignedInteger> expiration();
 
-  /**
-   * The intended recipient of the {@link org.xrpl.xrpl4j.model.client.accounts.NfTokenObject}.
-   * This address will receive the NFToken when the offer is accepted.
-   *
-   * @return The {@link Address} of the destination.
-   */
-  @JsonProperty("Destination")
-  Optional<Address> destination();
+    /**
+     * The intended recipient of the {@link org.xrpl.xrpl4j.model.client.accounts.NfTokenObject}.
+     * This address will receive the NFToken when the offer is accepted.
+     *
+     * @return The {@link Address} of the destination.
+     */
+    @JsonProperty("Destination")
+    Optional<Address> destination();
 
-  /**
-   * A hint indicating which page of the token buy or sell offer directory links to this object.
-   *
-   * @return A {@link String} containing the hint.
-   */
-  @JsonProperty("NFTokenOfferNode")
-  Optional<String> offerNode();
+    /**
+     * A hint indicating which page of the token buy or sell offer directory links to this object.
+     *
+     * @return A {@link String} containing the hint.
+     */
+    @JsonProperty("NFTokenOfferNode")
+    Optional<String> offerNode();
 
-  /**
-   * A set of boolean {@link NfTokenOfferFlags} containing options
-   * enabled for this object.
-   *
-   * @return The {@link NfTokenOfferFlags} for this object.
-   */
-  @JsonProperty("Flags")
-  @Value.Default
-  default NfTokenOfferFlags flags() {
-    return NfTokenOfferFlags.UNSET;
-  }
+    /**
+     * A set of boolean {@link NfTokenOfferFlags} containing options
+     * enabled for this object.
+     *
+     * @return The {@link NfTokenOfferFlags} for this object.
+     */
+    @JsonProperty("Flags")
+    @Value.Default
+    default NfTokenOfferFlags flags() {
+        return NfTokenOfferFlags.UNSET;
+    }
 }
