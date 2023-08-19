@@ -28,10 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.xrpl.xrpl4j.model.AbstractJsonTest;
 import org.xrpl.xrpl4j.model.flags.NfTokenOfferFlags;
 import org.xrpl.xrpl4j.model.ledger.NfTokenOfferObject;
-import org.xrpl.xrpl4j.model.transactions.Address;
-import org.xrpl.xrpl4j.model.transactions.Hash256;
-import org.xrpl.xrpl4j.model.transactions.NfTokenId;
-import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
+import org.xrpl.xrpl4j.model.transactions.*;
 
 public class NfTokenOfferObjectJsonTests  extends AbstractJsonTest {
 
@@ -39,7 +36,7 @@ public class NfTokenOfferObjectJsonTests  extends AbstractJsonTest {
   public void testJson() throws JsonProcessingException, JSONException {
 
     NfTokenOfferObject object = NfTokenOfferObject.builder()
-      .amount(XrpCurrencyAmount.ofDrops(10000))
+      .amount((CurrencyAmount) XrpCurrencyAmount.ofDrops(10000))
       .destination(Address.of("rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn"))
       .owner(Address.of("rsA2LpzuawewSBQXkiju3YQTMzW13pAAdW"))
       .previousTransactionId(Hash256.of("E3FE6EA3D48F0C2B639448020EA4F03D4F4F8FFDB243A852A0F59177921B4879"))

@@ -27,6 +27,7 @@ import com.google.common.primitives.UnsignedInteger;
 import org.immutables.value.Value;
 import org.xrpl.xrpl4j.model.flags.NfTokenOfferFlags;
 import org.xrpl.xrpl4j.model.transactions.Address;
+import org.xrpl.xrpl4j.model.transactions.CurrencyAmount;
 import org.xrpl.xrpl4j.model.transactions.NfTokenId;
 import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
 
@@ -69,7 +70,7 @@ public interface NfTokenOfferObject extends LedgerObject {
      */
     @JsonProperty("Amount")
     @Value.Default
-    default XrpCurrencyAmount amount() {
+    default CurrencyAmount amount() {
         return XrpCurrencyAmount.of(BigInteger.ZERO);
     }
 
