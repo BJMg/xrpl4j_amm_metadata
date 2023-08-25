@@ -56,6 +56,10 @@ public interface DeletedNode extends AffectedNode {
                         ObjectNode finalFieldsNode = (ObjectNode) objectNode.required("FinalFields");
                         finalFieldsNode.set("index", ledgerIndex);
                         finalFieldsNode.set("LedgerEntryType", ledgerEntryTypeNode);
+                        JsonNode previousFieldsNode = objectNode.get("PreviousFields");
+                        if (previousFieldsNode != null && previousFieldsNode.isObject()) {
+                            finalFieldsNode.setAll((ObjectNode) previousFieldsNode);
+                        }
                         builder.finalFields(Optional.ofNullable(deserializationContext.readTreeAsValue(finalFieldsNode, LedgerObject.class)));
                     }
                     builder.ledgerEntryType(ledgerEntryType);
