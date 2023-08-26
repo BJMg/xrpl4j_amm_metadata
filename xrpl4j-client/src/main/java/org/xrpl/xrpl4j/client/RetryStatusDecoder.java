@@ -58,8 +58,6 @@ public class RetryStatusDecoder implements ErrorDecoder {
   public Exception decode(String methodKey, Response response) {
     Exception exception = defaultErrorDecoder.decode(methodKey, response);
     if (retryableStatuses.contains(response.status())) {
-      JsonRpcClient.logger.error(String.format("##### Got %s response from %s #######", response.status(),
-        methodKey));
       return new RetryableException(
         response.status(),
         exception.getMessage(),
