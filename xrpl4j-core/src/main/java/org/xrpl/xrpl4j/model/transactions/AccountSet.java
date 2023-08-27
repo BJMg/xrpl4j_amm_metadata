@@ -193,6 +193,8 @@ public interface AccountSet extends Transaction {
    */
   enum AccountSetFlag {
 
+    NONE(0),
+
     /**
      * Require a destination tag to send transactions to this account.
      */
