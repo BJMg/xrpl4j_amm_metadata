@@ -193,6 +193,8 @@ public interface AccountSet extends Transaction {
    */
   enum AccountSetFlag {
 
+    UNKNOWN(-1),
+
     NONE(0),
 
     /**
@@ -270,7 +272,7 @@ public interface AccountSet extends Transaction {
         }
       }
 
-      throw new IllegalArgumentException("No matching AccountSetFlag enum value for int value " + value);
+      return AccountSetFlag.UNKNOWN;
     }
 
     /**
