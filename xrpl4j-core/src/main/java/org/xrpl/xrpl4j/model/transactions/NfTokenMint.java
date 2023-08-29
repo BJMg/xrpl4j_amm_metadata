@@ -23,7 +23,6 @@ package org.xrpl.xrpl4j.model.transactions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.google.common.base.Preconditions;
 import com.google.common.primitives.UnsignedLong;
 import org.immutables.value.Value;
 import org.xrpl.xrpl4j.model.flags.NfTokenMintFlags;
@@ -106,16 +105,5 @@ public interface NfTokenMint extends Transaction {
   @Value.Default
   default NfTokenMintFlags flags() {
     return NfTokenMintFlags.builder().build();
-  }
-
-  /**
-   * For secondary sale/brokered mode, tfTransferable flag must be set.
-   */
-  @Value.Check
-  default void checkIfFlagIsSet() {
-    if (transferFee().isPresent()) {
-      Preconditions.checkArgument(flags().tfTransferable(),
-        "tfTransferable flag must be set for secondary sale.");
-    }
   }
 }

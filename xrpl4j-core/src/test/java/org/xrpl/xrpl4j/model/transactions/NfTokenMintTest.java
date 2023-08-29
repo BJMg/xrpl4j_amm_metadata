@@ -20,9 +20,6 @@ package org.xrpl.xrpl4j.model.transactions;
  * =========================LICENSE_END==================================
  */
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import com.google.common.io.BaseEncoding;
 import com.google.common.primitives.UnsignedInteger;
 import com.google.common.primitives.UnsignedLong;
@@ -32,6 +29,9 @@ import org.xrpl.xrpl4j.model.flags.NfTokenMintFlags;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class NfTokenMintTest {
 
@@ -75,20 +75,6 @@ public class NfTokenMintTest {
       .build();
 
     assertThat(nfTokenMint.transferFee()).isEqualTo(Optional.of(transferFee));
-  }
-
-  @Test
-  public void transferFeeWithoutFlagSet() {
-    assertThrows(
-      IllegalArgumentException.class,
-      () -> NfTokenMint.builder()
-        .fee(XrpCurrencyAmount.ofDrops(1))
-        .account(Address.of("rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59Ba"))
-        .tokenTaxon(UnsignedLong.valueOf(146999694L))
-        .transferFee(TransferFee.of(UnsignedInteger.valueOf(1000)))
-        .build(),
-      "tfTransferable flag must be set for secondary sale."
-    );
   }
 
   @Test
