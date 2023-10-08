@@ -30,8 +30,8 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.ripple.cryptoconditions.jackson.CryptoConditionsModule;
 import com.ripple.cryptoconditions.jackson.Encoding;
+import org.xrpl.xrpl4j.model.jackson.modules.CryptoConditionsModule;
 import org.xrpl.xrpl4j.model.jackson.modules.Xrpl4jModule;
 
 /**
