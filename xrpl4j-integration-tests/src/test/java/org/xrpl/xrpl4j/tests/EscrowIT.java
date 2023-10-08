@@ -42,6 +42,7 @@ import org.xrpl.xrpl4j.model.transactions.EscrowCreate;
 import org.xrpl.xrpl4j.model.transactions.EscrowFinish;
 import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
 
+import java.math.BigInteger;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -245,7 +246,7 @@ public class EscrowIT extends AbstractIT {
       () -> this.getValidatedAccountInfo(senderKeyPair.publicKey().deriveAddress()),
       infoResult -> infoResult.accountData().balance().equals(
         senderAccountInfo.accountData().balance()
-          .minus(feeResult.drops().openLedgerFee().times(XrpCurrencyAmount.of(UnsignedLong.valueOf(2))))
+          .minus(feeResult.drops().openLedgerFee().times(XrpCurrencyAmount.of(BigInteger.valueOf(2))))
       )
     );
   }
@@ -449,7 +450,7 @@ public class EscrowIT extends AbstractIT {
       () -> this.getValidatedAccountInfo(senderKeyPair.publicKey().deriveAddress()),
       infoResult -> infoResult.accountData().balance().equals(
         senderAccountInfo.accountData().balance()
-          .minus(feeResult.drops().openLedgerFee().times(XrpCurrencyAmount.of(UnsignedLong.valueOf(2))))
+          .minus(feeResult.drops().openLedgerFee().times(XrpCurrencyAmount.of(BigInteger.valueOf(2))))
       )
     );
 
