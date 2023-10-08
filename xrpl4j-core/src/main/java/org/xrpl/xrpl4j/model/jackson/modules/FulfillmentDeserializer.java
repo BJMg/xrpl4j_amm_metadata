@@ -76,7 +76,7 @@ public class FulfillmentDeserializer extends StdScalarDeserializer<Fulfillment> 
           throw new RuntimeException("Unhandled Fulfillment Encoding!");
         }
       }
-    } catch (DerEncodingException e) {
+    } catch (Exception e) {
       return null;
     }
   }

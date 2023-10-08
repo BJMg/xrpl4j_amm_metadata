@@ -76,7 +76,7 @@ public class ConditionDeserializer extends StdScalarDeserializer<Condition> {
           throw new RuntimeException("Unhandled Condition Encoding!");
         }
       }
-    } catch (DerEncodingException e) {
+    } catch (Exception e) {
       return null;
     }
   }
