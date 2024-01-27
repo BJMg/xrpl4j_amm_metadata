@@ -58,6 +58,9 @@ public interface CreatedNode extends AffectedNode {
                         newFieldsNode.set("LedgerEntryType", ledgerEntryTypeNode);
                         builder.newFields(Optional.ofNullable(deserializationContext.readTreeAsValue(newFieldsNode, LedgerObject.class)));
                     }
+                    if (objectNode.has("FinalFields") || objectNode.has("PreviousFields")) {
+                        throw new IllegalArgumentException("Unexpected field in objectNode " + ledgerIndex);
+                    }
                     builder.ledgerEntryType(ledgerEntryType);
                 }
                 return builder.build();

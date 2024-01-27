@@ -31,6 +31,9 @@ public interface DeletedNode extends AffectedNode {
     @JsonProperty("FinalFields")
     Optional<LedgerObject> finalFields();
 
+    @JsonProperty("PreviousFields")
+    Optional<LedgerObject> previousFields();
+
 
     class Deserializer extends StdDeserializer<ImmutableDeletedNode> {
 
@@ -58,9 +61,16 @@ public interface DeletedNode extends AffectedNode {
                         finalFieldsNode.set("LedgerEntryType", ledgerEntryTypeNode);
                         JsonNode previousFieldsNode = objectNode.get("PreviousFields");
                         if (previousFieldsNode != null && previousFieldsNode.isObject()) {
-                            finalFieldsNode.setAll((ObjectNode) previousFieldsNode);
+                            ObjectNode previousFieldsObjectNode = (ObjectNode) previousFieldsNode;
+
+                            finalFieldsNode = previousFieldsObjectNode.deepCopy().setAll(finalFieldsNode);
                         }
-                        builder.finalFields(Optional.ofNullable(deserializationContext.readTreeAsValue(finalFieldsNode, LedgerObject.class)));
+                        builder.finalFields(Optional.of(deserializationContext.readTreeAsValue(finalFieldsNode, LedgerObject.class)));
+                        if (previousFieldsNode != null && previousFieldsNode.isObject()) {
+                            finalFieldsNode.setAll((ObjectNode) previousFieldsNode);
+                            builder.previousFields(Optional.of(deserializationContext.readTreeAsValue(finalFieldsNode, LedgerObject.class)));
+                        }
+                        
                     }
                     builder.ledgerEntryType(ledgerEntryType);
                 }
