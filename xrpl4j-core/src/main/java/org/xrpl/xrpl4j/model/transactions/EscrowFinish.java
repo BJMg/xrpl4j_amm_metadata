@@ -137,8 +137,6 @@ public interface EscrowFinish extends Transaction {
           "If a fulfillment is specified, the fee must be set to 330 or greater.");
       }
     );
-    condition().ifPresent($ -> Preconditions.checkState(fulfillment().isPresent(),
-      "If a condition is specified, the corresponding fulfillment must also be specified."));
   }
 
 }
