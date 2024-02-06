@@ -249,9 +249,9 @@ public interface AccountSet extends Transaction {
      */
     AUTHORIZED_MINTER(10);
 
-    int value;
+    long value;
 
-    AccountSetFlag(int value) {
+    AccountSetFlag(long value) {
       this.value = value;
     }
 
@@ -265,7 +265,7 @@ public interface AccountSet extends Transaction {
      * @see "https://github.com/FasterXML/jackson-databind/issues/1850"
      */
     @JsonCreator
-    public static AccountSetFlag forValue(int value) {
+    public static AccountSetFlag forValue(long value) {
       for (AccountSetFlag flag : AccountSetFlag.values()) {
         if (flag.value == value) {
           return flag;
@@ -281,7 +281,7 @@ public interface AccountSet extends Transaction {
      * @return The underlying {@code int} value of this {@link AccountSetFlag}.
      */
     @JsonValue
-    public int getValue() {
+    public long getValue() {
       return value;
     }
   }
