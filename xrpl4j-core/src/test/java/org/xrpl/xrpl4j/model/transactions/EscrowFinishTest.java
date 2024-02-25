@@ -55,24 +55,6 @@ public class EscrowFinishTest {
   }
 
   @Test
-  public void testNormalizeWithFulfillmentNoCondition() {
-    Fulfillment fulfillment = PreimageSha256Fulfillment.from("ssh".getBytes());
-
-    assertThrows(
-      IllegalStateException.class,
-      () -> EscrowFinish.builder()
-        .fee(XrpCurrencyAmount.ofDrops(1))
-        .account(Address.of("rN7n7otQDd6FczFgLdSqtcsAUxDkw6fzRH"))
-        .sequence(UnsignedInteger.ONE)
-        .owner(Address.of("rN7n7otQDd6FczFgLdSqtcsAUxDkw6fzRH"))
-        .offerSequence(UnsignedInteger.ZERO)
-        .fulfillment(fulfillment)
-        .build(),
-      "If a fulfillment is specified, the corresponding condition must also be specified."
-    );
-  }
-
-  @Test
   public void testNormalizeWithFulfillmentAndConditionButFeeLow() {
     // We expect the
 

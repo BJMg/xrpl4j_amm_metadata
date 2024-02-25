@@ -131,8 +131,6 @@ public interface EscrowFinish extends Transaction {
   default void check() {
     fulfillment().ifPresent(f -> {
       BigInteger feeInDrops = fee().value();
-        Preconditions.checkState(condition().isPresent(),
-          "If a fulfillment is specified, the corresponding condition must also be specified.");
         Preconditions.checkState(FluentCompareTo.is(feeInDrops).greaterThanEqualTo(BigInteger.valueOf(330)),
           "If a fulfillment is specified, the fee must be set to 330 or greater.");
       }
