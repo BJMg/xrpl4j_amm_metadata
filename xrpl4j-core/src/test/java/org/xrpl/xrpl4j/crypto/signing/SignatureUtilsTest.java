@@ -35,6 +35,7 @@ import org.xrpl.xrpl4j.codec.addresses.UnsignedByteArray;
 import org.xrpl.xrpl4j.codec.binary.XrplBinaryCodec;
 import org.xrpl.xrpl4j.crypto.keys.PublicKey;
 import org.xrpl.xrpl4j.model.client.channels.UnsignedClaim;
+import org.xrpl.xrpl4j.model.flags.AmmDepositFlags;
 import org.xrpl.xrpl4j.model.flags.AmmWithdrawFlags;
 import org.xrpl.xrpl4j.model.ledger.Asset;
 import org.xrpl.xrpl4j.model.ledger.AuthAccount;
@@ -593,6 +594,7 @@ public class SignatureUtilsTest {
     AmmDeposit deposit = AmmDeposit.builder()
       .account(sourcePublicKey.deriveAddress())
       .fee(XrpCurrencyAmount.ofDrops(10))
+      .flags(AmmDepositFlags.TWO_ASSET)
       .asset(Asset.XRP)
       .asset2(
         Asset.builder()
@@ -1019,6 +1021,7 @@ public class SignatureUtilsTest {
     AmmDeposit deposit = AmmDeposit.builder()
       .account(sourcePublicKey.deriveAddress())
       .fee(XrpCurrencyAmount.ofDrops(10))
+      .flags(AmmDepositFlags.TWO_ASSET)
       .asset(Asset.XRP)
       .asset2(
         Asset.builder()

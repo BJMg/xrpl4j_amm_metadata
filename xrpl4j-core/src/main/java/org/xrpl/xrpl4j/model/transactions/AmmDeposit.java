@@ -27,34 +27,14 @@ public interface AmmDeposit extends Transaction {
     return ImmutableAmmDeposit.builder();
   }
 
+
   /**
-   * A {@link AmmDepositFlags} for this transaction. This flag will always be derived from the presence
-   * of {@link #lpTokenOut()}, {@link #amount()}, {@link #amount2()} and {@link #effectivePrice()}.
+   * A {@link AmmDepositFlags} for this transaction. This field must be set manually.
    *
    * @return A {@link AmmDepositFlags} for this transaction.
    */
   @JsonProperty("Flags")
-  @Value.Derived
-  default AmmDepositFlags flags() {
-    boolean lpTokenPresent = lpTokenOut().isPresent();
-    boolean amountPresent = amount().isPresent();
-    boolean amount2Present = amount2().isPresent();
-    boolean effectivePricePresent = effectivePrice().isPresent();
-
-    if (lpTokenPresent && !amountPresent && !amount2Present && !effectivePricePresent) {
-      return AmmDepositFlags.LP_TOKEN;
-    } else if (!lpTokenPresent && amountPresent && amount2Present &&  !effectivePricePresent) {
-      return AmmDepositFlags.TWO_ASSET;
-    } else if (!lpTokenPresent && amountPresent && !amount2Present && !effectivePricePresent) {
-      return AmmDepositFlags.SINGLE_ASSET;
-    } else if (lpTokenPresent && amountPresent && !amount2Present && !effectivePricePresent) {
-      return AmmDepositFlags.ONE_ASSET_LP_TOKEN;
-    } else if (!lpTokenPresent && amountPresent && !amount2Present) {
-      return AmmDepositFlags.LIMIT_LP_TOKEN;
-    } else {
-      throw new IllegalStateException("Correct AmmDepositFlag could not be determined based on set fields.");
-    }
-  }
+  AmmDepositFlags flags();
 
   /**
    * The definition for one of the assets in the AMM's pool.
@@ -105,5 +85,13 @@ public interface AmmDeposit extends Transaction {
    */
   @JsonProperty("LPTokenOut")
   Optional<IssuedCurrencyAmount> lpTokenOut();
+  /**
+   * An optional {@link TradingFee} to set on the AMM instance. This field is only honored if the AMM's LP token balance
+   * is zero, and can only be set if flags is {@link AmmDepositFlags#TWO_ASSET_IF_EMPTY}.
+   *
+   * @return An {@link Optional} {@link TradingFee}.
+   */
+  @JsonProperty("TradingFee")
+  Optional<TradingFee> tradingFee();
 
 }
