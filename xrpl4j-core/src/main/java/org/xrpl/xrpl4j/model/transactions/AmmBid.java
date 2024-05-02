@@ -63,19 +63,19 @@ public interface AmmBid extends Transaction {
    * Pay at least this amount for the slot. Setting this value higher makes it harder for others to outbid you. If
    * omitted, pay the minimum necessary to win the bid.
    *
-   * @return An optionally present {@link IssuedCurrencyAmount}.
+   * @return An optionally present {@link CurrencyAmount}.
    */
   @JsonProperty("BidMin")
-  Optional<IssuedCurrencyAmount> bidMin();
+  Optional<CurrencyAmount> bidMin();
 
   /**
    * Pay at most this amount for the slot. If the cost to win the bid is higher than this amount, the transaction fails.
    * If omitted, pay as much as necessary to win the bid.
    *
-   * @return An optionally present {@link IssuedCurrencyAmount}.
+   * @return An optionally present {@link CurrencyAmount}.
    */
   @JsonProperty("BidMax")
-  Optional<IssuedCurrencyAmount> bidMax();
+  Optional<CurrencyAmount> bidMax();
 
   /**
    * A list of up to 4 additional accounts that you allow to trade at the discounted fee. This cannot include the
