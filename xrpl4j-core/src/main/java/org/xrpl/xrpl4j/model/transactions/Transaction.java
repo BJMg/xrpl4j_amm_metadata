@@ -35,7 +35,6 @@ import java.util.Optional;
 /**
  * Provides an abstract interface for all concrete XRPL transactions.
  */
-@Value.Immutable
 public interface Transaction {
 
     /**
@@ -78,7 +77,7 @@ public interface Transaction {
                     .put(ImmutableAmmVote.class, TransactionType.AMM_VOTE)
                     .put(ImmutableAmmWithdraw.class, TransactionType.AMM_WITHDRAW)
                     .put(ImmutableClawback.class, TransactionType.CLAWBACK)
-                    .put(ImmutableTransaction.class, TransactionType.UNKNOWN)
+                    .put(ImmutableUnknown.class, TransactionType.UNKNOWN)
                     .build();
 
     /**
