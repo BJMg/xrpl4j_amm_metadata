@@ -52,8 +52,7 @@ public class TransactionTypeTests {
   @ParameterizedTest
   @ArgumentsSource(value = TransactionTypeInvalidArgumentProvider.class)
   public void shouldThrowIllegalArgumentExceptionForInvalidValues(String value) {
-    assertThrows(IllegalArgumentException.class, () -> TransactionType.forValue(value),
-      "No matching TransactionType enum value for String value " + value);
+    assertThat(TransactionType.forValue(value)).isEqualTo(TransactionType.UNKNOWN);
   }
 
   public static class TransactionTypeValidArgumentProvider implements ArgumentsProvider {

@@ -187,7 +187,8 @@ public enum TransactionType {
    */
   AMM_WITHDRAW("AMMWithdraw"),
   
-  CLAWBACK("Clawback");
+  CLAWBACK("Clawback"),
+  UNKNOWN("Unknown");
 
   private final String value;
 
@@ -209,7 +210,7 @@ public enum TransactionType {
       }
     }
 
-    throw new IllegalArgumentException("No matching TransactionType enum value for String value " + value);
+    return TransactionType.UNKNOWN;
   }
 
   /**
