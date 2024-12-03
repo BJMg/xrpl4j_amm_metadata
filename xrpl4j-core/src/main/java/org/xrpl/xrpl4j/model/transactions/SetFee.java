@@ -9,9 +9,9 @@ package org.xrpl.xrpl4j.model.transactions;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,55 +40,68 @@ import java.util.Optional;
 @JsonDeserialize(as = ImmutableSetFee.class)
 public interface SetFee extends Transaction {
 
-  /**
-   * Construct a builder for this class.
-   *
-   * @return An {@link ImmutableSetFee.Builder}.
-   */
-  static ImmutableSetFee.Builder builder() {
-    return ImmutableSetFee.builder();
-  }
+    /**
+     * Construct a builder for this class.
+     *
+     * @return An {@link ImmutableSetFee.Builder}.
+     */
+    static ImmutableSetFee.Builder builder() {
+        return ImmutableSetFee.builder();
+    }
 
-  /**
-   * The charge, in drops of XRP, for the reference transaction, as hex. (This is the transaction cost before scaling
-   * for load.)
-   *
-   * @return A hex {@link String} basefee value.
-   */
-  @JsonProperty("BaseFee")
-  String baseFee();
+    /**
+     * The charge, in drops of XRP, for the reference transaction, as hex. (This is the transaction cost before scaling
+     * for load.)
+     *
+     * @return A hex {@link String} basefee value.
+     */
+    @JsonProperty("BaseFee")
+    @Value.Default
+    default String baseFee() {
+        return "0000000000000000";
+    }
 
-  /**
-   * The cost, in fee units, of the reference transaction.
-   *
-   * @return An {@link UnsignedInteger} cost of ref transaction.
-   */
-  @JsonProperty("ReferenceFeeUnits")
-  UnsignedInteger referenceFeeUnits();
+    /**
+     * The cost, in fee units, of the reference transaction.
+     *
+     * @return An {@link UnsignedInteger} cost of ref transaction.
+     */
+    @JsonProperty("ReferenceFeeUnits")
+    @Value.Default
+    default UnsignedInteger referenceFeeUnits() {
+        return UnsignedInteger.ZERO;
+    }
 
-  /**
-   * The base reserve, in drops.
-   *
-   * @return An {@link UnsignedInteger} base reverse value in {@link org.xrpl.xrpl4j.model.client.fees.FeeDrops}.
-   */
-  @JsonProperty("ReserveBase")
-  UnsignedInteger reserveBase();
+    /**
+     * The base reserve, in drops.
+     *
+     * @return An {@link UnsignedInteger} base reverse value in {@link org.xrpl.xrpl4j.model.client.fees.FeeDrops}.
+     */
+    @JsonProperty("ReserveBase")
+    @Value.Default
+    default UnsignedInteger reserveBase() {
+        return UnsignedInteger.ZERO;
+    }
 
-  /**
-   * The incremental reserve, in drops.
-   *
-   * @return An {@link UnsignedInteger} incremental reserve in {@link org.xrpl.xrpl4j.model.client.fees.FeeDrops}.
-   */
-  @JsonProperty("ReserveIncrement")
-  UnsignedInteger reserveIncrement();
+    /**
+     * The incremental reserve, in drops.
+     *
+     * @return An {@link UnsignedInteger} incremental reserve in {@link org.xrpl.xrpl4j.model.client.fees.FeeDrops}.
+     */
+    @JsonProperty("ReserveIncrement")
+    @Value.Default
+    default UnsignedInteger reserveIncrement() {
+        return UnsignedInteger.ZERO;
+    }
 
-  /**
-   * The index of the ledger version where this pseudo-transaction appears. This distinguishes the pseudo-transaction
-   * from other occurrences of the same change. Omitted for some historical SetFee pseudo-transactions hence making it
-   * optional.
-   *
-   * @return A {@link LedgerIndex} to indicates where the tx appears.
-   */
-  @JsonProperty("LedgerSequence")
-  Optional<LedgerIndex> ledgerSequence();
+
+    /**
+     * The index of the ledger version where this pseudo-transaction appears. This distinguishes the pseudo-transaction
+     * from other occurrences of the same change. Omitted for some historical SetFee pseudo-transactions hence making it
+     * optional.
+     *
+     * @return A {@link LedgerIndex} to indicates where the tx appears.
+     */
+    @JsonProperty("LedgerSequence")
+    Optional<LedgerIndex> ledgerSequence();
 }
