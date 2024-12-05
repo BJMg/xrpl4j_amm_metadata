@@ -559,11 +559,6 @@
         <artifactId>maven-source-plugin</artifactId>
       </plugin>
 
-      <!-- org.apache.maven.plugins:maven-javadoc-plugin -->
-      <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-      </plugin>
-
       <!-- org.apache.maven.plugins:maven-checkstyle-plugin -->
       <plugin>
         <artifactId>maven-checkstyle-plugin</artifactId>
