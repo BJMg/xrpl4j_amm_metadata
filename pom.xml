@@ -382,28 +382,6 @@
           </executions>
         </plugin>
 
-        <!-- org.apache.maven.plugins:maven-javadoc-plugin -->
-        <plugin>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.3.1</version>
-          <configuration>
-            <excludes>
-              <exclude>**/generated-sources/**/*.java,**/generated-test-sources/**/*.java</exclude>
-            </excludes>
-            <failOnWarnings>false</failOnWarnings>
-            <failOnError>true</failOnError>
-            <source>8</source>
-          </configuration>
-          <executions>
-            <execution>
-              <id>attach-javadocs</id>
-              <goals>
-                <goal>jar</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-
         <!-- org.apache.maven.plugins:maven-checkstyle-plugin -->
         <plugin>
           <artifactId>maven-checkstyle-plugin</artifactId>
@@ -660,16 +638,6 @@
             </reports>
           </reportSet>
         </reportSets>
-      </plugin>
-
-      <!-- org.apache.maven.plugins:maven-javadoc-plugin -->
-      <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>**/generated-sources/**/*,**/generated-test-sources/**/*</exclude>
-          </excludes>
-        </configuration>
       </plugin>
 
     </plugins>
