@@ -314,12 +314,12 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>versions-maven-plugin</artifactId>
-          <version>2.17.1</version>
+          <version>2.14.2</version>
         </plugin>
 
         <plugin>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>3.7.1</version>
+          <version>3.5.0</version>
           <executions>
             <execution>
               <id>analyze</id>
@@ -346,7 +346,7 @@
         <!-- org.apache.maven.plugins:maven-compiler-plugin -->
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.13.0</version>
+          <version>3.10.1</version>
           <configuration>
             <source>${maven.compiler.source}</source>
             <target>${maven.compiler.target}</target>
@@ -356,7 +356,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>3.3.1</version>
+          <version>2.22.2</version>
           <executions>
             <execution>
               <id>integration-tests</id>
@@ -371,7 +371,7 @@
         <!-- org.apache.maven.plugins:maven-source-plugin -->
         <plugin>
           <artifactId>maven-source-plugin</artifactId>
-          <version>3.3.1</version>
+          <version>3.1.0</version>
           <executions>
             <execution>
               <id>attach-sources</id>
@@ -408,7 +408,7 @@
         <plugin>
           <artifactId>maven-checkstyle-plugin</artifactId>
           <!-- Lock down plugin version for build reproducibility -->
-          <version>3.4.0</version>
+          <version>3.2.1</version>
           <inherited>true</inherited>
           <configuration>
             <encoding>UTF-8</encoding>
@@ -445,7 +445,7 @@
         <!-- org.jacoco:jacoc-maven-plugin -->
         <plugin>
           <groupId>org.jacoco</groupId>
-          <version>0.8.2</version>
+          <version>0.8.8</version>
           <artifactId>jacoco-maven-plugin</artifactId>
           <executions>
             <execution>
@@ -488,7 +488,7 @@
         <!-- org.apache.maven.plugins:maven-surefire-plugin -->
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.3.1</version>
+          <version>2.22.2</version>
           <configuration>
             <argLine>${argLine}</argLine>
             <reuseForks>true</reuseForks>
@@ -500,7 +500,7 @@
         <plugin>
           <groupId>org.sonatype.plugins</groupId>
           <artifactId>nexus-staging-maven-plugin</artifactId>
-          <version>1.7.0</version>
+          <version>1.6.13</version>
           <extensions>true</extensions>
           <configuration>
             <serverId>ossrh-snapshots</serverId>
@@ -513,7 +513,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>license-maven-plugin</artifactId>
-          <version>2.4.0</version>
+          <version>2.0.0</version>
           <configuration>
             <!--license to use for the project-->
             <licenseName>apache_v2</licenseName>
@@ -615,7 +615,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>3.1.1</version>
+        <version>2.5.3</version>
         <configuration>
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <useReleaseProfile>false</useReleaseProfile>
@@ -627,7 +627,6 @@
     </plugins>
 
   </build>
-
   <reporting>
     <plugins>
 
