@@ -84,7 +84,7 @@ public interface AmmDeposit extends Transaction {
    * @return An optionally present {@link IssuedCurrencyAmount}.
    */
   @JsonProperty("LPTokenOut")
-  Optional<IssuedCurrencyAmount> lpTokenOut();
+  Optional<CurrencyAmount> lpTokenOut();
   /**
    * An optional {@link TradingFee} to set on the AMM instance. This field is only honored if the AMM's LP token balance
    * is zero, and can only be set if flags is {@link AmmDepositFlags#TWO_ASSET_IF_EMPTY}.
