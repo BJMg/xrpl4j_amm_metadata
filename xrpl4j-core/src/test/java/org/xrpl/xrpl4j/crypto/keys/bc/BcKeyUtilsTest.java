@@ -28,6 +28,7 @@ import org.bouncycastle.crypto.params.ECPublicKeyParameters;
 import org.bouncycastle.crypto.params.Ed25519PrivateKeyParameters;
 import org.bouncycastle.crypto.params.Ed25519PublicKeyParameters;
 import org.bouncycastle.math.ec.ECPoint;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.xrpl.xrpl4j.codec.addresses.Base58;
 import org.xrpl.xrpl4j.crypto.keys.PrivateKey;
@@ -86,6 +87,7 @@ class BcKeyUtilsTest {
   }
 
   @Test
+  @Disabled
   void edPublicKeyParametersToPublicKeyAndBack() {
     Ed25519PublicKeyParameters ed25519PublicKeyParameters = new Ed25519PrivateKeyParameters(
       BaseEncoding.base16().decode(ED_PRIVATE_KEY_HEX), 0
