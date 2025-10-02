@@ -9,9 +9,9 @@ package org.xrpl.xrpl4j.model.jackson.modules;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,12 +21,17 @@ package org.xrpl.xrpl4j.model.jackson.modules;
  */
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xrpl.xrpl4j.model.transactions.Transaction;
 import org.xrpl.xrpl4j.model.transactions.TransactionType;
+import org.xrpl.xrpl4j.model.transactions.Unknown;
 
 import java.io.IOException;
 
@@ -36,19 +41,26 @@ import java.io.IOException;
  */
 public class TransactionDeserializer extends StdDeserializer<Transaction> {
 
-  /**
-   * No-args constructor.
-   */
-  protected TransactionDeserializer() {
-    super(Transaction.class);
-  }
+    private static final Logger log = LoggerFactory.getLogger(TransactionDeserializer.class);
 
-  @Override
-  public Transaction deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
-    ObjectMapper objectMapper = (ObjectMapper) jsonParser.getCodec();
-    ObjectNode objectNode = objectMapper.readTree(jsonParser);
+    /**
+     * No-args constructor.
+     */
+    protected TransactionDeserializer() {
+        super(Transaction.class);
+    }
 
-    TransactionType transactionType = TransactionType.forValue(objectNode.get("TransactionType").asText());
-    return objectMapper.treeToValue(objectNode, Transaction.typeMap.inverse().get(transactionType));
-  }
+    @Override
+    public Transaction deserialize(JsonParser jsonParser, DeserializationContext ctxt) throws IOException {
+        ObjectMapper objectMapper = (ObjectMapper) jsonParser.getCodec();
+        ObjectNode objectNode = objectMapper.readTree(jsonParser);
+
+        try {
+            TransactionType transactionType = TransactionType.forValue(objectNode.get("TransactionType").asText());
+            return objectMapper.treeToValue(objectNode, Transaction.typeMap.inverse().get(transactionType));
+        } catch (Exception e) {
+            log.error("Cannot deserialize transaction. Deserializing to Unknown.", e);
+            return objectMapper.treeToValue(objectNode, Unknown.class);
+        }
+    }
 }
