@@ -9,9 +9,9 @@ package org.xrpl.xrpl4j.model.transactions;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.primitives.UnsignedInteger;
+import org.immutables.value.Value;
 import org.immutables.value.Value.Immutable;
 
 import java.util.List;
@@ -41,48 +42,51 @@ import java.util.Optional;
 @JsonDeserialize(as = ImmutableTransactionMetadata.class)
 public interface TransactionMetadata {
 
-  /**
-   * Construct a builder for this class.
-   *
-   * @return An {@link ImmutableTransactionMetadata.Builder}.
-   */
-  static ImmutableTransactionMetadata.Builder builder() {
-    return ImmutableTransactionMetadata.builder();
-  }
+    /**
+     * Construct a builder for this class.
+     *
+     * @return An {@link ImmutableTransactionMetadata.Builder}.
+     */
+    static ImmutableTransactionMetadata.Builder builder() {
+        return ImmutableTransactionMetadata.builder();
+    }
 
-  /**
-   * The transaction's position within the ledger that included it. This is zero-indexed.
-   * For example, the value 2 means it was the 3rd transaction in that ledger.
-   *
-   * @return index of transaction within ledger.
-   */
-  @JsonProperty("TransactionIndex")
-  UnsignedInteger transactionIndex();
+    /**
+     * The transaction's position within the ledger that included it. This is zero-indexed.
+     * For example, the value 2 means it was the 3rd transaction in that ledger.
+     *
+     * @return index of transaction within ledger.
+     */
+    @JsonProperty("TransactionIndex")
+    UnsignedInteger transactionIndex();
 
-  /**
-   * A result code indicating whether the transaction succeeded or how it failed.
-   *
-   * @return transaction result code.
-   */
-  @JsonProperty("TransactionResult")
-  String transactionResult();
+    /**
+     * A result code indicating whether the transaction succeeded or how it failed.
+     *
+     * @return transaction result code.
+     */
+    @JsonProperty("TransactionResult")
+    String transactionResult();
 
-  /**
-   * The Currency Amount actually received by the Destination account.
-   * Use this field to determine how much was delivered, regardless of whether the transaction is a partial payment.
-   * Omitted for non-Payment transactions.
-   *
-   * @return delivered amount for payments, otherwise empty for non-payments.
-   */
-  @JsonProperty("delivered_amount")
-  Optional<CurrencyAmount> deliveredAmount();
+    /**
+     * The Currency Amount actually received by the Destination account.
+     * Use this field to determine how much was delivered, regardless of whether the transaction is a partial payment.
+     * Omitted for non-Payment transactions.
+     *
+     * @return delivered amount for payments, otherwise empty for non-payments.
+     */
+    @JsonProperty("delivered_amount")
+    @Value.Default
+    default Optional<CurrencyAmount> deliveredAmount() {
+        return Optional.empty();
+    }
 
-  /**
-   * An {@link AffectedNode} contains a list of objects a transaction modified in some way.
-   * 
-   * @return a list of {@link AffectedNode}s subtypes ({@link CreatedNode}, {@link DeletedNode}, and {ModifiedNode}).
-   */
-  @JsonProperty("AffectedNodes")
-  List<AffectedNode> affectedNodes();
+    /**
+     * An {@link AffectedNode} contains a list of objects a transaction modified in some way.
+     *
+     * @return a list of {@link AffectedNode}s subtypes ({@link CreatedNode}, {@link DeletedNode}, and {ModifiedNode}).
+     */
+    @JsonProperty("AffectedNodes")
+    List<AffectedNode> affectedNodes();
 
 }
