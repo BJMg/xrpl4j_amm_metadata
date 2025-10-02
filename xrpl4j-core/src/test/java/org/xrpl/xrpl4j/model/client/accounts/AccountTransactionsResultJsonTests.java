@@ -39,6 +39,8 @@ import org.xrpl.xrpl4j.model.transactions.TransactionMetadata;
 import org.xrpl.xrpl4j.model.transactions.TransactionResultCodes;
 import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
 
+import java.util.Optional;
+
 public class AccountTransactionsResultJsonTests extends AbstractJsonTest {
 
   @Test
@@ -82,7 +84,7 @@ public class AccountTransactionsResultJsonTests extends AbstractJsonTest {
             TransactionMetadata.builder()
               .transactionIndex(UnsignedInteger.valueOf(12))
               .transactionResult(TransactionResultCodes.TES_SUCCESS)
-              .deliveredAmount(XrpCurrencyAmount.ofDrops(455643030))
+              .deliveredAmount(Optional.of(XrpCurrencyAmount.ofDrops(455643030)))
               .build()
           )
           .validated(true)
@@ -115,7 +117,7 @@ public class AccountTransactionsResultJsonTests extends AbstractJsonTest {
             TransactionMetadata.builder()
               .transactionIndex(UnsignedInteger.valueOf(33))
               .transactionResult(TransactionResultCodes.TES_SUCCESS)
-              .deliveredAmount(XrpCurrencyAmount.ofDrops(499500387))
+              .deliveredAmount(Optional.of(XrpCurrencyAmount.ofDrops(499500387)))
               .build()
           )
           .validated(true)

@@ -35,6 +35,7 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -65,7 +66,7 @@ public class TransactionResultJsonTests extends AbstractJsonTest {
       .metadata(TransactionMetadata.builder()
         .transactionResult(TransactionResultCodes.TES_SUCCESS)
         .transactionIndex(UnsignedInteger.MAX_VALUE)
-        .deliveredAmount(amount)
+        .deliveredAmount(Optional.of(amount))
         .build()
       )
       .build();
@@ -124,7 +125,7 @@ public class TransactionResultJsonTests extends AbstractJsonTest {
       .metadata(TransactionMetadata.builder()
         .transactionResult(TransactionResultCodes.TES_SUCCESS)
         .transactionIndex(UnsignedInteger.MAX_VALUE)
-        .deliveredAmount(amount)
+        .deliveredAmount(Optional.of(amount))
         .build()
       )
       .build();
@@ -178,7 +179,7 @@ public class TransactionResultJsonTests extends AbstractJsonTest {
       .metadata(TransactionMetadata.builder()
         .transactionResult("tesSUCCESS")
         .transactionIndex(UnsignedInteger.MAX_VALUE)
-        .deliveredAmount(amount)
+        .deliveredAmount(Optional.of(amount))
         .build()
       )
       .build();

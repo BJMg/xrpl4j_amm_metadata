@@ -242,7 +242,7 @@ public class XrplClientTest {
     TransactionMetadata metadata = TransactionMetadata.builder()
       .transactionResult("tesSUCCESS")
       .transactionIndex(UnsignedInteger.MAX_VALUE)
-      .deliveredAmount(XrpCurrencyAmount.ofDrops(10))
+      .deliveredAmount(Optional.of(XrpCurrencyAmount.ofDrops(10)))
       .build();
     when(mockTransactionResult.metadata()).thenReturn(Optional.of(metadata));
 
@@ -279,7 +279,7 @@ public class XrplClientTest {
     TransactionMetadata metadata = TransactionMetadata.builder()
       .transactionResult("tefPAST_SEQ")
       .transactionIndex(UnsignedInteger.MAX_VALUE)
-      .deliveredAmount(XrpCurrencyAmount.ofDrops(10))
+      .deliveredAmount(Optional.of(XrpCurrencyAmount.ofDrops(10)))
       .build();
     when(mockTransactionResult.metadata()).thenReturn(Optional.of(metadata));
 
