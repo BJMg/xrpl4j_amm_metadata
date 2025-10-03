@@ -96,6 +96,9 @@ public class TransactionResultDeserializer<T extends Transaction> extends StdDes
     }
 
     private Optional<TransactionMetadata> getTransactionMetadata(ObjectMapper objectMapper, ObjectNode objectNode) {
+        if (!objectNode.has("delivered_amount")) {
+            objectNode.putNull("delivered_amount");
+        }
         if (objectNode.has("meta")) {
             return Optional.of(objectMapper.convertValue(objectNode.get("meta"), TransactionMetadata.class));
         } else if (objectNode.has("metaData")) {
