@@ -57,6 +57,8 @@ import java.util.stream.Collectors;
         @JsonSubTypes.Type(value = ImmutableSignerListObject.class, name = "SignerList"),
         @JsonSubTypes.Type(value = ImmutableTicketObject.class, name = "Ticket"),
         @JsonSubTypes.Type(value = ImmutableAmmObject.class, name = "AMM"),
+        @JsonSubTypes.Type(value = ImmutableMPTokenObject.class, name = "MPToken"),
+        @JsonSubTypes.Type(value = ImmutableMPTokenIssuanceObject.class, name = "MPTokenIssuance"),
 })
 // TODO: Uncomment subtypes as we implement
 public interface LedgerObject {
@@ -143,7 +145,10 @@ public interface LedgerObject {
         /**
          * The {@link LedgerEntryType} for {@code AmmObject} ledger objects.
          */
-        AMM("AMM");
+        AMM("AMM"),
+
+        MP_TOKEN("MPToken"),
+        MP_TOKEN_ISSUANCE("MPTokenIssuance");
 
         private final String value;
 

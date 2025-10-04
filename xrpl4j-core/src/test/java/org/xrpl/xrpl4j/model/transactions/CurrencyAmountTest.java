@@ -33,112 +33,187 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class CurrencyAmountTest {
 
-  @Test
-  public void handleXrp() {
-    XrpCurrencyAmount xrpCurrencyAmount = XrpCurrencyAmount.ofDrops(0L);
+    @Test
+    public void handleXrp() {
+        XrpCurrencyAmount xrpCurrencyAmount = XrpCurrencyAmount.ofDrops(0L);
 
-    xrpCurrencyAmount.handle(
-      ($) -> assertThat($.value()).isEqualTo(BigInteger.ZERO),
-      ($) -> fail()
-    );
+        xrpCurrencyAmount.handle(
+                ($) -> assertThat($.value()).isEqualTo(BigInteger.ZERO),
+                ($) -> fail(),
+                ($) -> fail()
+        );
 
-    // null xrpCurrencyAmountHandler
-    assertThrows(NullPointerException.class, () ->
-      xrpCurrencyAmount.handle(null, ($) -> new Object())
-    );
+        // null xrpCurrencyAmountHandler
+        assertThrows(NullPointerException.class, () ->
+                xrpCurrencyAmount.handle(null, ($) -> new Object(), ($) -> new Object())
+        );
 
-    // null issuedCurrencyAmountConsumer
-    assertThrows(NullPointerException.class, () ->
-      xrpCurrencyAmount.handle(($) -> new Object(), null)
-    );
+        // null issuedCurrencyAmountConsumer
+        assertThrows(NullPointerException.class, () ->
+                xrpCurrencyAmount.handle(($) -> new Object(), null, ($) -> new Object())
+        );
+        // null mpTokenAmountConsumer
+        assertThrows(NullPointerException.class, () ->
+                xrpCurrencyAmount.handle(($) -> new Object(), ($) -> new Object(), null)
+        );
 
-    // Unhandled...
-    CurrencyAmount currencyAmount = new CurrencyAmount() {
-    };
-    assertThrows(IllegalStateException.class, () ->
-      currencyAmount.handle(($) -> new Object(), ($) -> new Object())
-    );
-  }
+        // Unhandled...
+        CurrencyAmount currencyAmount = new CurrencyAmount() {
+        };
+        assertThrows(IllegalStateException.class, () ->
+                currencyAmount.handle(($) -> new Object(), ($) -> new Object(), ($) -> new Object())
+        );
+    }
 
 
-  @Test
-  public void handleIssuance() {
-    final IssuedCurrencyAmount issuedCurrencyAmount = IssuedCurrencyAmount.builder()
-      .issuer(Address.of("rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59Ba"))
-      .currency("USD")
-      .value("100")
-      .build();
+    @Test
+    public void handleIssuance() {
+        final IssuedCurrencyAmount issuedCurrencyAmount = IssuedCurrencyAmount.builder()
+                .issuer(Address.of("rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59Ba"))
+                .currency("USD")
+                .value("100")
+                .build();
 
-    issuedCurrencyAmount.handle(
-      ($) -> fail(),
-      ($) -> assertThat($.value()).isEqualTo("100")
-    );
+        issuedCurrencyAmount.handle(
+                ($) -> fail(),
+                ($) -> assertThat($.value()).isEqualTo("100"),
+                ($) -> fail()
+        );
 
-    // null xrpCurrencyAmountHandler
-    assertThrows(NullPointerException.class, () ->
-      issuedCurrencyAmount.handle(null, ($) -> new Object())
-    );
-    // null issuedCurrencyAmountConsumer
-    assertThrows(NullPointerException.class, () ->
-      issuedCurrencyAmount.handle(($) -> new Object(), null)
-    );
-  }
+        // null xrpCurrencyAmountHandler
+        assertThrows(NullPointerException.class, () ->
+                issuedCurrencyAmount.handle(null, ($) -> new Object(), ($) -> new Object())
+        );
+        // null issuedCurrencyAmountConsumer
+        assertThrows(NullPointerException.class, () ->
+                issuedCurrencyAmount.handle(($) -> new Object(), null,  ($) -> new Object())
+        );
+        // null mpTokenAmountConsumer
+        assertThrows(NullPointerException.class, () ->
+                issuedCurrencyAmount.handle(($) -> new Object(), ($) -> new Object(), null)
+        );
+    }
 
-  @Test
-  public void mapXrp() {
-    XrpCurrencyAmount xrpCurrencyAmount = XrpCurrencyAmount.ofDrops(0L);
+    @Test
+    public void mapXrp() {
+        XrpCurrencyAmount xrpCurrencyAmount = XrpCurrencyAmount.ofDrops(0L);
 
-    String actual = xrpCurrencyAmount.map(
-      ($) -> "success",
-      ($) -> "fail"
-    );
-    assertThat(actual).isEqualTo("success");
+        String actual = xrpCurrencyAmount.map(
+                ($) -> "success",
+                ($) -> "fail",
+                ($) -> "fail"
+        );
+        assertThat(actual).isEqualTo("success");
 
-    // null xrpCurrencyAmountHandler
-    assertThrows(NullPointerException.class, () ->
-      xrpCurrencyAmount.map(null, ($) -> new Object())
-    );
-    // null issuedCurrencyAmountConsumer
-    assertThrows(NullPointerException.class, () ->
-      xrpCurrencyAmount.map(($) -> new Object(), null)
-    );
+        // null xrpCurrencyAmountHandler
+        assertThrows(NullPointerException.class, () ->
+                xrpCurrencyAmount.map(null, ($) -> new Object(), ($) -> new Object())
+        );
+        // null issuedCurrencyAmountConsumer
+        assertThrows(NullPointerException.class, () ->
+                xrpCurrencyAmount.map(($) -> new Object(), null, ($) -> new Object())
+        );
+        // null mpTokenAmountMapper
+        assertThrows(NullPointerException.class, () ->
+                xrpCurrencyAmount.map(($) -> new Object(), ($) -> new Object(), null)
+        );
 
-    // Unhandled...
-    CurrencyAmount currencyAmount = new CurrencyAmount() {
-    };
-    assertThrows(IllegalStateException.class, () ->
-      currencyAmount.map(($) -> new Object(), ($) -> new Object())
-    );
-  }
+        // Unhandled...
+        CurrencyAmount currencyAmount = new CurrencyAmount() {
+        };
+        assertThrows(IllegalStateException.class, () ->
+                currencyAmount.map(($) -> new Object(), ($) -> new Object(), ($) -> new Object())
+        );
+    }
 
-  @Test
-  public void mapIssuance() {
-    final IssuedCurrencyAmount issuedCurrencyAmount = IssuedCurrencyAmount.builder()
-      .issuer(Address.of("rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59Ba"))
-      .currency("USD")
-      .value("100")
-      .build();
+    @Test
+    public void mapIssuance() {
+        final IssuedCurrencyAmount issuedCurrencyAmount = IssuedCurrencyAmount.builder()
+                .issuer(Address.of("rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59Ba"))
+                .currency("USD")
+                .value("100")
+                .build();
 
-    String actual = issuedCurrencyAmount.map(
-      ($) -> "fail",
-      ($) -> "success"
-    );
-    assertThat(actual).isEqualTo("success");
+        String actual = issuedCurrencyAmount.map(
+                ($) -> "fail",
+                ($) -> "success",
+                ($) -> "fail"
+        );
+        assertThat(actual).isEqualTo("success");
 
-    // null xrpCurrencyAmountHandler
-    assertThrows(NullPointerException.class, () ->
-      issuedCurrencyAmount.map(null, ($) -> new Object())
-    );
-    // null issuedCurrencyAmountConsumer
-    assertThrows(NullPointerException.class, () ->
-      issuedCurrencyAmount.map(($) -> new Object(), null)
-    );
-  }
+        // null xrpCurrencyAmountHandler
+        assertThrows(NullPointerException.class, () ->
+                issuedCurrencyAmount.map(null, ($) -> new Object(), ($) -> new Object())
+        );
+        // null issuedCurrencyAmountConsumer
+        assertThrows(NullPointerException.class, () ->
+                issuedCurrencyAmount.map(($) -> new Object(), null, ($) -> new Object())
+        );
+        // null mpTokenAmountMapper
+        assertThrows(NullPointerException.class, () ->
+                issuedCurrencyAmount.map(($) -> new Object(), ($) -> new Object(), null)
+        );
+    }
 
-  @Test
-  void testConstants() {
-    assertThat(CurrencyAmount.ONE_XRP_IN_DROPS).isEqualTo(1_000_000L);
-    assertThat(CurrencyAmount.MAX_XRP).isEqualTo(100_000_000_000L);
-    assertThat(CurrencyAmount.MAX_XRP_IN_DROPS).isEqualTo(100_000_000_000_000_000L);
-  }
+    @Test
+    public void handleMPToken() {
+        final MPTokenAmount mpTokenAmount = MPTokenAmount.builder()
+                .mptIssuanceId("00000001F4D2F1E1D2F1E1D2F1E1D2F1E1D2F1E1D2F1E1D2F1E1D2F1E1D2F1E1D2")
+                .value("100")
+                .build();
+
+        mpTokenAmount.handle(
+                ($) -> fail(),
+                ($) -> fail(),
+                ($) -> assertThat($.value()).isEqualTo("100")
+        );
+
+        // null xrpCurrencyAmountHandler
+        assertThrows(NullPointerException.class, () ->
+                mpTokenAmount.handle(null, ($) -> new Object(), ($) -> new Object())
+        );
+        // null issuedCurrencyAmountConsumer
+        assertThrows(NullPointerException.class, () ->
+                mpTokenAmount.handle(($) -> new Object(), null, ($) -> new Object())
+        );
+        // null mpTokenAmountConsumer
+        assertThrows(NullPointerException.class, () ->
+                mpTokenAmount.handle(($) -> new Object(), ($) -> new Object(), null)
+        );
+    }
+
+    @Test
+    public void mapMPToken() {
+        final MPTokenAmount mpTokenAmount = MPTokenAmount.builder()
+                .mptIssuanceId("00000001F4D2F1E1D2F1E1D2F1E1D2F1E1D2F1E1D2F1E1D2F1E1D2F1E1D2F1E1D2")
+                .value("100")
+                .build();
+
+        String actual = mpTokenAmount.map(
+                ($) -> "fail",
+                ($) -> "fail",
+                ($) -> "success"
+        );
+        assertThat(actual).isEqualTo("success");
+
+        // null xrpCurrencyAmountHandler
+        assertThrows(NullPointerException.class, () ->
+                mpTokenAmount.map(null, ($) -> new Object(), ($) -> new Object())
+        );
+        // null issuedCurrencyAmountConsumer
+        assertThrows(NullPointerException.class, () ->
+                mpTokenAmount.map(($) -> new Object(), null, ($) -> new Object())
+        );
+        // null mpTokenAmountMapper
+        assertThrows(NullPointerException.class, () ->
+                mpTokenAmount.map(($) -> new Object(), ($) -> new Object(), null)
+        );
+    }
+
+    @Test
+    void testConstants() {
+        assertThat(CurrencyAmount.ONE_XRP_IN_DROPS).isEqualTo(1_000_000L);
+        assertThat(CurrencyAmount.MAX_XRP).isEqualTo(100_000_000_000L);
+        assertThat(CurrencyAmount.MAX_XRP_IN_DROPS).isEqualTo(100_000_000_000_000_000L);
+    }
 }
