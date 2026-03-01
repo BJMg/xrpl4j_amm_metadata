@@ -77,6 +77,10 @@ public interface Transaction {
                     .put(ImmutableAmmVote.class, TransactionType.AMM_VOTE)
                     .put(ImmutableAmmWithdraw.class, TransactionType.AMM_WITHDRAW)
                     .put(ImmutableClawback.class, TransactionType.CLAWBACK)
+                    .put(ImmutableMpTokenIssuanceCreate.class, TransactionType.MPT_ISSUANCE_CREATE)
+                    .put(ImmutableMpTokenIssuanceDestroy.class, TransactionType.MPT_ISSUANCE_DESTROY)
+                    .put(ImmutableMpTokenIssuanceSet.class, TransactionType.MPT_ISSUANCE_SET)
+                    .put(ImmutableMpTokenAuthorize.class, TransactionType.MPT_AUTHORIZE)
                     .put(ImmutableUnknown.class, TransactionType.UNKNOWN)
                     .build();
 

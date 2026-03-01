@@ -33,10 +33,18 @@ import org.xrpl.xrpl4j.model.immutables.Wrapped;
 import org.xrpl.xrpl4j.model.immutables.Wrapper;
 import org.xrpl.xrpl4j.model.jackson.modules.AddressDeserializer;
 import org.xrpl.xrpl4j.model.jackson.modules.AddressSerializer;
+import org.xrpl.xrpl4j.model.jackson.modules.AssetScaleDeserializer;
+import org.xrpl.xrpl4j.model.jackson.modules.AssetScaleSerializer;
 import org.xrpl.xrpl4j.model.jackson.modules.Hash256Deserializer;
 import org.xrpl.xrpl4j.model.jackson.modules.Hash256Serializer;
 import org.xrpl.xrpl4j.model.jackson.modules.MarkerDeserializer;
 import org.xrpl.xrpl4j.model.jackson.modules.MarkerSerializer;
+import org.xrpl.xrpl4j.model.jackson.modules.MpTokenIssuanceIdDeserializer;
+import org.xrpl.xrpl4j.model.jackson.modules.MpTokenIssuanceIdSerializer;
+import org.xrpl.xrpl4j.model.jackson.modules.MpTokenMetadataDeserializer;
+import org.xrpl.xrpl4j.model.jackson.modules.MpTokenMetadataSerializer;
+import org.xrpl.xrpl4j.model.jackson.modules.MpTokenNumericAmountDeserializer;
+import org.xrpl.xrpl4j.model.jackson.modules.MpTokenNumericAmountSerializer;
 import org.xrpl.xrpl4j.model.jackson.modules.NfTokenIdDeserializer;
 import org.xrpl.xrpl4j.model.jackson.modules.NfTokenIdSerializer;
 import org.xrpl.xrpl4j.model.jackson.modules.NfTokenUriSerializer;
@@ -441,6 +449,87 @@ public class Wrappers {
      */
     public BigDecimal bigDecimalValue() {
       return BigDecimal.valueOf(value().longValue(), 3);
+    }
+
+  }
+
+  /**
+   * A wrapped {@link UnsignedInteger} containing an asset scale for MPT.
+   */
+  @Value.Immutable
+  @Wrapped
+  @JsonSerialize(as = AssetScale.class, using = AssetScaleSerializer.class)
+  @JsonDeserialize(as = AssetScale.class, using = AssetScaleDeserializer.class)
+  abstract static class _AssetScale extends Wrapper<UnsignedInteger> implements Serializable {
+
+    @Override
+    public String toString() {
+      return this.value().toString();
+    }
+
+  }
+
+  /**
+   * A wrapped {@link UnsignedLong} containing an MPT numeric amount.
+   */
+  @Value.Immutable
+  @Wrapped
+  @JsonSerialize(as = MpTokenNumericAmount.class, using = MpTokenNumericAmountSerializer.class)
+  @JsonDeserialize(as = MpTokenNumericAmount.class, using = MpTokenNumericAmountDeserializer.class)
+  abstract static class _MpTokenNumericAmount extends Wrapper<UnsignedLong> implements Serializable {
+
+    public static MpTokenNumericAmount of(long amount) {
+      return MpTokenNumericAmount.of(UnsignedLong.valueOf(amount));
+    }
+
+    @Override
+    public String toString() {
+      return this.value().toString();
+    }
+
+  }
+
+  /**
+   * A wrapped {@link String} containing an MPT issuance ID.
+   */
+  @Value.Immutable
+  @Wrapped
+  @JsonSerialize(as = MpTokenIssuanceId.class, using = MpTokenIssuanceIdSerializer.class)
+  @JsonDeserialize(as = MpTokenIssuanceId.class, using = MpTokenIssuanceIdDeserializer.class)
+  abstract static class _MpTokenIssuanceId extends Wrapper<String> implements Serializable {
+
+    @Override
+    public String toString() {
+      return this.value();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj instanceof MpTokenIssuanceId) {
+        String otherValue = ((MpTokenIssuanceId) obj).value();
+        return otherValue.toUpperCase(Locale.ENGLISH).equals(value().toUpperCase(Locale.ENGLISH));
+      }
+      return false;
+    }
+
+    @Override
+    public int hashCode() {
+      return value().toUpperCase(Locale.ENGLISH).hashCode();
+    }
+  }
+
+  /**
+   * Wrapped String representing MPT metadata.
+   */
+  @Value.Immutable
+  @Wrapped
+  @JsonSerialize(as = MpTokenMetadata.class, using = MpTokenMetadataSerializer.class)
+  @JsonDeserialize(as = MpTokenMetadata.class, using = MpTokenMetadataDeserializer.class)
+  abstract static class _MpTokenMetadata extends Wrapper<String> implements Serializable {
+
+    @Override
+    public String toString() {
+      return this.value();
     }
 
   }

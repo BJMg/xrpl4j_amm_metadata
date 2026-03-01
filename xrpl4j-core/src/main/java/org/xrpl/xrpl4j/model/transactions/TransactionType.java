@@ -188,6 +188,27 @@ public enum TransactionType {
   AMM_WITHDRAW("AMMWithdraw"),
   
   CLAWBACK("Clawback"),
+
+  /**
+   * The {@link TransactionType} for the {@link MpTokenIssuanceCreate} transaction.
+   */
+  MPT_ISSUANCE_CREATE("MPTokenIssuanceCreate"),
+
+  /**
+   * The {@link TransactionType} for the {@link MpTokenIssuanceDestroy} transaction.
+   */
+  MPT_ISSUANCE_DESTROY("MPTokenIssuanceDestroy"),
+
+  /**
+   * The {@link TransactionType} for the {@link MpTokenIssuanceSet} transaction.
+   */
+  MPT_ISSUANCE_SET("MPTokenIssuanceSet"),
+
+  /**
+   * The {@link TransactionType} for the {@link MpTokenAuthorize} transaction.
+   */
+  MPT_AUTHORIZE("MPTokenAuthorize"),
+
   UNKNOWN("Unknown");
 
   private final String value;

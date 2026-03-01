@@ -28,12 +28,34 @@ import org.xrpl.xrpl4j.model.transactions.Transaction;
 public class TransactionFlags extends Flags {
 
   /**
+   * Constant for an unset flag.
+   */
+  protected static final TransactionFlags UNSET = new TransactionFlags(0);
+
+  /**
+   * Constant for empty flags.
+   */
+  public static final TransactionFlags EMPTY = new TransactionFlags(0);
+
+  /**
    * Corresponds to the {@code tfFullyCanonicalSig} flag.
    */
   protected static final TransactionFlags FULLY_CANONICAL_SIG = new TransactionFlags(0x80000000L);
 
   TransactionFlags(long value) {
     super(value);
+  }
+
+  /**
+   * Construct {@link TransactionFlags} from one or more {@link Flags} by performing a bitwise OR on all.
+   *
+   * @param flag   The first {@link Flags}.
+   * @param others Zero or more other {@link Flags} to include.
+   *
+   * @return A new {@link TransactionFlags}.
+   */
+  public static TransactionFlags of(Flags flag, Flags... others) {
+    return new TransactionFlags(Flags.of(flag, others).getValue());
   }
 
   /**
