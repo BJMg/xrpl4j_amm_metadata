@@ -20,28 +20,60 @@ package org.xrpl.xrpl4j.model.flags;
  * =========================LICENSE_END==================================
  */
 
-import org.xrpl.xrpl4j.model.ledger.NfTokenOfferObject;
-
+/**
+ * A set of static {@link Flags} which can be set on {@link org.xrpl.xrpl4j.model.ledger.MPTokenObject}s.
+ */
 public class MPTokenFlags extends Flags {
+
+    /**
+     * Constant for an unset flag.
+     */
     public static final MPTokenFlags UNSET = new MPTokenFlags(0);
-    public static final MPTokenFlags MPT_LOCKED = new MPTokenFlags(0x00000001);
 
-    public static final MPTokenFlags MPT_AUTHORIZED = new MPTokenFlags(0x00000002);
+    /**
+     * Constant {@link MPTokenFlags} for the {@code lsfMPTLocked} flag.
+     */
+    public static final MPTokenFlags LOCKED = new MPTokenFlags(0x00000001);
 
+    /**
+     * Constant {@link MPTokenFlags} for the {@code lsfMPTAuthorized} flag.
+     */
+    public static final MPTokenFlags AUTHORIZED = new MPTokenFlags(0x00000002);
 
+    /**
+     * Required-args Constructor.
+     *
+     * @param value The long-number encoded flags value of this {@link MPTokenFlags}.
+     */
     private MPTokenFlags(long value) {
         super(value);
     }
 
+    /**
+     * Construct {@link MPTokenFlags} with a given value.
+     *
+     * @param value The long-number encoded flags value of this {@link MPTokenFlags}.
+     * @return New {@link MPTokenFlags}.
+     */
     public static MPTokenFlags of(long value) {
         return new MPTokenFlags(value);
     }
 
-    public boolean lsfMPTLocked() {
-        return this.isSet(MPT_LOCKED);
+    /**
+     * If set, indicates that all balances are locked.
+     *
+     * @return {@code true} if {@code lsfMPTLocked} is set, otherwise {@code false}.
+     */
+    public boolean lsfMptLocked() {
+        return this.isSet(LOCKED);
     }
 
-    public boolean lsfMPTAuthorized() {
-        return this.isSet(MPT_AUTHORIZED);
+    /**
+     * If set, indicates that the issuer has authorized the holder for the MPT.
+     *
+     * @return {@code true} if {@code lsfMPTAuthorized} is set, otherwise {@code false}.
+     */
+    public boolean lsfMptAuthorized() {
+        return this.isSet(AUTHORIZED);
     }
 }

@@ -26,15 +26,16 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.primitives.UnsignedInteger;
 import org.immutables.value.Value;
 import org.xrpl.xrpl4j.model.flags.MPTokenFlags;
-import org.xrpl.xrpl4j.model.flags.NfTokenOfferFlags;
 import org.xrpl.xrpl4j.model.transactions.Address;
-import org.xrpl.xrpl4j.model.transactions.CurrencyAmount;
-import org.xrpl.xrpl4j.model.transactions.NfTokenId;
-import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
+import org.xrpl.xrpl4j.model.transactions.Hash256;
+import org.xrpl.xrpl4j.model.transactions.MpTokenIssuanceId;
+import org.xrpl.xrpl4j.model.transactions.MpTokenNumericAmount;
 
-import java.math.BigInteger;
 import java.util.Optional;
 
+/**
+ * Represents an {@code MPToken} ledger object.
+ */
 @Value.Immutable
 @JsonSerialize(as = ImmutableMPTokenObject.class)
 @JsonDeserialize(as = ImmutableMPTokenObject.class)
@@ -60,22 +61,73 @@ public interface MPTokenObject extends LedgerObject {
         return LedgerEntryType.MP_TOKEN;
     }
 
-
-    @JsonProperty("Account")
-    Address account();
-
-    @JsonProperty("MPTokenIssuanceID")
-    String mpTokenIssuanceID();
-
-    @JsonProperty("MPTAmount")
-    String mptAmount();
-
-    @JsonProperty("LockedAmount")
-    Optional<String> lockedAmount();
-
+    /**
+     * The {@link MPTokenFlags} for this token.
+     *
+     * @return An {@link MPTokenFlags}.
+     */
     @JsonProperty("Flags")
     @Value.Default
     default MPTokenFlags flags() {
         return MPTokenFlags.UNSET;
     }
+
+    /**
+     * The {@link Address} of the owner of this MPToken.
+     *
+     * @return An {@link Address}.
+     */
+    @JsonProperty("Account")
+    Optional<Address> account();
+
+    /**
+     * The {@link MpTokenIssuanceId} of the MPTokenIssuance that this token corresponds to.
+     *
+     * @return An {@link MpTokenIssuanceId}.
+     */
+    @JsonProperty("MPTokenIssuanceID")
+    Optional<MpTokenIssuanceId> mpTokenIssuanceId();
+
+    /**
+     * The balance of this MPToken. Defaults to 0.
+     *
+     * @return An {@link MpTokenNumericAmount}.
+     */
+    @JsonProperty("MPTAmount")
+    @Value.Default
+    default MpTokenNumericAmount mptAmount() {
+        return MpTokenNumericAmount.of(0);
+    }
+
+    /**
+     * The amount of this MPToken that is locked in escrows.
+     *
+     * @return An optionally-present {@link MpTokenNumericAmount}.
+     */
+    @JsonProperty("LockedAmount")
+    Optional<MpTokenNumericAmount> lockedAmount();
+
+    /**
+     * The identifying hash of the transaction that most recently modified this object.
+     *
+     * @return An optionally-present {@link Hash256} containing the previous transaction hash.
+     */
+    @JsonProperty("PreviousTxnID")
+    Optional<Hash256> previousTransactionId();
+
+    /**
+     * The index of the ledger that contains the transaction that most recently modified this object.
+     *
+     * @return An optionally-present {@link UnsignedInteger} representing the previous transaction ledger sequence.
+     */
+    @JsonProperty("PreviousTxnLgrSeq")
+    Optional<UnsignedInteger> previousTransactionLedgerSequence();
+
+    /**
+     * A hint indicating which page of the owner directory links to this object.
+     *
+     * @return An {@link Optional} of type {@link String} containing the owner node hint.
+     */
+    @JsonProperty("OwnerNode")
+    Optional<String> ownerNode();
 }

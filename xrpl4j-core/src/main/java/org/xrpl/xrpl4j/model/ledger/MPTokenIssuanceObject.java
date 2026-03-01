@@ -24,12 +24,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.primitives.UnsignedInteger;
+import com.google.common.primitives.UnsignedLong;
 import org.immutables.value.Value;
-import org.xrpl.xrpl4j.model.flags.MPTokenFlags;
+import org.xrpl.xrpl4j.model.flags.MpTokenIssuanceFlags;
 import org.xrpl.xrpl4j.model.transactions.Address;
+import org.xrpl.xrpl4j.model.transactions.AssetScale;
+import org.xrpl.xrpl4j.model.transactions.Hash256;
+import org.xrpl.xrpl4j.model.transactions.MpTokenIssuanceId;
+import org.xrpl.xrpl4j.model.transactions.MpTokenMetadata;
+import org.xrpl.xrpl4j.model.transactions.MpTokenNumericAmount;
+import org.xrpl.xrpl4j.model.transactions.TransferFee;
 
 import java.util.Optional;
 
+/**
+ * Represents an {@code MPTokenIssuance} ledger object.
+ */
 @Value.Immutable
 @JsonSerialize(as = ImmutableMPTokenIssuanceObject.class)
 @JsonDeserialize(as = ImmutableMPTokenIssuanceObject.class)
@@ -45,9 +55,9 @@ public interface MPTokenIssuanceObject extends LedgerObject {
     }
 
     /**
-     * The type of ledger object. In this case, this is always "MPToken".
+     * The type of ledger object.
      *
-     * @return Always {@link LedgerEntryType#MP_TOKEN}.
+     * @return Always {@link LedgerEntryType#MP_TOKEN_ISSUANCE}.
      */
     @JsonProperty("LedgerEntryType")
     @Value.Derived
@@ -55,24 +65,120 @@ public interface MPTokenIssuanceObject extends LedgerObject {
         return LedgerEntryType.MP_TOKEN_ISSUANCE;
     }
 
+    /**
+     * The {@link MpTokenIssuanceFlags} for this issuance.
+     *
+     * @return An {@link MpTokenIssuanceFlags}.
+     */
+    @JsonProperty("Flags")
+    @Value.Default
+    default MpTokenIssuanceFlags flags() {
+        return MpTokenIssuanceFlags.UNSET;
+    }
 
+    /**
+     * The {@link Address} of the issuer of this token.
+     *
+     * @return An {@link Address}.
+     */
     @JsonProperty("Issuer")
     Optional<Address> issuer();
 
-    @JsonProperty("AssetScale")
-    UnsignedInteger assetScale();
-
-    @JsonProperty("MaximumAmount")
-    Optional<String> maximumAmount();
-
-    @JsonProperty("OutstandingAmount")
-    String outstandingAmount();
-
-    @JsonProperty("TransferFee")
-    UnsignedInteger transferFee();
-    @JsonProperty("MPTokenMetadata")
-    String mpTokenMetadata();
-
+    /**
+     * A 32-bit unsigned integer that is used to ensure issuances from a given sender may only ever exist once.
+     *
+     * @return An {@link UnsignedInteger} representing the account sequence number.
+     */
     @JsonProperty("Sequence")
-    UnsignedInteger sequence();
+    Optional<UnsignedInteger> sequence();
+
+    /**
+     * The fee that this issuance charges for secondary sales of the token.
+     *
+     * @return A {@link TransferFee}.
+     */
+    @JsonProperty("TransferFee")
+    @Value.Default
+    default TransferFee transferFee() {
+        return TransferFee.of(UnsignedInteger.ZERO);
+    }
+
+    /**
+     * The {@link AssetScale} of the issuance.
+     *
+     * @return An {@link AssetScale}.
+     */
+    @JsonProperty("AssetScale")
+    @Value.Default
+    default AssetScale assetScale() {
+        return AssetScale.of(UnsignedInteger.ZERO);
+    }
+
+    /**
+     * The maximum number of this issuance that can be distributed to non-issuing accounts.
+     *
+     * @return An optionally present {@link MpTokenNumericAmount}.
+     */
+    @JsonProperty("MaximumAmount")
+    Optional<MpTokenNumericAmount> maximumAmount();
+
+    /**
+     * The sum of all token amounts that have been minted to all token holders.
+     *
+     * @return An {@link MpTokenNumericAmount}.
+     */
+    @JsonProperty("OutstandingAmount")
+    @Value.Default
+    default MpTokenNumericAmount outstandingAmount() {
+        return MpTokenNumericAmount.of(UnsignedLong.ZERO);
+    }
+
+    /**
+     * The total amount of this MPT that is locked in escrows across all holders.
+     *
+     * @return An optionally-present {@link MpTokenNumericAmount}.
+     */
+    @JsonProperty("LockedAmount")
+    Optional<MpTokenNumericAmount> lockedAmount();
+
+    /**
+     * Arbitrary hex-encoded metadata about this issuance.
+     *
+     * @return An optionally-present {@link MpTokenMetadata}.
+     */
+    @JsonProperty("MPTokenMetadata")
+    Optional<MpTokenMetadata> mpTokenMetadata();
+
+    /**
+     * The identifying hash of the transaction that most recently modified this object.
+     *
+     * @return An optionally-present {@link Hash256} containing the previous transaction hash.
+     */
+    @JsonProperty("PreviousTxnID")
+    Optional<Hash256> previousTransactionId();
+
+    /**
+     * The index of the ledger that contains the transaction that most recently modified this object.
+     *
+     * @return An optionally-present {@link UnsignedInteger} representing the previous transaction ledger sequence.
+     */
+    @JsonProperty("PreviousTxnLgrSeq")
+    Optional<UnsignedInteger> previousTransactionLedgerSequence();
+
+    /**
+     * A hint indicating which page of the owner directory links to this object.
+     *
+     * @return An {@link Optional} of type {@link String} containing the owner node hint.
+     */
+    @JsonProperty("OwnerNode")
+    Optional<String> ownerNode();
+
+    /**
+     * The {@link MpTokenIssuanceId} of the issuance. Only present in responses to {@code ledger_data} and
+     * {@code account_objects} RPC calls.
+     *
+     * @return An {@link Optional} {@link MpTokenIssuanceId}.
+     */
+    @JsonProperty("mpt_issuance_id")
+    Optional<MpTokenIssuanceId> mpTokenIssuanceId();
 }
