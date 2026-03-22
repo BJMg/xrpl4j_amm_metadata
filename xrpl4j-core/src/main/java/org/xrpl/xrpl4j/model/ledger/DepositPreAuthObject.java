@@ -28,6 +28,8 @@ import org.xrpl.xrpl4j.model.transactions.Address;
 import org.xrpl.xrpl4j.model.transactions.DepositPreAuth;
 import org.xrpl.xrpl4j.model.transactions.Transaction;
 
+import java.util.Optional;
+
 /**
  * Tracks a preauthorization from one account to another. {@link DepositPreAuth} transactions create these objects.
  *
@@ -35,6 +37,10 @@ import org.xrpl.xrpl4j.model.transactions.Transaction;
  * requires Deposit Authorization. In that case, the account that was preauthorized can send payments and
  * other transactions directly to the account that provided the preauthorization.
  * Preauthorizations are uni-directional, and have no effect on payments going the opposite direction.</p>
+ *
+ * <p>Note: Some fields that would normally be required in a complete ledger object are marked as
+ * Optional to handle partial objects in transaction metadata (CreatedNode, ModifiedNode, DeletedNode)
+ * where not all fields may be present.</p>
  */
 @Value.Immutable
 @JsonSerialize(as = ImmutableDepositPreAuthObject.class)
@@ -71,9 +77,10 @@ public interface DepositPreAuthObject extends LedgerObject {
 
   /**
    * The account that received the preauthorization. (The sender of the preauthorized payments.)
+   * May be absent in partial objects from transaction metadata.
    *
-   * @return The {@link Address} of the account to authorize.
+   * @return An optionally-present {@link Address} of the account to authorize.
    */
   @JsonProperty("Authorize")
-  Address authorize();
+  Optional<Address> authorize();
 }

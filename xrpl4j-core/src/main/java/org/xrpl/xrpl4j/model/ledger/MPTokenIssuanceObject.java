@@ -39,6 +39,10 @@ import java.util.Optional;
 
 /**
  * Represents an {@code MPTokenIssuance} ledger object.
+ *
+ * <p>Note: Some fields that would normally be required in a complete ledger object are marked as
+ * Optional or have default values to handle partial objects in transaction metadata
+ * (CreatedNode, ModifiedNode, DeletedNode) where not all fields may be present.</p>
  */
 @Value.Immutable
 @JsonSerialize(as = ImmutableMPTokenIssuanceObject.class)
@@ -78,16 +82,18 @@ public interface MPTokenIssuanceObject extends LedgerObject {
 
     /**
      * The {@link Address} of the issuer of this token.
+     * This field is required in complete ledger objects but may be absent in partial objects from transaction metadata.
      *
-     * @return An {@link Address}.
+     * @return An optionally-present {@link Address}.
      */
     @JsonProperty("Issuer")
     Optional<Address> issuer();
 
     /**
      * A 32-bit unsigned integer that is used to ensure issuances from a given sender may only ever exist once.
+     * This field is required in complete ledger objects but may be absent in partial objects from transaction metadata.
      *
-     * @return An {@link UnsignedInteger} representing the account sequence number.
+     * @return An optionally-present {@link UnsignedInteger} representing the account sequence number.
      */
     @JsonProperty("Sequence")
     Optional<UnsignedInteger> sequence();
@@ -124,8 +130,10 @@ public interface MPTokenIssuanceObject extends LedgerObject {
 
     /**
      * The sum of all token amounts that have been minted to all token holders.
+     * This field is required in complete ledger objects but may be absent in partial objects from transaction metadata,
+     * so it defaults to 0.
      *
-     * @return An {@link MpTokenNumericAmount}.
+     * @return An {@link MpTokenNumericAmount}, defaults to 0 if not present.
      */
     @JsonProperty("OutstandingAmount")
     @Value.Default

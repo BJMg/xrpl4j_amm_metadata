@@ -35,6 +35,9 @@ import java.util.Optional;
 
 /**
  * Represents an {@code MPToken} ledger object.
+ *
+ * <p>Note: Some fields are marked as Optional to handle partial objects in transaction metadata
+ * (CreatedNode, ModifiedNode, DeletedNode) where not all fields may be present.</p>
  */
 @Value.Immutable
 @JsonSerialize(as = ImmutableMPTokenObject.class)
@@ -74,16 +77,18 @@ public interface MPTokenObject extends LedgerObject {
 
     /**
      * The {@link Address} of the owner of this MPToken.
+     * May be absent in partial objects from transaction metadata.
      *
-     * @return An {@link Address}.
+     * @return An optionally-present {@link Address}.
      */
     @JsonProperty("Account")
     Optional<Address> account();
 
     /**
      * The {@link MpTokenIssuanceId} of the MPTokenIssuance that this token corresponds to.
+     * May be absent in partial objects from transaction metadata.
      *
-     * @return An {@link MpTokenIssuanceId}.
+     * @return An optionally-present {@link MpTokenIssuanceId}.
      */
     @JsonProperty("MPTokenIssuanceID")
     Optional<MpTokenIssuanceId> mpTokenIssuanceId();
@@ -109,6 +114,7 @@ public interface MPTokenObject extends LedgerObject {
 
     /**
      * The identifying hash of the transaction that most recently modified this object.
+     * May be absent in partial objects from transaction metadata.
      *
      * @return An optionally-present {@link Hash256} containing the previous transaction hash.
      */
@@ -117,6 +123,7 @@ public interface MPTokenObject extends LedgerObject {
 
     /**
      * The index of the ledger that contains the transaction that most recently modified this object.
+     * May be absent in partial objects from transaction metadata.
      *
      * @return An optionally-present {@link UnsignedInteger} representing the previous transaction ledger sequence.
      */
