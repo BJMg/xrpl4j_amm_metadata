@@ -23,7 +23,6 @@ package org.xrpl.xrpl4j.model.transactions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.google.common.base.Preconditions;
 import org.immutables.value.Value;
 import org.immutables.value.Value.Derived;
 import org.xrpl.xrpl4j.model.flags.TransactionFlags;
@@ -83,14 +82,4 @@ public interface DepositPreAuth extends Transaction {
   @JsonProperty("Unauthorize")
   Optional<Address> unauthorize();
 
-  /**
-   * Validate that either {@link DepositPreAuth#authorize()} or {@link DepositPreAuth#unauthorize()} is present,
-   * but not both.
-   */
-  @Value.Check
-  default void validateFieldPresence() {
-    Preconditions.checkArgument((authorize().isPresent() || unauthorize().isPresent()) &&
-        !(authorize().isPresent() && unauthorize().isPresent()),
-      "The DepositPreAuth transaction must include either Authorize or Unauthorize, but not both.");
-  }
 }
