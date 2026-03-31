@@ -32,12 +32,17 @@ import org.xrpl.xrpl4j.model.transactions.*;
 import java.util.Optional;
 
 /**
- * Represents a held payment of XRP waiting to be executed or canceled. An {@link EscrowCreate} transaction creates an
- * {@link EscrowObject} in the ledger. A successful {@link EscrowFinish} or {@link EscrowCancel} transaction deletes the
- * object. If the {@link EscrowObject} has a crypto-condition, the payment can only succeed if an {@link EscrowFinish}
+ * Represents a held payment of XRP, IOU tokens, or MPT tokens waiting to be executed or canceled. An
+ * {@link EscrowCreate} transaction creates an {@link EscrowObject} in the ledger. A successful {@link EscrowFinish} or
+ * {@link EscrowCancel} transaction deletes the object.
+ *
+ * <p>If the {@link EscrowObject} has a crypto-condition, the payment can only succeed if an {@link EscrowFinish}
  * transaction provides the corresponding fulfillment that satisfies the condition (the only supported crypto-condition
  * type is PREIMAGE-SHA-256). If the {@link EscrowObject} has a {@link EscrowObject#finishAfter()} time, the held
  * payment can only execute after that time.
+ *
+ * <p>With the TokenEscrow amendment, escrows can hold IOU tokens (trustline-based) or MPT tokens (Multi-Purpose
+ * Tokens) in addition to XRP.
  */
 @Value.Immutable
 @JsonSerialize(as = ImmutableEscrowObject.class)
@@ -82,12 +87,19 @@ public interface EscrowObject extends LedgerObject {
   Address destination();
 
   /**
-   * The amount of XRP, in drops, to be delivered by the held payment.
+   * The number of tokens to be delivered by the held payment.
    *
-   * @return A {@link XrpCurrencyAmount} denoting the amount.
+   * <p>Can be one of:
+   * <ul>
+   *   <li>{@link XrpCurrencyAmount} - XRP in drops</li>
+   *   <li>{@link IssuedCurrencyAmount} - IOU tokens</li>
+   *   <li>{@link MptCurrencyAmount} - MPT tokens</li>
+   * </ul>
+   *
+   * @return A {@link CurrencyAmount} denoting the amount.
    */
   @JsonProperty("Amount")
-  XrpCurrencyAmount amount();
+  CurrencyAmount amount();
 
   /**
    * A PREIMAGE-SHA-256 crypto-condition in DER hexadecimal encoding. If present, the
